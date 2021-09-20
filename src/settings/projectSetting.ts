@@ -24,13 +24,13 @@ const setting: ProjectConfig = {
   settingButtonPosition: SettingButtonPositionEnum.AUTO,
 
   // Permission mode
-  permissionMode: PermissionModeEnum.ROUTE_MAPPING,
+  permissionMode: PermissionModeEnum.BACK,
 
   // Permission-related cache is stored in sessionStorage or localStorage
   permissionCacheType: CacheTypeEnum.LOCAL,
 
   // Session timeout processing
-  sessionTimeoutProcessing: SessionTimeoutProcessingEnum.ROUTE_JUMP,
+  sessionTimeoutProcessing: SessionTimeoutProcessingEnum.PAGE_COVERAGE,
 
   // color
   themeColor: primaryColor,
@@ -51,7 +51,7 @@ const setting: ProjectConfig = {
   showLogo: true,
 
   // Whether to show footer
-  showFooter: false,
+  showFooter: true,
 
   // Header configuration
   headerSetting: {
@@ -87,7 +87,7 @@ const setting: ProjectConfig = {
     collapsedShowTitle: false,
     // Whether it can be dragged
     // Only limited to the opening of the left menu, the mouse has a drag bar on the right side of the menu
-    canDrag: false,
+    canDrag: true,
     // Whether to show no dom
     show: true,
     // Whether to show dom
@@ -134,7 +134,7 @@ const setting: ProjectConfig = {
   // Transition Setting
   transitionSetting: {
     //  Whether to open the page switching animation
-    // The disabled state will also disable pageLoadinng
+    // The disabled state will also disable pageLoading
     enable: true,
 
     // Route basic switching animation
@@ -145,11 +145,11 @@ const setting: ProjectConfig = {
     openPageLoading: true,
 
     // Whether to open the top progress bar
-    openNProgress: false,
+    openNProgress: true,
   },
 
   // Whether to enable KeepAlive cache is best to close during development, otherwise the cache needs to be cleared every time
-  openKeepAlive: true,
+  openKeepAlive: false,
 
   // Automatic screen lock time, 0 does not lock the screen. Unit minute default 0
   lockTime: 0,
@@ -158,10 +158,10 @@ const setting: ProjectConfig = {
   showBreadCrumb: true,
 
   // Whether to show the breadcrumb icon
-  showBreadCrumbIcon: false,
+  showBreadCrumbIcon: true,
 
   // Use error-handler-plugin
-  useErrorHandle: false,
+  useErrorHandle: true,
 
   // Whether to open back to top
   useOpenBackTop: true,

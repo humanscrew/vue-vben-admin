@@ -22,6 +22,7 @@
         visibilityToggle
         v-model:value="formData.password"
         :placeholder="t('sys.login.password')"
+        autocomplete
       />
     </FormItem>
 
@@ -119,8 +120,8 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'vben',
-    password: '123456',
+    account: '',
+    password: '',
   });
 
   const { validForm } = useFormValid(formRef);

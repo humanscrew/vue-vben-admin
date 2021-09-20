@@ -11306,9 +11306,9 @@ vue-eslint-parser@^7.10.0, vue-eslint-parser@^7.11.0:
     lodash "^4.17.21"
     semver "^6.3.0"
 
-vue-i18n@9.1.7:
+vue-i18n@^9.1.7:
   version "9.1.7"
-  resolved "https://registry.nlark.com/vue-i18n/download/vue-i18n-9.1.7.tgz?cache=0&sync_timestamp=1631556819687&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue-i18n%2Fdownload%2Fvue-i18n-9.1.7.tgz#6f28dd2135197066508e2e65ab204a019750d773"
+  resolved "https://registry.nlark.com/vue-i18n/download/vue-i18n-9.1.7.tgz?cache=0&sync_timestamp=1631557728971&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvue-i18n%2Fdownload%2Fvue-i18n-9.1.7.tgz#6f28dd2135197066508e2e65ab204a019750d773"
   integrity sha1-byjdITUZcGZQji5lqyBKAZdQ13M=
   dependencies:
     "@intlify/core-base" "9.1.7"
