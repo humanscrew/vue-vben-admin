@@ -1,19 +1,52 @@
-import { defHttp } from '/@/utils/http/axios';
-import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userModel';
+import { defHttp, http } from '/@/utils/http/axios';
+import {
+  LoginParams,
+  GetRsaResultModel,
+  LoginResultModel,
+  GetUserInfoModel,
+} from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
+import { useUserStoreWithOut } from '/@/store/modules/user';
 
 enum Api {
-  Login = '/login',
+  RSA = '/utils/rsa',
+  Login = '/auth/login',
   Logout = '/logout',
   GetUserInfo = '/getUserInfo',
   GetPermCode = '/getPermCode',
 }
 
+export function getRSA(params: LoginParams, mode: ErrorMessageMode = 'modal') {
+  const userStore = useUserStoreWithOut();
+  userStore.setPublicKey(undefined);
+  return http.post<GetRsaResultModel>(
+    {
+      url: Api.RSA,
+      params: { username: params.username },
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function loginApi(params: any, mode: ErrorMessageMode = 'modal') {
+  return http.post<LoginResultModel>(
+    {
+      url: Api.Login,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
 /**
  * @description: user login api
  */
-export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
+export function login2(params: LoginParams, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<LoginResultModel>(
     {
       url: Api.Login,
@@ -39,3 +72,5 @@ export function getPermCode() {
 export function doLogout() {
   return defHttp.get({ url: Api.Logout });
 }
+
+export const LoginUrl = Api.Login;

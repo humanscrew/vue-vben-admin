@@ -8,6 +8,9 @@ import { isFunction } from '/@/utils/is';
 import { cloneDeep, omit } from 'lodash-es';
 import { ContentTypeEnum } from '/@/enums/httpEnum';
 import { RequestEnum } from '/@/enums/httpEnum';
+import { getPublicKey } from '/@/utils/auth';
+import { AesEncryption } from '/@/utils/cipher';
+import { LoginUrl } from '/@/api/sys/user';
 
 export * from './axiosTransform';
 
@@ -202,13 +205,25 @@ export class VAxios {
       conf = beforeRequestHook(conf, opt);
     }
     conf.requestOptions = opt;
-
     conf = this.supportFormData(conf);
+
+    const publicKey = getPublicKey();
+    let encryption: AesEncryption | undefined = undefined;
+    if (publicKey && conf.data) {
+      encryption = new AesEncryption();
+      encryption.encryptByAESWithRSA(conf.data, publicKey);
+      if (config.url === LoginUrl) {
+        conf.data.username = config.params.username;
+      }
+    }
 
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request<any, AxiosResponse<Result>>(conf)
         .then((res: AxiosResponse<Result>) => {
+          if (encryption) {
+            encryption.decryptByAES(res.data);
+          }
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {
               const ret = transformRequestHook(res, opt);

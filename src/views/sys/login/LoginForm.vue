@@ -108,7 +108,7 @@
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
-  const { notification, createErrorModal } = useMessage();
+  const { notification } = useMessage();
   const { prefixCls } = useDesign('login');
   const userStore = useUserStore();
 
@@ -139,7 +139,7 @@
         toRaw({
           password: data.password,
           username: data.account,
-          mode: 'none', //不要默认的错误提示
+          mode: 'message',
         }),
       );
       if (userInfo) {
@@ -150,11 +150,12 @@
         });
       }
     } catch (error) {
-      createErrorModal({
-        title: t('sys.api.errorTip'),
-        content: error.message || t('sys.api.networkExceptionMsg'),
-        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-      });
+      console.log(error.message);
+      // createErrorModal({
+      //   title: t('sys.api.errorTip'),
+      //   content: error.message || t('sys.api.networkExceptionMsg'),
+      //   getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+      // });
     } finally {
       loading.value = false;
     }

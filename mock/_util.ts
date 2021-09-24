@@ -2,7 +2,7 @@
 
 export function resultSuccess<T = Recordable>(result: T, { message = 'ok' } = {}) {
   return {
-    code: 0,
+    code: 200,
     result,
     message,
     type: 'success',

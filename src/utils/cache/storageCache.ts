@@ -1,12 +1,12 @@
 import { cacheCipher } from '/@/settings/encryptionSetting';
 
-import type { EncryptionParams } from '/@/utils/cipher';
+import type { AesEncryptionParams } from '/@/utils/cipher';
 
 import { AesEncryption } from '/@/utils/cipher';
 
 import { isNullOrUnDef } from '/@/utils/is';
 
-export interface CreateStorageParams extends EncryptionParams {
+export interface CreateStorageParams extends AesEncryptionParams {
   prefixKey: string;
   storage: Storage;
   hasEncrypt: boolean;
@@ -83,7 +83,7 @@ export const createStorage = ({
 
       try {
         const decVal = this.hasEncrypt ? this.encryption.decryptByAES(val) : val;
-        const data = JSON.parse(decVal);
+        const data = JSON.parse(decVal as string);
         const { value, expire } = data;
         if (isNullOrUnDef(expire) || expire >= new Date().getTime()) {
           return value;

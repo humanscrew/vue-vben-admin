@@ -4,10 +4,16 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import {
+  ROLES_KEY,
+  TOKEN_KEY,
+  REFRESH_TOKEN_KEY,
+  USER_INFO_KEY,
+  RSA_PUBLIC_KEY,
+} from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi } from '/@/api/sys/user';
+import { doLogout, getUserInfo, loginApi, getRSA } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
@@ -20,9 +26,11 @@ import { h } from 'vue';
 interface UserState {
   userInfo: Nullable<UserInfo>;
   token?: string;
+  refreshToken?: string;
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  publicKey?: string;
 }
 
 export const useUserStore = defineStore({
@@ -32,12 +40,14 @@ export const useUserStore = defineStore({
     userInfo: null,
     // token
     token: undefined,
+    refreshToken: undefined,
     // roleList
     roleList: [],
     // Whether the login expired
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
+    publicKey: undefined,
   }),
   getters: {
     getUserInfo(): UserInfo {
@@ -45,6 +55,9 @@ export const useUserStore = defineStore({
     },
     getToken(): string {
       return this.token || getAuthCache<string>(TOKEN_KEY);
+    },
+    getRefreshToken(): string {
+      return this.refreshToken || getAuthCache<string>(REFRESH_TOKEN_KEY);
     },
     getRoleList(): RoleEnum[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
@@ -55,11 +68,18 @@ export const useUserStore = defineStore({
     getLastUpdateTime(): number {
       return this.lastUpdateTime;
     },
+    getPublicKey(): string {
+      return this.publicKey || getAuthCache<string>(RSA_PUBLIC_KEY);
+    },
   },
   actions: {
     setToken(info: string | undefined) {
       this.token = info ? info : ''; // for null or undefined value
       setAuthCache(TOKEN_KEY, info);
+    },
+    setRefreshToken(info: string | undefined) {
+      this.refreshToken = info ? info : ''; // for null or undefined value
+      setAuthCache(REFRESH_TOKEN_KEY, info);
     },
     setRoleList(roleList: RoleEnum[]) {
       this.roleList = roleList;
@@ -73,11 +93,17 @@ export const useUserStore = defineStore({
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
     },
+    setPublicKey(publicKey: string | undefined) {
+      this.publicKey = publicKey;
+      setAuthCache(RSA_PUBLIC_KEY, publicKey);
+    },
     resetState() {
       this.userInfo = null;
       this.token = '';
+      this.refreshToken = '';
       this.roleList = [];
       this.sessionTimeout = false;
+      this.publicKey = undefined;
     },
     /**
      * @description: login
@@ -90,11 +116,15 @@ export const useUserStore = defineStore({
     ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
+        const { publicKey } = await getRSA(loginParams, mode);
+        this.setPublicKey(publicKey);
+
         const data = await loginApi(loginParams, mode);
-        const { token } = data;
+        const { access_token, refresh_token } = data;
 
         // save token
-        this.setToken(token);
+        this.setToken(access_token);
+        this.setRefreshToken(refresh_token);
         return this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
@@ -148,8 +178,10 @@ export const useUserStore = defineStore({
         }
       }
       this.setToken(undefined);
+      this.setRefreshToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
+      this.setPublicKey(undefined);
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 

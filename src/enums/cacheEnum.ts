@@ -1,5 +1,6 @@
 // token key
 export const TOKEN_KEY = 'TOKEN__';
+export const REFRESH_TOKEN_KEY = 'REFRESH__TOKEN__';
 
 export const LOCALE_KEY = 'LOCALE__';
 
@@ -15,7 +16,7 @@ export const PROJ_CFG_KEY = 'PROJ__CFG__KEY__';
 // lock info
 export const LOCK_INFO_KEY = 'LOCK__INFO__KEY__';
 
-export const MULTIPLE_TABS_KEY = 'MULTIPLE_TABS__KEY__';
+export const MULTIPLE_TABS_KEY = 'MULTIPLE__TABS__KEY__';
 
 export const APP_DARK_MODE_KEY_ = '__APP__DARK__MODE__';
 
@@ -29,3 +30,5 @@ export enum CacheTypeEnum {
   SESSION,
   LOCAL,
 }
+
+export const RSA_PUBLIC_KEY = 'RSA__PUBLIC__KEY__';
