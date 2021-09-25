@@ -209,9 +209,14 @@ export class VAxios {
 
     const publicKey = getPublicKey();
     let encryption: AesEncryption | undefined = undefined;
-    if (publicKey && conf.data) {
+    if (publicKey) {
       encryption = new AesEncryption();
-      encryption.encryptByAESWithRSA(conf.data, publicKey);
+      if (conf.data) {
+        encryption.encryptByAESWithRSA(conf.data, publicKey);
+      }
+      if (conf.params) {
+        encryption.encryptByAESWithRSA(conf.params, publicKey);
+      }
       if (config.url === LoginUrl) {
         conf.data.username = config.params.username;
       }

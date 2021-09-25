@@ -60,7 +60,7 @@ export class AesEncryption {
     return cipherVar;
   }
 
-  encryptByAESWithRSA(cipherVar: { [key: string]: any }, publicKey: string) {
+  encryptByAESWithRSA(cipherVar: { [key: string]: any } = {}, publicKey: string) {
     Object.keys(cipherVar).forEach((key) => {
       const item = cipherVar[key];
       const cipherText = JSON.stringify(item);

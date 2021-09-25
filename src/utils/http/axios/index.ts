@@ -144,7 +144,7 @@ const transform: AxiosTransform = {
     // 请求之前处理config
     const token = getToken();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
-      options.authenticationScheme = options.authenticationScheme || 'Bearer ';
+      options.authenticationScheme = options.authenticationScheme || 'Bearer';
       // jwt token
       config.headers.Authorization = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`

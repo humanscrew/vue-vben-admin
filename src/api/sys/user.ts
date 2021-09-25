@@ -13,7 +13,7 @@ enum Api {
   RSA = '/utils/rsa',
   Login = '/auth/login',
   Logout = '/logout',
-  GetUserInfo = '/getUserInfo',
+  GetUserInfo = '/api/userInfo',
   GetPermCode = '/getPermCode',
 }
 
@@ -31,23 +31,11 @@ export function getRSA(params: LoginParams, mode: ErrorMessageMode = 'modal') {
   );
 }
 
-export function loginApi(params: any, mode: ErrorMessageMode = 'modal') {
-  return http.post<LoginResultModel>(
-    {
-      url: Api.Login,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
-}
-
 /**
  * @description: user login api
  */
-export function login2(params: LoginParams, mode: ErrorMessageMode = 'modal') {
-  return defHttp.post<LoginResultModel>(
+export function loginApi(params: any, mode: ErrorMessageMode = 'modal') {
+  return http.post<LoginResultModel>(
     {
       url: Api.Login,
       params,
@@ -62,7 +50,7 @@ export function login2(params: LoginParams, mode: ErrorMessageMode = 'modal') {
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+  return http.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
 }
 
 export function getPermCode() {
