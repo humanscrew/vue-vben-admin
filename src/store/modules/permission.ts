@@ -93,7 +93,10 @@ export const usePermissionStore = defineStore({
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const codeList = await getPermCode();
+      const { permitCode } = await getPermCode();
+      const codeList = permitCode.map((item) => {
+        return item.value;
+      });
       this.setPermCodeList(codeList);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {

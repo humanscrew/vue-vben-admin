@@ -53,3 +53,11 @@ export interface registerParams {
 export interface registerResultModel {
   user: string;
 }
+
+export interface PermitCode {
+  name: string;
+  value: string;
+}
+export interface GetPermitCodeModel {
+  permitCode: PermitCode[];
+}

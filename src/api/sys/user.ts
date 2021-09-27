@@ -6,6 +6,7 @@ import {
   registerParams,
   registerResultModel,
   GetUserInfoModel,
+  GetPermitCodeModel,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
@@ -18,7 +19,7 @@ export enum Api {
   Register = '/auth/register',
   User = '/api/user',
   Logout = '/logout',
-  GetPermCode = '/getPermCode',
+  GetPermCode = '/api/permitCode',
 }
 
 export function getRSA(params: LoginParams, mode: ErrorMessageMode = 'modal') {
@@ -76,7 +77,7 @@ export function getUserInfo() {
 }
 
 export function getPermCode() {
-  return defHttp.get<string[]>({ url: Api.GetPermCode });
+  return http.get<GetPermitCodeModel>({ url: Api.GetPermCode });
 }
 
 export function doLogout() {
