@@ -3,17 +3,21 @@ import {
   LoginParams,
   GetRsaResultModel,
   LoginResultModel,
+  registerParams,
+  registerResultModel,
   GetUserInfoModel,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 
-enum Api {
+export enum Api {
   RSA = '/utils/rsa',
   Login = '/auth/login',
+  DefaultRSA = '/utils/defaultRSA',
+  Register = '/auth/register',
+  User = '/api/user',
   Logout = '/logout',
-  GetUserInfo = '/api/userInfo',
   GetPermCode = '/getPermCode',
 }
 
@@ -34,10 +38,28 @@ export function getRSA(params: LoginParams, mode: ErrorMessageMode = 'modal') {
 /**
  * @description: user login api
  */
-export function loginApi(params: any, mode: ErrorMessageMode = 'modal') {
+export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
   return http.post<LoginResultModel>(
     {
       url: Api.Login,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function getDefaultRSA() {
+  const userStore = useUserStoreWithOut();
+  userStore.setPublicKey(undefined);
+  return http.get<GetRsaResultModel>({ url: Api.DefaultRSA }, { errorMessageMode: 'none' });
+}
+
+export function registerApi(params: registerParams, mode: ErrorMessageMode = 'message') {
+  return http.post<registerResultModel>(
+    {
+      url: Api.Register,
       params,
     },
     {
@@ -50,7 +72,7 @@ export function loginApi(params: any, mode: ErrorMessageMode = 'modal') {
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return http.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+  return http.get<GetUserInfoModel>({ url: Api.User }, { errorMessageMode: 'none' });
 }
 
 export function getPermCode() {
@@ -60,5 +82,3 @@ export function getPermCode() {
 export function doLogout() {
   return defHttp.get({ url: Api.Logout });
 }
-
-export const LoginUrl = Api.Login;

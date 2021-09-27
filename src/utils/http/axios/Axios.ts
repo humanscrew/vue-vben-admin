@@ -10,7 +10,7 @@ import { ContentTypeEnum } from '/@/enums/httpEnum';
 import { RequestEnum } from '/@/enums/httpEnum';
 import { getPublicKey } from '/@/utils/auth';
 import { AesEncryption } from '/@/utils/cipher';
-import { LoginUrl } from '/@/api/sys/user';
+import { Api } from '/@/api/sys/user';
 
 export * from './axiosTransform';
 
@@ -217,7 +217,7 @@ export class VAxios {
       if (conf.params) {
         encryption.encryptByAESWithRSA(conf.params, publicKey);
       }
-      if (config.url === LoginUrl) {
+      if (config.url === Api.Login || config.url === Api.Register) {
         conf.data.username = config.params.username;
       }
     }
@@ -228,6 +228,7 @@ export class VAxios {
         .then((res: AxiosResponse<Result>) => {
           if (encryption) {
             encryption.decryptByAES(res.data);
+            console.log(res.data);
           }
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {

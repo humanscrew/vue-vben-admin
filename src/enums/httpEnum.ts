@@ -29,3 +29,9 @@ export enum ContentTypeEnum {
   // form-data  upload
   FORM_DATA = 'multipart/form-data;charset=UTF-8',
 }
+
+export enum SuccessEnum {
+  SUCCESS = 200,
+  CREATED = 201,
+  ACCEPTED = 202,
+}

@@ -31,6 +31,7 @@
           size="large"
           v-model:value="formData.password"
           :placeholder="t('sys.login.password')"
+          autocomplete="off"
         />
       </FormItem>
       <FormItem name="confirmPassword" class="enter-x">
@@ -39,6 +40,7 @@
           visibilityToggle
           v-model:value="formData.confirmPassword"
           :placeholder="t('sys.login.confirmPassword')"
+          autocomplete="off"
         />
       </FormItem>
 
@@ -66,17 +68,20 @@
   </template>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, unref, computed } from 'vue';
+  import { reactive, ref, unref, toRaw, computed } from 'vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import { Form, Input, Button, Checkbox } from 'ant-design-vue';
   import { StrengthMeter } from '/@/components/StrengthMeter';
   import { CountdownInput } from '/@/components/CountDown';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { useLoginState, useFormRules, useFormValid, LoginStateEnum } from './useLogin';
+  import { useUserStore } from '/@/store/modules/user';
 
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
+  const { notification } = useMessage();
   const { handleBackLogin, getLoginState } = useLoginState();
 
   const formRef = ref();
@@ -99,6 +104,29 @@
   async function handleRegister() {
     const data = await validForm();
     if (!data) return;
-    console.log(data);
+    const userStore = useUserStore();
+    try {
+      loading.value = true;
+      const userInfo = await userStore.register(
+        toRaw({
+          username: data.account,
+          password: data.password,
+          mobile: data.mobile,
+          sms: data.sms,
+          mode: 'message',
+        }),
+      );
+      if (userInfo) {
+        notification.success({
+          message: t('sys.login.registerSuccessTitle'),
+          description: `${t('sys.login.registerSuccessDesc')}: ${userInfo.username}`,
+          duration: 3,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      loading.value = false;
+    }
   }
 </script>

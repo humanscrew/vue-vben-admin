@@ -17,8 +17,8 @@ export interface RoleInfo {
 export interface LoginResultModel {
   userId: string | number;
   token: string;
-  access_token: string;
-  refresh_token: string;
+  accessToken: string;
+  refreshToken: string;
   role: RoleInfo;
 }
 
@@ -41,4 +41,15 @@ export interface GetUserInfoModel {
 
 export interface GetRsaResultModel {
   publicKey: string;
+}
+
+export interface registerParams {
+  username: string;
+  password: string;
+  mobile: string;
+  sms?: string;
+}
+
+export interface registerResultModel {
+  user: string;
 }

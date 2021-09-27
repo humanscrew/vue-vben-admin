@@ -12,8 +12,15 @@ import {
   RSA_PUBLIC_KEY,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi, getRSA } from '/@/api/sys/user';
+import { GetUserInfoModel, LoginParams, registerParams } from '/@/api/sys/model/userModel';
+import {
+  getRSA,
+  loginApi,
+  getUserInfo,
+  getDefaultRSA,
+  registerApi,
+  doLogout,
+} from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
@@ -120,11 +127,11 @@ export const useUserStore = defineStore({
         this.setPublicKey(publicKey);
 
         const data = await loginApi(loginParams, mode);
-        const { access_token, refresh_token } = data;
+        const { accessToken, refreshToken } = data;
 
         // save token
-        this.setToken(access_token);
-        this.setRefreshToken(refresh_token);
+        this.setToken(accessToken);
+        this.setRefreshToken(refreshToken);
         return this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
@@ -199,6 +206,29 @@ export const useUserStore = defineStore({
           await this.logout(true);
         },
       });
+    },
+
+    async register(
+      params: registerParams & {
+        mode?: ErrorMessageMode;
+      },
+    ): Promise<GetUserInfoModel | null> {
+      try {
+        const { mode, ...registerParams } = params;
+        const { publicKey } = await getDefaultRSA();
+        this.setPublicKey(publicKey);
+        await registerApi(registerParams, mode);
+        return this.afterRegisterAction(params);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
+    async afterRegisterAction(
+      params: registerParams & {
+        mode?: ErrorMessageMode;
+      },
+    ): Promise<GetUserInfoModel | null> {
+      return await this.login(params);
     },
   },
 });
