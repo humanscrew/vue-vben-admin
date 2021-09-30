@@ -1,5 +1,10 @@
 export default {
-  footer: { onlinePreview: 'Preview', onlineDocument: 'Document' },
+  footer: {
+    onlinePreview: 'Preview',
+    onlineDocument: 'Document',
+    ICP: '粤ICP备2021127182号',
+    networkSecurity: '桂公网安备45050302000119',
+  },
   header: {
     // user dropdown
     dropdownItemDoc: 'Document',

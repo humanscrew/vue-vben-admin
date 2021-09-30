@@ -1,11 +1,11 @@
 <template>
   <Footer :class="prefixCls" v-if="getShowLayoutFooter" ref="footerRef">
     <div :class="`${prefixCls}__links`">
-      <a @click="openWindow(SITE_URL)">{{ t('layout.footer.onlinePreview') }}</a>
-
+      <a @click="openWindow(ICP_URL)">{{ t('layout.footer.ICP') }}</a>
       <GithubFilled @click="openWindow(GITHUB_URL)" :class="`${prefixCls}__github`" />
-
-      <a @click="openWindow(DOC_URL)">{{ t('layout.footer.onlineDocument') }}</a>
+      <a @click="openWindow(NETWORK_SECURITY_URL)">{{ t('layout.footer.networkSecurity') }}</a>
+      <!-- <a @click="openWindow(SITE_URL)" class="mr-2">{{ t('layout.footer.onlinePreview') }}</a> -->
+      <!-- <a @click="openWindow(DOC_URL)">{{ t('layout.footer.onlineDocument') }}</a> -->
     </div>
     <div>Copyright &copy;2021 WestHide SYSUWang</div>
   </Footer>
@@ -17,7 +17,13 @@
 
   import { GithubFilled } from '@ant-design/icons-vue';
 
-  import { DOC_URL, GITHUB_URL, SITE_URL } from '/@/settings/siteSetting';
+  import {
+    DOC_URL,
+    GITHUB_URL,
+    SITE_URL,
+    ICP_URL,
+    NETWORK_SECURITY_URL,
+  } from '/@/settings/siteSetting';
   import { openWindow } from '/@/utils';
 
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -55,6 +61,8 @@
         DOC_URL,
         GITHUB_URL,
         SITE_URL,
+        ICP_URL,
+        NETWORK_SECURITY_URL,
         openWindow,
         footerRef,
       };

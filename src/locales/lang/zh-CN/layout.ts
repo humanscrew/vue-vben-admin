@@ -1,5 +1,10 @@
 export default {
-  footer: { onlinePreview: '在线预览', onlineDocument: '在线文档' },
+  footer: {
+    onlinePreview: '在线预览',
+    onlineDocument: '在线文档',
+    ICP: '粤ICP备2021127182号',
+    networkSecurity: '桂公网安备45050302000119',
+  },
   header: {
     // user dropdown
     dropdownItemDoc: '文档',
