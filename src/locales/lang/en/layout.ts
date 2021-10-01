@@ -2,8 +2,8 @@ export default {
   footer: {
     onlinePreview: 'Preview',
     onlineDocument: 'Document',
-    ICP: '粤ICP备2021127182号',
-    networkSecurity: '桂公网安备45050302000119',
+    ICP: '粤ICP备 2021127182号',
+    networkSecurity: '桂公网安备 45050302000119号',
   },
   header: {
     // user dropdown

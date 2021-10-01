@@ -1,5 +1,5 @@
 <template>
-  <Card title="访问来源" :loading="loading">
+  <Card :title="cardTitle" :loading="loading">
     <div ref="chartRef" :style="{ width, height }"></div>
   </Card>
 </template>
@@ -7,6 +7,10 @@
   import { Ref, ref, watch } from 'vue';
   import { Card } from 'ant-design-vue';
   import { useECharts } from '/@/hooks/web/useECharts';
+  import { AnalysisConfig } from '../data';
+
+  const { cardTitle } = AnalysisConfig.AgeStructure;
+
   const props = defineProps({
     loading: Boolean,
     width: {
@@ -37,7 +41,7 @@
         series: [
           {
             color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
-            name: '访问来源',
+            name: '年龄',
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
@@ -61,10 +65,10 @@
               show: false,
             },
             data: [
-              { value: 1048, name: '搜索引擎' },
-              { value: 735, name: '直接访问' },
-              { value: 580, name: '邮件营销' },
-              { value: 484, name: '联盟广告' },
+              { value: 1048, name: '20-30' },
+              { value: 735, name: '30-40' },
+              { value: 580, name: '40-50' },
+              { value: 484, name: '50以上' },
             ],
             animationType: 'scale',
             animationEasing: 'exponentialInOut',

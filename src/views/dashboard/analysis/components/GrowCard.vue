@@ -14,13 +14,19 @@
         </template>
 
         <div class="py-4 px-4 flex justify-between">
-          <CountTo prefix="$" :startVal="1" :endVal="item.value" class="text-2xl" />
+          <CountTo
+            :prefix="item.prefix"
+            :suffix="item.suffix"
+            :startVal="1"
+            :endVal="item.value"
+            class="text-2xl"
+          />
           <Icon :icon="item.icon" :size="40" />
         </div>
 
         <div class="p-2 px-4 flex justify-between">
-          <span>总{{ item.title }}</span>
-          <CountTo prefix="$" :startVal="1" :endVal="item.total" />
+          <span>{{ item.totalExtent }}{{ item.title }}</span>
+          <CountTo :prefix="item.prefix" :suffix="item.suffix" :startVal="1" :endVal="item.total" />
         </div>
       </Card>
     </template>

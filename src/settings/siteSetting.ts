@@ -1,5 +1,5 @@
 // github url
-export const GITHUB_URL = '#';
+export const GITHUB_URL = 'https://github.com/humanscrew?tab=repositories';
 
 // doc
 export const DOC_URL = '#';

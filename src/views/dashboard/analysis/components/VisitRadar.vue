@@ -1,5 +1,5 @@
 <template>
-  <Card title="转化率" :loading="loading">
+  <Card :title="cardTitle" :loading="loading">
     <div ref="chartRef" :style="{ width, height }"></div>
   </Card>
 </template>
@@ -7,6 +7,9 @@
   import { Ref, ref, watch } from 'vue';
   import { Card } from 'ant-design-vue';
   import { useECharts } from '/@/hooks/web/useECharts';
+  import { AnalysisConfig } from '../data';
+
+  const { cardTitle } = AnalysisConfig.visitRadar;
 
   const props = defineProps({
     loading: Boolean,

@@ -71,7 +71,7 @@ export default {
     signUpFormTitle: 'Sign up',
     forgetFormTitle: 'Reset password',
 
-    signInTitle: 'Backstage management system',
+    signInTitle: 'WESTHIDE management system',
     signInDesc: 'Enter your personal details and get started!',
     policy: 'I agree to the Privacy Policy',
     scanSign: `scanning the code to complete the login`,
@@ -102,5 +102,13 @@ export default {
     email: 'Email',
     smsCode: 'SMS code',
     mobile: 'Mobile',
+  },
+  views: {
+    dashboard: {
+      analysis: {
+        currency: 'USD',
+        currencySymbol: '$',
+      },
+    },
   },
 };

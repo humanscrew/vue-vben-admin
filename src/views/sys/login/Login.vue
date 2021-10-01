@@ -59,6 +59,51 @@
         </div>
       </div>
     </div>
+
+    <div class="absolute enter-x w-full bottom-2 left-0 text-center text-xs xl:text-right">
+      <div
+        @click="openWindow(ICP_URL)"
+        class="
+          inline-block
+          text-opacity-40 text-white text-right
+          hover:text-opacity-80
+          xl:text-gray-300 xl:hover:text-gray-800 xl:w-auto
+          w-260px
+          duration-300
+          dark:hover:text-blue-400
+        "
+      >
+        {{ t('layout.footer.ICP') }}
+      </div>
+      <div
+        class="
+          opacity-50
+          px-4
+          text-white
+          inline
+          hover:opacity-90
+          xl:text-gray-800
+          duration-300
+          dark:text-white dark:hover:text-blue-400
+        "
+      >
+        <GithubFilled @click="openWindow(GITHUB_URL)" />
+      </div>
+      <div
+        @click="openWindow(NETWORK_SECURITY_URL)"
+        class="
+          inline-block
+          text-opacity-40 text-white text-left
+          hover:text-opacity-80
+          xl:text-gray-300 xl:hover:text-gray-800 xl:w-auto xl:pr-8
+          w-260px
+          duration-300
+          dark:hover:text-blue-400
+        "
+      >
+        {{ t('layout.footer.networkSecurity') }}
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -74,6 +119,9 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLocaleStore } from '/@/store/modules/locale';
+  import { GithubFilled } from '@ant-design/icons-vue';
+  import { GITHUB_URL, ICP_URL, NETWORK_SECURITY_URL } from '/@/settings/siteSetting';
+  import { openWindow } from '/@/utils';
 
   defineProps({
     sessionTimeout: {

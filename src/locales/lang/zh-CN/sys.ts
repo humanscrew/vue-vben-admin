@@ -66,7 +66,7 @@ export default {
     forgetFormTitle: '重置密码',
 
     signInTitle: 'WESTHIDE 综合管理平台',
-    signInDesc: '感谢您的使用！',
+    signInDesc: '欢迎您的使用！',
     policy: '我同意该网站用户政策',
     scanSign: `扫码后点击"确认"，即可完成登录`,
 
@@ -96,5 +96,13 @@ export default {
     email: '邮箱',
     smsCode: '短信验证码',
     mobile: '手机号码',
+  },
+  views: {
+    dashboard: {
+      analysis: {
+        currency: 'CNY',
+        currencySymbol: '¥',
+      },
+    },
   },
 };
