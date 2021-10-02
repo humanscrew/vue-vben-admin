@@ -12,14 +12,14 @@ import {
   RSA_PUBLIC_KEY,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams, registerParams } from '/@/api/sys/model/userModel';
+import { GetUserInfoModel, LoginParams, RegisterParams } from '/@/api/sys/model/userModel';
 import {
-  getRSA,
+  getRsaAPI,
   loginApi,
-  getUserInfo,
-  getDefaultRSA,
+  getUserInfoAPI,
+  getDefaultRsaAPI,
   registerApi,
-  doLogout,
+  doLogoutAPI,
 } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -123,7 +123,7 @@ export const useUserStore = defineStore({
     ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
-        const { publicKey } = await getRSA(loginParams, mode);
+        const { publicKey } = await getRsaAPI(loginParams, mode);
         this.setPublicKey(publicKey);
 
         const data = await loginApi(loginParams, mode);
@@ -161,7 +161,7 @@ export const useUserStore = defineStore({
     },
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo();
+      const userInfo = await getUserInfoAPI();
       const { roles = [] } = userInfo;
       if (isArray(roles)) {
         const roleList = roles.map((item) => item.value) as RoleEnum[];
@@ -179,7 +179,7 @@ export const useUserStore = defineStore({
     async logout(goLogin = false) {
       if (this.getToken) {
         try {
-          await doLogout();
+          await doLogoutAPI();
         } catch {
           console.log('注销Token失败');
         }
@@ -209,13 +209,13 @@ export const useUserStore = defineStore({
     },
 
     async register(
-      params: registerParams & {
+      params: RegisterParams & {
         mode?: ErrorMessageMode;
       },
     ): Promise<GetUserInfoModel | null> {
       try {
         const { mode, ...registerParams } = params;
-        const { publicKey } = await getDefaultRSA();
+        const { publicKey } = await getDefaultRsaAPI();
         this.setPublicKey(publicKey);
         await registerApi(registerParams, mode);
         return this.afterRegisterAction(params);
@@ -224,7 +224,7 @@ export const useUserStore = defineStore({
       }
     },
     async afterRegisterAction(
-      params: registerParams & {
+      params: RegisterParams & {
         mode?: ErrorMessageMode;
       },
     ): Promise<GetUserInfoModel | null> {

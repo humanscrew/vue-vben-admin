@@ -55,9 +55,9 @@ const transform: AxiosTransform = {
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && code in SuccessEnum;
     if (hasSuccess) {
-      if (Reflect.has(data, 'result')) {
-        return data.result;
-      }
+      // if (Reflect.has(data, 'result')) {
+      //   return data.result;
+      // }
       return data;
     }
 
@@ -144,7 +144,6 @@ const transform: AxiosTransform = {
     // 请求之前处理config
     const token = getToken();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
-      options.authenticationScheme = options.authenticationScheme || 'Bearer';
       // jwt token
       config.headers.Authorization = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
@@ -201,8 +200,8 @@ const transform: AxiosTransform = {
 const httpSetting = {
   // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
   // authentication schemes，e.g: Bearer
-  // authenticationScheme: 'Bearer',
-  authenticationScheme: '',
+  authenticationScheme: 'Bearer',
+  // authenticationScheme: '',
   timeout: 10 * 1000,
   // 基础接口地址
   // baseURL: globSetting.apiUrl,
@@ -240,16 +239,16 @@ const httpSetting = {
 };
 
 function createAxios(opt?: Partial<CreateAxiosOptions>) {
-  return new VAxios(deepMerge(httpSetting, opt || {}));
+  const setting = cloneDeep(httpSetting);
+  setting.requestOptions.apiUrl = '/basic-api';
+  setting.requestOptions.urlPrefix = '';
+  return new VAxios(deepMerge(setting, opt || {}));
 }
 
 export const defHttp = createAxios();
 
 export const http = ((opt?: Partial<CreateAxiosOptions>) => {
-  const setting = cloneDeep(httpSetting);
-  setting.requestOptions.apiUrl = 'http://127.0.0.1:5000';
-  setting.requestOptions.urlPrefix = '/westhide';
-  return new VAxios(deepMerge(setting, opt || {}));
+  return new VAxios(deepMerge(httpSetting, opt || {}));
 })();
 // other api url
 // export const otherHttp = createAxios({

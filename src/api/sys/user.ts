@@ -3,8 +3,8 @@ import {
   LoginParams,
   GetRsaResultModel,
   LoginResultModel,
-  registerParams,
-  registerResultModel,
+  RegisterParams,
+  RegisterResultModel,
   GetUserInfoModel,
   GetPermitCodeModel,
 } from './model/userModel';
@@ -22,7 +22,7 @@ export enum Api {
   GetPermCode = '/api/permitCode',
 }
 
-export function getRSA(params: LoginParams, mode: ErrorMessageMode = 'modal') {
+export function getRsaAPI(params: LoginParams, mode: ErrorMessageMode = 'modal') {
   const userStore = useUserStoreWithOut();
   userStore.setPublicKey(undefined);
   return http.post<GetRsaResultModel>(
@@ -51,14 +51,14 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
   );
 }
 
-export function getDefaultRSA() {
+export function getDefaultRsaAPI() {
   const userStore = useUserStoreWithOut();
   userStore.setPublicKey(undefined);
   return http.get<GetRsaResultModel>({ url: Api.DefaultRSA }, { errorMessageMode: 'none' });
 }
 
-export function registerApi(params: registerParams, mode: ErrorMessageMode = 'message') {
-  return http.post<registerResultModel>(
+export function registerApi(params: RegisterParams, mode: ErrorMessageMode = 'message') {
+  return http.post<RegisterResultModel>(
     {
       url: Api.Register,
       params,
@@ -72,14 +72,14 @@ export function registerApi(params: registerParams, mode: ErrorMessageMode = 'me
 /**
  * @description: getUserInfo
  */
-export function getUserInfo() {
+export function getUserInfoAPI() {
   return http.get<GetUserInfoModel>({ url: Api.User }, { errorMessageMode: 'none' });
 }
 
-export function getPermCode() {
+export function getPermCodeAPI() {
   return http.get<GetPermitCodeModel>({ url: Api.GetPermCode });
 }
 
-export function doLogout() {
+export function doLogoutAPI() {
   return defHttp.get({ url: Api.Logout });
 }

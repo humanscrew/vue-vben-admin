@@ -43,14 +43,14 @@ export interface GetRsaResultModel {
   publicKey: string;
 }
 
-export interface registerParams {
+export interface RegisterParams {
   username: string;
   password: string;
   mobile: string;
   sms?: string;
 }
 
-export interface registerResultModel {
+export interface RegisterResultModel {
   user: string;
 }
 

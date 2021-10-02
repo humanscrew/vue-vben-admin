@@ -33,7 +33,7 @@ export const AnalysisConfig = {
 export const growCardList: GrowCardItem[] = [
   {
     title: '接待量',
-    icon: 'tourist-male|svg',
+    icon: 'visitor-male|svg',
     value: 2000,
     total: 120000,
     totalExtent: '当月累计',
