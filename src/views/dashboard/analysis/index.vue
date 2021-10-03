@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <GrowCard :loading="loading" class="enter-y" />
+    <GrowCard :loading="loading" :growCardList="growCardList" class="enter-y" />
     <SalesAnalysis class="!my-4 enter-y" :loading="loading" />
     <div class="md:flex enter-y">
       <VisitRadar class="md:w-1/3 w-full" :loading="loading" />
@@ -10,24 +10,49 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, reactive } from 'vue';
   import GrowCard from './components/GrowCard.vue';
   import VisitAgeStructure from './components/VisitAgeStructure.vue';
   import VisitRadar from './components/VisitRadar.vue';
   import SalesProductPie from './components/SalesProductPie.vue';
   import SalesAnalysis from './components/SalesAnalysis.vue';
-
   import { onMounted } from 'vue';
-  import { executeSqlAPI, sqlStatementParams } from '/@/api/sys/sql';
+  import { executeSqlAPI } from '/@/api/sys/sql';
+  import { growCardData } from './data';
 
   const loading = ref(true);
 
-  setTimeout(() => {
-    loading.value = false;
-  }, 1500);
+  const growCardList = reactive(growCardData);
+
+  const toDay = ['2021-09-15 00:00:00', '2021-09-15 23:59:59'];
+  const toMonth = ['2021-09-01 00:00:00', '2021-09-30 23:59:59'];
+  const nextDay = ['2021-09-16 00:00:00', '2021-09-16 23:59:59'];
 
   onMounted(async () => {
-    tickets = await executeSqlAPI(sqlStatementParams.visitorCount());
-    console.log(tickets);
+    const visitorDayCount = await executeSqlAPI.visitorCount('船票', ...toDay);
+    const visitorMonthCount = await executeSqlAPI.visitorCount('船票', ...toMonth);
+    growCardList[0].value = visitorDayCount.result[0].visitorCount;
+    growCardList[0].total = visitorMonthCount.result[0].visitorCount;
+    growCardList[0].loading = false;
+
+    const revenueDaySum = await executeSqlAPI.revenueSum('船票', ...toDay);
+    const revenueMonthSum = await executeSqlAPI.revenueSum('船票', ...toMonth);
+    growCardList[1].value = revenueDaySum.result[0].revenueSum;
+    growCardList[1].total = revenueMonthSum.result[0].revenueSum;
+    growCardList[1].loading = false;
+
+    const advanceSaleDay = await executeSqlAPI.advanceSale('船票', ...nextDay);
+    const advanceSaleTotal = await executeSqlAPI.advanceSale('船票', nextDay[0]);
+    growCardList[2].value = advanceSaleDay.result[0].advanceSale;
+    growCardList[2].total = advanceSaleTotal.result[0].advanceSale;
+    growCardList[2].loading = false;
+
+    const cashFlowDay = await executeSqlAPI.cashFlow('船票', ...toDay);
+    const cashFlowMonth = await executeSqlAPI.cashFlow('船票', ...toMonth);
+    growCardList[3].value = cashFlowDay.result[0].cashFlow;
+    growCardList[3].total = cashFlowMonth.result[0].cashFlow;
+    growCardList[3].loading = false;
   });
+
+  loading.value = false;
 </script>

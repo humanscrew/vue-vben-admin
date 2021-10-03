@@ -126,6 +126,7 @@
     "codemirror",
     "commitlint",
     "cropperjs",
+    "datetime",
     "echarts",
     "esnext",
     "esno",

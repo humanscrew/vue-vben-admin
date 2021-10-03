@@ -12,11 +12,11 @@ export interface GrowCardItem {
   action: string;
   prefix?: string;
   suffix?: string;
+  loading: boolean;
 }
 
 export const AnalysisConfig = {
   growCard: {
-    totalExtent: '当月累计',
     currencySymbol: t('sys.views.dashboard.analysis.currencySymbol'),
   },
   salesProductPie: {
@@ -30,45 +30,49 @@ export const AnalysisConfig = {
   },
 };
 
-export const growCardList: GrowCardItem[] = [
+export const growCardData: GrowCardItem[] = [
   {
-    title: '接待量',
+    title: '船票接待量',
     icon: 'visitor-male|svg',
-    value: 2000,
-    total: 120000,
+    value: 0,
+    total: 0,
     totalExtent: '当月累计',
     color: 'green',
     action: '人次/天',
     suffix: '人次',
+    loading: true,
   },
   {
     title: '收入',
-    icon: 'total-sales|svg',
-    value: 20000,
-    total: 500000,
+    icon: 'line-chart|svg',
+    value: 0,
+    total: 0,
     totalExtent: '当月累计',
     color: 'blue',
     action: '天',
     prefix: AnalysisConfig.growCard.currencySymbol,
+    loading: true,
   },
   {
-    title: '预收款',
-    icon: 'wallet|svg',
-    value: 8000,
-    total: 120000,
-    totalExtent: '当月累计',
+    title: '预售票',
+    icon: 'total-sales|svg',
+    value: 0,
+    total: 0,
+    totalExtent: '累计',
     color: 'orange',
-    action: '天',
-    prefix: AnalysisConfig.growCard.currencySymbol,
+    action: '次日',
+    suffix: '张',
+    loading: true,
   },
   {
-    title: '退款',
-    icon: 'refund-click|svg',
-    value: 5000,
-    total: 50000,
+    title: '净收款',
+    icon: 'wallet|svg',
+    value: 0,
+    total: 0,
     totalExtent: '当月累计',
-    color: 'red',
+    color: 'purple',
     action: '天',
     prefix: AnalysisConfig.growCard.currencySymbol,
+    loading: true,
   },
 ];

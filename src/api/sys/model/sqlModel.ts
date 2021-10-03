@@ -9,7 +9,11 @@ export interface SQLParams {
 }
 
 export interface SQLResultModel {
-  result: any;
+  result: any[];
   status: boolean;
   message: string;
+}
+
+export interface databaseInfo {
+  productType: '船票';
 }
