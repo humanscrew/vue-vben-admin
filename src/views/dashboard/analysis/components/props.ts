@@ -11,6 +11,6 @@ export const basicProps = {
   },
   height: {
     type: String as PropType<string>,
-    default: '280px',
+    default: '350px',
   },
 };

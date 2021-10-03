@@ -1,4 +1,5 @@
 import { useI18n } from '/@/hooks/web/useI18n';
+import { formatToDateTime } from '/@/utils/dateUtil';
 
 const { t } = useI18n();
 
@@ -30,6 +31,16 @@ export const AnalysisConfig = {
   },
 };
 
+export const timeStore = {
+  // dateTimeFormatter : 'YYYY-MM-DD HH:mm:ss',z
+  toDay: { start: '2021-09-15 00:00:00', end: '2021-09-15 23:59:59' },
+  toMonth: { start: '2021-09-01 00:00:00', end: '2021-09-30 23:59:59' },
+  nextDay: { start: '2021-09-16 00:00:00', end: '2021-09-16 23:59:59' },
+};
+
+const todayDate = formatToDateTime(timeStore.toDay.end, 'M月D日');
+const nextDayDate = formatToDateTime(timeStore.nextDay.end, 'M月D日');
+
 export const growCardData: GrowCardItem[] = [
   {
     title: '船票接待量',
@@ -38,7 +49,7 @@ export const growCardData: GrowCardItem[] = [
     total: 0,
     totalExtent: '当月累计',
     color: 'green',
-    action: '人次/天',
+    action: todayDate,
     suffix: '人次',
     loading: true,
   },
@@ -49,7 +60,7 @@ export const growCardData: GrowCardItem[] = [
     total: 0,
     totalExtent: '当月累计',
     color: 'green',
-    action: '天',
+    action: todayDate,
     prefix: AnalysisConfig.growCard.currencySymbol,
     loading: true,
   },
@@ -60,7 +71,7 @@ export const growCardData: GrowCardItem[] = [
     total: 0,
     totalExtent: '累计',
     color: 'orange',
-    action: '次日',
+    action: '次日@' + nextDayDate,
     suffix: '张',
     loading: true,
   },
@@ -71,7 +82,7 @@ export const growCardData: GrowCardItem[] = [
     total: 0,
     totalExtent: '当月累计',
     color: 'green',
-    action: '天',
+    action: todayDate,
     prefix: AnalysisConfig.growCard.currencySymbol,
     loading: true,
   },

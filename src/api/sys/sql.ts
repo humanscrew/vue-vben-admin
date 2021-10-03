@@ -34,12 +34,22 @@ export const executeSqlAPI = {
     productType: databaseInfo['productType'],
     start: any,
     end: any,
-    columns: string[],
+    columns: string[] = ['visits', 'revenue'],
+    groupBys: string[] = [],
   ) => {
     const { startTime, endTime } = handleSqlTime(start, end);
-    const visits = columns.includes('visits') ? ` COUNT( id ) AS visits ` : ``;
-    const revenue = columns.includes('revenue') ? ` SUM( ticket_price ) AS revenue ` : ``;
-    const columnCondition = visits ? (revenue ? visits + ',' + revenue : visits) : revenue;
+    const visits = columns.includes('visits') ? ` COUNT( id ) AS visits, ` : ``;
+    const revenue = columns.includes('revenue') ? ` SUM( ticket_price ) AS revenue, ` : ``;
+
+    let date = '';
+    let groupBy = '';
+    if (groupBys.includes('departure_datetime')) {
+      date = ` DATE_FORMAT( departure_datetime, "%d" ) AS date, `;
+      groupBy = ` GROUP BY date `;
+    }
+
+    const str = date + visits + revenue;
+    const columnCondition = str.substring(0, str.lastIndexOf(',')) + ' ';
     const sqlStatement = `
         SELECT 
           ${columnCondition} 
@@ -48,9 +58,9 @@ export const executeSqlAPI = {
           product_type = "${productType}" 
           AND ticket_status IN ( "出票成功", "一检", "二检" ) 
           AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) >= "${startTime}" 
-          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}"
+          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}" 
+          ${groupBy}
         `;
-    // console.log(sqlStatement);
     return executeSql({ sqlStatement });
   },
 
