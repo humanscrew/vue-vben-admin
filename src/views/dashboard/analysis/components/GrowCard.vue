@@ -10,7 +10,12 @@
         :canExpan="false"
       >
         <template #extra>
-          <Tag :color="item.color">{{ item.action }}</Tag>
+          <Tag :color="item.color">
+            <template #icon v-if="item.loading">
+              <sync-outlined :spin="true" />
+            </template>
+            {{ item.action }}
+          </Tag>
         </template>
 
         <div class="py-4 px-4 flex justify-between">
@@ -36,6 +41,7 @@
   import { CountTo } from '/@/components/CountTo/index';
   import { Icon } from '/@/components/Icon';
   import { Tag, Card } from 'ant-design-vue';
+  import { SyncOutlined } from '@ant-design/icons-vue';
 
   defineProps({
     loading: {

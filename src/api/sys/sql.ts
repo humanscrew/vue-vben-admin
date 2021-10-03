@@ -30,11 +30,19 @@ const handleSqlTime = (startTime: any, endTime: any) => {
 };
 
 export const executeSqlAPI = {
-  visitorCount: (productType: databaseInfo['productType'], start: any, end: any) => {
+  ticketSale: (
+    productType: databaseInfo['productType'],
+    start: any,
+    end: any,
+    columns: string[],
+  ) => {
     const { startTime, endTime } = handleSqlTime(start, end);
+    const visits = columns.includes('visits') ? ` COUNT( id ) AS visits ` : ``;
+    const revenue = columns.includes('revenue') ? ` SUM( ticket_price ) AS revenue ` : ``;
+    const columnCondition = visits ? (revenue ? visits + ',' + revenue : visits) : revenue;
     const sqlStatement = `
         SELECT 
-          COUNT( id ) AS visitorCount 
+          ${columnCondition} 
         FROM ticket_laiu8 
         WHERE 
           product_type = "${productType}" 
@@ -42,28 +50,14 @@ export const executeSqlAPI = {
           AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) >= "${startTime}" 
           AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}"
         `;
-    return executeSql({ sqlStatement });
-  },
-
-  revenueSum: (productType: databaseInfo['productType'], start: any, end: any) => {
-    const { startTime, endTime } = handleSqlTime(start, end);
-    const sqlStatement = `
-        SELECT 
-          SUM( ticket_price ) AS revenueSum 
-        FROM ticket_laiu8 
-        WHERE 
-          product_type = "${productType}" 
-          AND ticket_status IN ( "出票成功", "一检", "二检" ) 
-          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) >= "${startTime}" 
-          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}"
-        `;
+    // console.log(sqlStatement);
     return executeSql({ sqlStatement });
   },
 
   advanceSale: (productType: databaseInfo['productType'], start: any, end: any) => {
     const { startTime, endTime } = handleSqlTime(start, end);
     const endCondition = end
-      ? `AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}"`
+      ? ` AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime} "`
       : ``;
     const sqlStatement = `
         SELECT 
@@ -80,7 +74,9 @@ export const executeSqlAPI = {
 
   cashFlow: (productType: databaseInfo['productType'], start: any, end: any) => {
     const { startTime, endTime } = handleSqlTime(start, end);
-    const endCondition = end ? `AND DATE_FORMAT( create_time, "%Y-%m-%d %T" ) <= "${endTime}"` : ``;
+    const endCondition = end
+      ? ` AND DATE_FORMAT( create_time, "%Y-%m-%d %T" ) <= "${endTime} "`
+      : ``;
     const sqlStatement = `
         SELECT 
           SUM( ticket_price ) AS cashFlow 
