@@ -69,7 +69,7 @@ export const createStorage = ({
       const stringifyValue = this.hasEncrypt
         ? this.encryption.encryptByAES(stringData)
         : stringData;
-      this.storage.setItem(this.getKey(key), stringifyValue);
+      this.storage.setItem(this.getKey(key), stringifyValue as string);
     }
 
     /**

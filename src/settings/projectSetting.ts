@@ -161,7 +161,7 @@ const setting: ProjectConfig = {
   showBreadCrumbIcon: true,
 
   // Use error-handler-plugin
-  useErrorHandle: true,
+  useErrorHandle: false,
 
   // Whether to open back to top
   useOpenBackTop: true,

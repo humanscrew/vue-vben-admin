@@ -53,8 +53,6 @@
     growCardList[3].value = cashFlowDay.result[0].cashFlow;
     growCardList[3].total = cashFlowMonth.result[0].cashFlow;
     growCardList[3].loading = false;
-
-    console.log(growCardList);
   });
 
   loading.value = false;

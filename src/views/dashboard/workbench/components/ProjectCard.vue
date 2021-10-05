@@ -1,34 +1,46 @@
 <template>
-  <Card title="项目" v-bind="$attrs">
+  <Card title="自驱组织" :loading="loading">
     <template #extra>
       <a-button type="link" size="small">更多</a-button>
     </template>
 
-    <template v-for="item in items" :key="item">
+    <template v-for="item in groupList" :key="item">
       <CardGrid class="!md:w-1/3 !w-full">
         <span class="flex">
           <Icon :icon="item.icon" :color="item.color" size="30" />
           <span class="text-lg ml-4">{{ item.title }}</span>
         </span>
-        <div class="flex mt-2 h-10 text-secondary">{{ item.desc }}</div>
-        <div class="flex justify-between text-secondary">
-          <span>{{ item.group }}</span>
-          <span>{{ item.date }}</span>
+        <!-- <div class="flex mt-2 text-secondary justify-end">{{ item.desc }}</div> -->
+        <div class="flex justify-between text-secondary mt-4">
+          <span>{{ item.location }}</span>
+          <span>{{ item.desc }}</span>
         </div>
       </CardGrid>
     </template>
   </Card>
 </template>
-<script lang="ts">
-  import { defineComponent } from 'vue';
+<script lang="ts" setup>
+  import { ref, reactive, onMounted } from 'vue';
   import { Card } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
-  import { groupItems } from './data';
+  import { getCompanyGroupAPI } from '/@/api/sys/company';
 
-  export default defineComponent({
-    components: { Card, CardGrid: Card.Grid, Icon },
-    setup() {
-      return { items: groupItems };
-    },
+  const CardGrid = Card.Grid;
+  const loading = ref(true);
+  const groupList = reactive([]);
+
+  onMounted(async () => {
+    const { companyGroup } = await getCompanyGroupAPI();
+    let groups = companyGroup.map((item) => {
+      return {
+        title: item.name + '项目',
+        icon: item.icon,
+        color: item.color,
+        desc: item.desc,
+        location: item.location,
+      };
+    });
+    groupList.push(...groups);
+    loading.value = false;
   });
 </script>

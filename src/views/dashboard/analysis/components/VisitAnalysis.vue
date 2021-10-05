@@ -18,15 +18,15 @@
   onMounted(async () => {
     const { options } = props;
     setOptions({
-      visualMap: [
-        {
-          show: false,
-          type: 'continuous',
-          seriesIndex: 1,
-          min: 0,
-          max: options.yAxisMaxRevenue * 1.5,
-        },
-      ],
+      // visualMap: [
+      //   {
+      //     show: false,
+      //     type: 'continuous',
+      //     seriesIndex: 1,
+      //     min: 0,
+      //     max: options.yAxisMaxRevenue * 1.5,
+      //   },
+      // ],
 
       // title: [
       //   {
@@ -61,7 +61,7 @@
         // boundaryGap: false,
         data: options.xAxisData,
         splitLine: {
-          show: true,
+          show: false,
           lineStyle: {
             width: 1,
             type: 'solid',
@@ -72,26 +72,26 @@
           // show: false,
           alignWithLabel: true,
         },
-        // axisPointer: {
-        //   type: 'shadow',
-        // },
+        axisPointer: {
+          type: 'shadow',
+        },
       },
       yAxis: [
         {
           type: 'value',
           name: '接待量/人次',
           position: 'left',
-          max: options.yAxisMaxVisits,
+          max: options.yAxisMaxVisits * 1.1,
           // splitNumber: 4,
           axisTick: {
             show: false,
           },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'],
-            },
-          },
+          // splitArea: {
+          //   show: true,
+          //   areaStyle: {
+          //     color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'],
+          //   },
+          // },
           splitLine: {
             show: true,
             lineStyle: {
@@ -106,7 +106,7 @@
           name: '收入/万元',
           position: 'right',
           min: 0,
-          max: options.yAxisMaxRevenue,
+          max: options.yAxisMaxRevenue * 1.1,
           // splitNumber: 4,
           // axisTick: {
           //   show: false,
@@ -114,11 +114,14 @@
           axisLabel: {
             formatter: '{value}',
           },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'],
-            },
+          // splitArea: {
+          //   show: true,
+          //   areaStyle: {
+          //     color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'],
+          //   },
+          // },
+          splitLine: {
+            show: false,
           },
         },
       ],
@@ -133,7 +136,7 @@
           smooth: true,
           data: options.visitsData,
           type: 'bar',
-          barWidth: 15,
+          barWidth: '40%',
           label: {
             show: true,
             position: 'top',
@@ -142,28 +145,27 @@
             fontWeight: 'normal',
             distance: 10,
           },
-          barCategoryGap: '20%',
-          areaStyle: {},
+          // barCategoryGap: '20%',
+          // areaStyle: {},
           itemStyle: {
             // color: '#019680',
-            normal: {
-              barBorderRadius: [20, 20, 0, 0],
-              color: new echarts.graphic.LinearGradient(
-                0,
-                1,
-                0,
-                0,
-                ['#1CD8A8', '#2FAEF2'].map((color, offset) => ({ color, offset })),
-              ),
-            },
+            borderRadius: [20, 20, 0, 0],
+            color: new echarts.graphic.LinearGradient(
+              0,
+              1,
+              0,
+              0,
+              ['#1CD8A8', '#2FAEF2'].map((color, offset) => ({ color, offset })),
+            ),
           },
-          emphasis: {
-            focus: 'series',
-          },
-          animationDelay: function (idx) {
-            return idx * 10;
-          },
+          // emphasis: {
+          //   focus: 'series',
+          // },
+          // animationDelay: function (idx) {
+          //   return idx * 10;
+          // },
         },
+
         {
           name: '收入',
           yAxisIndex: 1,
@@ -171,8 +173,25 @@
           data: options.revenueData,
           type: 'line',
           // areaStyle: {},
+          lineStyle: {
+            width: 3,
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              {
+                offset: 0,
+                color: '#fe9a',
+              },
+              {
+                offset: 1,
+                color: '#fe9a8b',
+              },
+            ]),
+            shadowColor: 'rgba(254,154,139, 0.3)',
+            shadowBlur: 10,
+            shadowOffsetY: 20,
+          },
           itemStyle: {
-            color: '#5ab1ef',
+            color: '#fe9a8b',
+            borderColor: '#fe9a8b',
           },
         },
       ],

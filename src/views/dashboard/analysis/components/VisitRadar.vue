@@ -42,27 +42,27 @@
           splitNumber: 8,
           indicator: [
             {
-              text: '电脑',
+              text: '船票',
               max: 100,
             },
             {
-              text: '充电器',
+              text: '门票',
               max: 100,
             },
             {
-              text: '耳机',
+              text: '酒店',
               max: 100,
             },
             {
-              text: '手机',
+              text: '岛上产品',
               max: 100,
             },
             {
-              text: 'Ipad',
+              text: '路线',
               max: 100,
             },
             {
-              text: '耳机',
+              text: '观光车',
               max: 100,
             },
           ],

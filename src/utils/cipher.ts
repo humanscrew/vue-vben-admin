@@ -43,8 +43,17 @@ export class AesEncryption {
     };
   }
 
-  encryptByAES(cipherText: string) {
-    return encrypt(cipherText, this.key, this.getOptions).toString();
+  encryptByAES(cipherVar: string | object) {
+    if (isString(cipherVar)) {
+      const encryptText = encrypt(cipherVar, this.key, this.getOptions).toString();
+      return encryptText;
+    }
+    Object.keys(cipherVar).forEach((key) => {
+      const item = cipherVar[key];
+      const encryptItem = encrypt(item, this.key, this.getOptions).toString();
+      cipherVar[key] = encryptItem;
+    });
+    return cipherVar;
   }
 
   decryptByAES(cipherVar: string | object) {

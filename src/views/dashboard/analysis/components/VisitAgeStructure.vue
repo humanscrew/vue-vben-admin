@@ -34,41 +34,31 @@
         tooltip: {
           trigger: 'item',
         },
-        legend: {
-          bottom: '1%',
-          left: 'center',
-        },
         series: [
           {
-            color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
+            color: ['#5ab1ef', '#b6a2de', '#2ec7c9', '#67e0e3', '#2ec7c9'],
             name: '年龄',
             type: 'pie',
             radius: ['40%', '70%'],
-            avoidLabelOverlap: false,
+            // avoidLabelOverlap: false,
             itemStyle: {
               borderRadius: 10,
               borderColor: '#fff',
-              borderWidth: 2,
+              borderWidth: 5,
             },
             label: {
-              show: false,
-              position: 'center',
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: '12',
-                fontWeight: 'bold',
-              },
+              show: true,
+              fontSize: '10',
             },
             labelLine: {
-              show: false,
+              show: true,
             },
             data: [
-              { value: 1048, name: '20-30' },
-              { value: 735, name: '30-40' },
-              { value: 580, name: '40-50' },
-              { value: 484, name: '50以上' },
+              { value: 1048, name: '20岁以下' },
+              { value: 1048, name: '20-30岁' },
+              { value: 735, name: '30-40岁' },
+              { value: 580, name: '40-50岁' },
+              { value: 484, name: '50岁以上' },
             ],
             animationType: 'scale',
             animationEasing: 'exponentialInOut',

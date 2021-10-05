@@ -66,8 +66,8 @@
     visitAnalysisOptions.xAxisData = new Array(daysInMonth)
       .fill('')
       .map((value, index) => index + 1 + '日');
-    visitAnalysisOptions.yAxisMaxVisits = Math.max(...visitsData) * 1.1;
-    visitAnalysisOptions.yAxisMaxRevenue = Math.max(...revenueData) * 1.1;
+    visitAnalysisOptions.yAxisMaxVisits = Math.max(...visitsData);
+    visitAnalysisOptions.yAxisMaxRevenue = Math.max(...revenueData);
     visitAnalysisOptions.visitsData = visitsData;
     visitAnalysisOptions.revenueData = revenueData;
 
