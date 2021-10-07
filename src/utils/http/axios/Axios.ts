@@ -210,13 +210,18 @@ export class VAxios {
     const publicKey = getPublicKey();
     let encryption: AesEncryption | undefined = undefined;
     if (publicKey) {
+      // console.log('request', cloneDeep(conf.data || conf.params));
       encryption = new AesEncryption();
       if (conf.data) {
-        encryption.encryptByAESWithRSA(conf.data, publicKey);
+        encryption.encryptByAES(conf.data);
       }
       if (conf.params) {
-        encryption.encryptByAESWithRSA(conf.params, publicKey);
+        encryption.encryptByAES(conf.params);
       }
+
+      const aesKeyHeader = encryption.encryptAesKeyByRsa(publicKey);
+      this.setHeader(aesKeyHeader);
+
       if (config.url === Api.Login || config.url === Api.Register) {
         conf.data.username = config.params.username;
       }
@@ -228,7 +233,7 @@ export class VAxios {
         .then((res: AxiosResponse<Result>) => {
           if (encryption) {
             encryption.decryptByAES(res.data);
-            console.log(res.data);
+            // console.log('response', cloneDeep(res.data));
           }
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {

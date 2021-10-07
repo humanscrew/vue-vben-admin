@@ -46,7 +46,7 @@
       },
       toolbox: {
         show: true,
-        right: '6%',
+        right: '10%',
         feature: {
           mark: { show: true },
           dataView: { show: true, readOnly: false },

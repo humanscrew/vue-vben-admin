@@ -67,8 +67,7 @@
           inline-block
           text-opacity-40 text-white text-right
           hover:text-opacity-80
-          xl:text-gray-300 xl:hover:text-gray-800 xl:w-auto
-          w-260px
+          xl:text-gray-300 xl:hover:text-gray-800
           duration-300
           dark:hover:text-blue-400
         "
@@ -95,8 +94,7 @@
           inline-block
           text-opacity-40 text-white text-left
           hover:text-opacity-80
-          xl:text-gray-300 xl:hover:text-gray-800 xl:w-auto xl:pr-8
-          w-260px
+          xl:text-gray-300 xl:hover:text-gray-800 xl:w-auto
           duration-300
           dark:hover:text-blue-400
         "

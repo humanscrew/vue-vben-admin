@@ -186,4 +186,16 @@ export default {
     editRowTable: '可编辑行',
     authColumn: '权限列',
   },
+  ticket: {
+    moduleName: '票务管理',
+
+    laiu8: '来游吧',
+    client: '客户管理',
+    salesDetail: '销售明细',
+  },
+  voucher: {
+    moduleName: '记账凭证',
+
+    generate: '凭证生成',
+  },
 };

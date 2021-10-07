@@ -31,7 +31,7 @@
         </div>
 
         <div class="p-2 px-4 flex justify-between">
-          <span>{{ item.totalExtent }}{{ item.title }}</span>
+          <span>{{ item.totalExtent }}</span>
           <CountTo :prefix="item.prefix" :suffix="item.suffix" :startVal="0" :endVal="item.total" />
         </div>
       </Card>

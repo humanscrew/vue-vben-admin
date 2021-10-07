@@ -54,7 +54,7 @@ export default {
     restore: 'Restore',
   },
   table: {
-    settingDens: 'Density',
+    settingDens: 'Line Hight',
     settingDensDefault: 'Default',
     settingDensMiddle: 'Middle',
     settingDensSmall: 'Compact',

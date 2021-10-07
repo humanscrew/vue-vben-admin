@@ -50,7 +50,8 @@ export class AesEncryption {
     }
     Object.keys(cipherVar).forEach((key) => {
       const item = cipherVar[key];
-      const encryptItem = encrypt(item, this.key, this.getOptions).toString();
+      const cipherText = JSON.stringify(item);
+      const encryptItem = encrypt(cipherText, this.key, this.getOptions).toString();
       cipherVar[key] = encryptItem;
     });
     return cipherVar;
@@ -69,16 +70,11 @@ export class AesEncryption {
     return cipherVar;
   }
 
-  encryptByAESWithRSA(cipherVar: { [key: string]: any } = {}, publicKey: string) {
-    Object.keys(cipherVar).forEach((key) => {
-      const item = cipherVar[key];
-      const cipherText = JSON.stringify(item);
-      cipherVar[key] = this.encryptByAES(cipherText);
-    });
+  encryptAesKeyByRsa(publicKey: string) {
     const RSA = new RsaEncryption({ publicKey });
-    cipherVar.aesKey = RSA.encryptByRSA(this.aesKey);
-    cipherVar.aesIV = RSA.encryptByRSA(this.aesIV);
-    return cipherVar;
+    const aesKey = RSA.encryptByRSA(this.aesKey);
+    const aesIV = RSA.encryptByRSA(this.aesIV);
+    return { aesKey, aesIV };
   }
 }
 

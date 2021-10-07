@@ -195,4 +195,16 @@ export default {
     editRowTable: 'Editable row',
     authColumn: 'Auth column',
   },
+  ticket: {
+    moduleName: 'Ticket management',
+
+    laiu8: 'Laiu8 ticket system',
+    client: 'Client management',
+    salesDetail: 'Sales detail',
+  },
+  voucher: {
+    moduleName: 'Voucher management',
+
+    generate: 'Generate voucher',
+  },
 };

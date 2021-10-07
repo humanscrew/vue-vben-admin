@@ -190,6 +190,9 @@ export const usePermissionStore = defineStore({
             this.changePermissionCode();
             const res = await getRouteListAPI();
             routeList = res.routesList as AppRouteRecordRaw[];
+            routeList.sort((a, b) => {
+              return (a.meta.orderNo || 0) - (b.meta.orderNo || 0);
+            });
           } catch (error) {
             console.error(error);
           }

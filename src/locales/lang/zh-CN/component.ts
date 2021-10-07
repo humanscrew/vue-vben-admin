@@ -56,7 +56,7 @@ export default {
     restore: '还原',
   },
   table: {
-    settingDens: '密度',
+    settingDens: '行高',
     settingDensDefault: '默认',
     settingDensMiddle: '中等',
     settingDensSmall: '紧凑',

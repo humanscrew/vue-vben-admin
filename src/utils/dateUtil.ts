@@ -10,11 +10,11 @@ export function formatToDateTime(
   date: moment.MomentInput = undefined,
   format = DATE_TIME_FORMAT,
 ): string {
-  return moment(date).format(format);
+  return date ? moment(date).format(format) : '';
 }
 
 export function formatToDate(date: moment.MomentInput = undefined, format = DATE_FORMAT): string {
-  return moment(date).format(format);
+  return date ? moment(date).format(format) : '';
 }
 
 export const dateUtil = moment;
