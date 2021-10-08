@@ -24,7 +24,6 @@
         </Tooltip>
       </template>
       <template #Lock="{ record }">
-        <!-- {{ record }} -->
         <Icon
           v-if="record"
           :icon="
@@ -58,7 +57,7 @@
           :filterFn="filterFn"
           :sortFn="sortFn"
           :pagination="false"
-          :maxHeight="80"
+          :canResize="false"
         >
           <template #Tag="{ text }">
             <Tag @click="handleCopy(text)" :color="tagColor(text)">

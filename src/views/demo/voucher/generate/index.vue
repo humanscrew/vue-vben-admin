@@ -34,7 +34,7 @@
   import Icon from '/@/components/Icon';
   import { getLaiu8ClientAPI } from '/@/api/sys/ticket';
   import type { SorterResult } from '/@/components/Table';
-  import { OrderEnum } from '/@/enums/orderEnum';
+  import { OrderEnum } from '/@/enums/tableEnum';
 
   const [register] = useTable({
     api: getLaiu8ClientAPI,
