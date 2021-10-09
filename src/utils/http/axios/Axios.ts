@@ -210,7 +210,7 @@ export class VAxios {
     const publicKey = getPublicKey();
     let encryption: AesEncryption | undefined = undefined;
     if (publicKey) {
-      // console.log('request', cloneDeep(conf.data || conf.params));
+      console.log('request', cloneDeep(conf.data || conf.params));
       encryption = new AesEncryption();
       if (conf.data) {
         encryption.encryptByAES(conf.data);
@@ -233,7 +233,7 @@ export class VAxios {
         .then((res: AxiosResponse<Result>) => {
           if (encryption) {
             encryption.decryptByAES(res.data);
-            // console.log('response', cloneDeep(res.data));
+            console.log('response', cloneDeep(res.data));
           }
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {

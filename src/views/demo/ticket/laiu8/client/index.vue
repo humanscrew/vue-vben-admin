@@ -1,15 +1,11 @@
 <template>
   <div class="p-4">
     <BasicTable
-      title="签约客户"
-      titleHelpMessage="来游吧"
       bordered
+      :title="tableSetting.title"
+      :titleHelpMessage="tableSetting.titleHelpMessage"
       :canResize="canResize"
-      :rowSelection="{ type: 'checkbox' }"
       showTableSetting
-      :fetchSetting="fetchSetting"
-      :filterFn="filterFn"
-      :sortFn="sortFn"
       @columns-change="handleColumnChange"
       @register="register"
     >
@@ -23,45 +19,30 @@
           <Icon :icon="canResize ? 'bi:arrows-expand' : 'bi:arrows-collapse'" />
         </Tooltip>
       </template>
+      <template #Text="{ text }">
+        <div @click="handleCopy(text)" class="text-sm truncate">
+          {{ text }}
+        </div>
+      </template>
     </BasicTable>
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { BasicTable, ColumnChangeParam, useTable } from '/@/components/Table';
-  import { getBasicColumns } from './tableData';
+  import { getBasicColumns, tableSetting } from './components/tableData';
   import { Tooltip } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
   import { getLaiu8ClientAPI } from '/@/api/sys/ticket';
-  import type { SorterResult } from '/@/components/Table';
-  import { OrderEnum } from '/@/enums/tableEnum';
+  import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   const [register] = useTable({
     api: getLaiu8ClientAPI,
     columns: getBasicColumns(),
   });
 
-  const fetchSetting = {
-    pageField: 'page',
-    sizeField: 'per_page',
-    listField: 'results',
-    totalField: 'total',
-  };
-
   const canResize = ref(true);
-
-  const filterFn = (filters) => {
-    return filters;
-  };
-
-  const sortFn = (sortInfo: SorterResult) => {
-    const { field, order } = sortInfo;
-    const orderType = OrderEnum[order];
-    return {
-      field,
-      order: orderType,
-    };
-  };
 
   function toggleCanResize() {
     canResize.value = !canResize.value;
@@ -70,4 +51,19 @@
   function handleColumnChange(data: ColumnChangeParam[]) {
     console.log('ColumnChanged', data);
   }
+
+  const { createMessage } = useMessage();
+  const { clipboardRef, copiedRef } = useCopyToClipboard();
+  const handleCopy = (value) => {
+    if (!value) {
+      createMessage.warning('空值复制无效');
+      return;
+    }
+    clipboardRef.value = value;
+    if (unref(copiedRef)) {
+      createMessage.warning('已复制');
+      return;
+    }
+    createMessage.error('复制失败');
+  };
 </script>

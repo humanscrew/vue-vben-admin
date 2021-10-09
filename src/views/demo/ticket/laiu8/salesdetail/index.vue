@@ -1,14 +1,13 @@
 <template>
   <div class="p-4">
     <BasicTable
-      title="销售明细"
-      titleHelpMessage="单元格点击即可复制"
       bordered
-      :canResize="canResize"
       showTableSetting
-      :fetchSetting="fetchSetting"
-      :filterFn="filterFn"
-      :sortFn="sortFn"
+      expandRowByClick
+      :columns="tableColumns"
+      :title="tableSetting.title"
+      :titleHelpMessage="tableSetting.titleHelpMessage"
+      :canResize="canResize"
       :isTreeTable="true"
       @columns-change="handleColumnChange"
       @register="register"
@@ -23,19 +22,63 @@
           <Icon :icon="canResize ? 'bi:arrows-expand' : 'bi:arrows-collapse'" />
         </Tooltip>
       </template>
+
+      <template #searchIcon>
+        <Icon ref="searchIconRef" icon="uil:search" class="mt-4" />
+      </template>
+      <template #searchDropdown="{ setSelectedKeys, confirm, clearFilters, column }">
+        <div class="p-2 flex flex-wrap justify-left w-70">
+          <a-button
+            type="primary"
+            class="mb-2 mr-4"
+            preIcon="uil:search"
+            size="small"
+            @click="handleConfirm(confirm)"
+          >
+            查找
+          </a-button>
+          <a-button class="mb-2" size="small" @click="handleReset(clearFilters)">重置</a-button>
+          <!-- <Tooltip :title="selectedKeys" placement="top"> -->
+          <Select
+            ref="selectRef"
+            class="w-70"
+            mode="multiple"
+            labelInValue
+            :value="searchValue"
+            :token-separators="[',']"
+            :placeholder="`${column.dataIndex}`"
+            :filter-option="false"
+            :options="selectOptions"
+            @search="(value) => handleSearch(value, column.dataIndex)"
+            @change="(value) => handleChange(value, setSelectedKeys)"
+          >
+            <template #notFoundContent>
+              <div v-if="fetching" class="text-center">
+                <Spin size="small" />
+              </div>
+              <div v-else class="text-center">
+                <Icon icon="fluent:delete-24-regular" />
+              </div>
+            </template>
+          </Select>
+          <!-- </Tooltip> -->
+        </div>
+      </template>
+
+      <template #filterIcon="{ column }">
+        <Icon
+          ref="filterIconRef"
+          icon="mdi:filter-menu"
+          class="mt-4"
+          @click="handleFilter(column.dataIndex)"
+        />
+      </template>
+
       <template #Lock="{ record }">
         <Icon
           v-if="record"
-          :icon="
-            record.isLock
-              ? LockIcon[record.ticketStatus].icon || LockIcon.OTHER.icon
-              : UnLockIcon.UNLOCK.icon
-          "
-          :color="
-            record.isLock
-              ? LockIcon[record.ticketStatus].color || LockIcon.OTHER.color
-              : UnLockIcon.UNLOCK.color
-          "
+          :icon="record.isLock ? 'mdi:lock-outline' : 'clarity:unknown-status-line'"
+          :color="record.isLock ? '' : 'red'"
         />
       </template>
       <template #Tag="{ text }">
@@ -50,14 +93,13 @@
       </template>
       <template #expandedRowRender="{ record }">
         <BasicTable
-          v-if="record.ticketStatus != '已取消'"
+          v-if="record.ticketStatus != tableSetting.hideStatus"
           :dataSource="[record]"
           :columns="innerColumns"
-          :fetchSetting="fetchSetting"
-          :filterFn="filterFn"
-          :sortFn="sortFn"
           :pagination="false"
           :canResize="false"
+          inset
+          bordered
         >
           <template #Tag="{ text }">
             <Tag @click="handleCopy(text)" :color="tagColor(text)">
@@ -75,61 +117,34 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref, unref } from 'vue';
+  import { ref, unref, watch, nextTick } from 'vue';
   import { BasicTable, ColumnChangeParam, useTable } from '/@/components/Table';
-  import { Tooltip, Tag } from 'ant-design-vue';
+  import { Tooltip, Tag, Select, Spin } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
-  import { getBasicColumns, getInnerColumns } from './tableData';
+  import {
+    tableSetting,
+    getBasicColumns,
+    getInnerColumns,
+    ColorEnum,
+    isFilterDropdown,
+  } from './components/tableData';
   import { getTicketLaiu8API } from '/@/api/sys/ticket';
-  import type { SorterResult } from '/@/components/Table';
-  import { OrderEnum } from '../../../../../enums/tableEnum';
   import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { debounce } from 'lodash-es';
+  import { isNullOrUnDef } from '/@/utils/is';
 
   const [register] = useTable({
     api: getTicketLaiu8API,
-    columns: getBasicColumns(),
   });
 
+  let tableColumns = ref(getBasicColumns());
   const innerColumns = getInnerColumns();
-
-  const fetchSetting = {
-    pageField: 'page',
-    sizeField: 'per_page',
-    listField: 'results',
-    totalField: 'total',
-  };
 
   const canResize = ref(true);
 
-  const filterFn = (filters) => {
-    return filters;
-  };
-
-  const sortFn = (sortInfo: SorterResult) => {
-    const { field, order } = sortInfo;
-    const orderType = OrderEnum[order];
-    return {
-      field,
-      order: orderType,
-    };
-  };
-
   function toggleCanResize() {
     canResize.value = !canResize.value;
-  }
-
-  enum UnLockIcon {
-    UNLOCK = { icon: 'mdi:sort-clock-descending-outline', color: 'grey' },
-  }
-  enum LockIcon {
-    '一检' = { icon: 'teenyicons:tick-circle-solid', color: 'green' },
-    '二检' = { icon: 'teenyicons:tick-circle-solid', color: 'green' },
-    '出票成功' = { icon: 'teenyicons:tick-circle-solid', color: 'green' },
-    '已取消' = { icon: 'clarity:cancel-line', color: 'grey' },
-    '已退款' = { icon: 'ic:sharp-cancel', color: '#f07c76' },
-    '改签废票' = { icon: 'tabler:zodiac-cancer', color: 'orange' },
-    OTHER = { icon: 'clarity:unknown-status-line', color: 'orange' },
   }
 
   function handleColumnChange(data: ColumnChangeParam[]) {
@@ -137,16 +152,6 @@
   }
 
   const tagColor = (text) => {
-    enum ColorEnum {
-      '来游吧' = 'blue',
-      '已退款' = 'red',
-      '一检' = 'green',
-      '二检' = 'green',
-      '出票成功' = 'green',
-      '改签废票' = 'orange',
-      '微信' = '#87d068',
-      '支付宝' = '#2db7f5',
-    }
     const color = ColorEnum[text];
     return color;
   };
@@ -164,5 +169,107 @@
       return;
     }
     createMessage.error('复制失败');
+  };
+
+  const searchIconRef = ref();
+  const selectOptions = ref([]);
+  const searchValue = ref();
+
+  let lastFetchId = 0;
+  const fetching = ref(false);
+  const handleFetch = async (value, dataIndex) => {
+    lastFetchId++;
+    const fetchId = lastFetchId;
+    fetching.value = true;
+    selectOptions.value = [];
+    const { result } = await getTicketLaiu8API({
+      page: 1,
+      per_page: 100,
+      filterLike: [{ field: dataIndex, values: [value] }],
+      withEntities: [dataIndex],
+      distinct: true,
+    });
+    if (fetchId !== lastFetchId) {
+      // for fetch callback order
+      return;
+    }
+    for (let index = 0; index < result.length; index++) {
+      const value = result[index][dataIndex];
+      if (!isNullOrUnDef(value)) {
+        selectOptions.value.push({ value: value, key: index });
+      }
+    }
+    fetching.value = false;
+  };
+  const handleSearch = debounce(handleFetch, 300);
+
+  const selectRef = ref();
+  watch(
+    isFilterDropdown,
+    async () => {
+      if (isFilterDropdown.value) {
+        await nextTick(async () => {
+          selectRef.value.focus();
+          fetching.value = true;
+          await selectRef.value.$.props.onSearch();
+        });
+      }
+    },
+    {
+      immediate: true,
+    },
+  );
+
+  const handleChange = (value, setSelectedKeys) => {
+    const selectedKeys = value.map((item) => {
+      return item.value;
+    });
+    setSelectedKeys(selectedKeys);
+  };
+
+  const handleConfirm = (confirm) => {
+    confirm();
+    searchIconRef.value.$.props.color = '#108ee9';
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    selectOptions.value = [];
+    searchValue.value = [];
+    searchIconRef.value.$.props.color = undefined;
+  };
+
+  const handleFilter = async (dataIndex) => {
+    for (let index = 0; index < tableColumns.value.length; index++) {
+      const column = tableColumns.value[index];
+      if (
+        column.dataIndex === dataIndex &&
+        (column.filters?.length > 1 || column.filters[0].value)
+      ) {
+        return;
+      }
+    }
+
+    const { result } = await getTicketLaiu8API({
+      page: 1,
+      per_page: 100,
+      withEntities: [dataIndex],
+      distinct: true,
+    });
+    let filters = [];
+    for (let index = 0; index < result.length; index++) {
+      const value = result[index][dataIndex];
+      if (!isNullOrUnDef(value)) {
+        filters.push({ text: value, value: value });
+      }
+    }
+
+    for (let index = 0; index < tableColumns.value.length; index++) {
+      const column = tableColumns.value[index];
+      if (column.dataIndex == dataIndex) {
+        tableColumns.value[index].filters = filters;
+        break;
+      }
+    }
   };
 </script>
