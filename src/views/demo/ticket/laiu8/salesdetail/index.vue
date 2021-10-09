@@ -8,7 +8,6 @@
       :title="tableSetting.title"
       :titleHelpMessage="tableSetting.titleHelpMessage"
       :canResize="canResize"
-      :isTreeTable="true"
       @columns-change="handleColumnChange"
       @register="register"
     >
@@ -148,7 +147,7 @@
   }
 
   function handleColumnChange(data: ColumnChangeParam[]) {
-    console.log('ColumnChanged', data);
+    data;
   }
 
   const tagColor = (text) => {

@@ -32,6 +32,8 @@ export function getBasicColumns(): Columns[] {
       width: 150,
       format: 'date|YYYY-MM-DD HH:mm:ss',
       sorter: true,
+      slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+      onFilterDropdownVisibleChange,
     },
     {
       title: '订单ID',
@@ -39,7 +41,6 @@ export function getBasicColumns(): Columns[] {
       width: 180,
       slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Tag' },
       onFilterDropdownVisibleChange,
-      filtered: true,
     },
     {
       title: '订单号',
@@ -86,13 +87,9 @@ export function getBasicColumns(): Columns[] {
     {
       title: '客户类型',
       dataIndex: 'userType',
-      filters: [
-        { text: 'OTA', value: 'OTA' },
-        { text: 'VIP', value: 'VIP' },
-        { text: '散客', value: '散客' },
-      ],
       width: 100,
-      slots: { customRender: 'Tag' },
+      filters: [{ text: '加载中', value: '' }],
+      slots: { filterIcon: 'filterIcon', customRender: 'Text' },
     },
     {
       title: '客户名称',
@@ -113,6 +110,7 @@ export function getBasicColumns(): Columns[] {
       dataIndex: 'paymentTime',
       width: 150,
       format: 'date|YYYY-MM-DD HH:mm:ss',
+      sorter: true,
       slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
       onFilterDropdownVisibleChange,
     },
@@ -198,6 +196,7 @@ export function getBasicColumns(): Columns[] {
       dataIndex: 'departureDatetime',
       width: 150,
       format: 'date|YYYY-MM-DD HH:mm:ss',
+      sorter: true,
       slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
       onFilterDropdownVisibleChange,
     },
@@ -243,7 +242,6 @@ export function getBasicColumns(): Columns[] {
       format: (value: string): string => {
         return value.replace(/^(.{4})(?:\w+)(.{4})$/, '$1****$2');
       },
-      defaultHidden: true,
       slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
       onFilterDropdownVisibleChange,
     },
