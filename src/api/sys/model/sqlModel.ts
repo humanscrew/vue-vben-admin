@@ -8,7 +8,7 @@ export interface SQLParams {
   charset?: string;
 }
 
-export interface SQLResultModel {
+export interface SQLResult {
   result: any[];
   status: boolean;
   message: string;

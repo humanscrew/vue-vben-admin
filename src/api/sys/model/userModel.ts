@@ -14,7 +14,7 @@ export interface RoleInfo {
 /**
  * @description: Login interface return value
  */
-export interface LoginResultModel {
+export interface LoginResult {
   userId: string | number;
   token: string;
   accessToken: string;
@@ -25,7 +25,7 @@ export interface LoginResultModel {
 /**
  * @description: Get user information return value
  */
-export interface GetUserInfoModel {
+export interface GetUserInfoResult {
   roles: RoleInfo[];
   // 用户id
   userId: string | number;
@@ -39,7 +39,7 @@ export interface GetUserInfoModel {
   desc?: string;
 }
 
-export interface GetRsaResultModel {
+export interface GetRsaResult {
   publicKey: string;
 }
 
@@ -50,7 +50,7 @@ export interface RegisterParams {
   sms?: string;
 }
 
-export interface RegisterResultModel {
+export interface RegisterResult {
   user: string;
 }
 
@@ -58,6 +58,6 @@ export interface PermitCode {
   name: string;
   value: string;
 }
-export interface GetPermitCodeModel {
+export interface GetPermitCodeResult {
   permitCode: PermitCode[];
 }

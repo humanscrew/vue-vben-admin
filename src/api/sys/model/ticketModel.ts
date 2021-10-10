@@ -3,7 +3,7 @@ export interface GetTicketLaiu8Params {
   endTime: Date;
 }
 
-export interface GetTicketLaiu8Model {
+export interface GetTicketLaiu8Result {
   [k: string]: any;
 }
 
@@ -11,7 +11,7 @@ export interface GetLaiu8ClientParams {
   [k: string]: any;
 }
 
-export interface GetLaiu8ClientModel {
+export interface GetLaiu8ClientResult {
   clientId: string;
   uniformSocialCreditCode: string;
   type: string;

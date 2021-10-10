@@ -1,12 +1,12 @@
 import { defHttp, http } from '/@/utils/http/axios';
 import {
   LoginParams,
-  GetRsaResultModel,
-  LoginResultModel,
+  GetRsaResult,
+  LoginResult,
   RegisterParams,
-  RegisterResultModel,
-  GetUserInfoModel,
-  GetPermitCodeModel,
+  RegisterResult,
+  GetUserInfoResult,
+  GetPermitCodeResult,
 } from './model/userModel';
 
 import { ErrorMessageMode } from '/#/axios';
@@ -25,7 +25,7 @@ export enum Api {
 export function getRsaAPI(params: LoginParams, mode: ErrorMessageMode = 'modal') {
   const userStore = useUserStoreWithOut();
   userStore.setPublicKey(undefined);
-  return http.post<GetRsaResultModel>(
+  return http.post<GetRsaResult>(
     {
       url: Api.RSA,
       params: { username: params.username },
@@ -40,7 +40,7 @@ export function getRsaAPI(params: LoginParams, mode: ErrorMessageMode = 'modal')
  * @description: user login api
  */
 export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
-  return http.post<LoginResultModel>(
+  return http.post<LoginResult>(
     {
       url: Api.Login,
       params,
@@ -54,11 +54,11 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
 export function getDefaultRsaAPI() {
   const userStore = useUserStoreWithOut();
   userStore.setPublicKey(undefined);
-  return http.get<GetRsaResultModel>({ url: Api.DefaultRSA }, { errorMessageMode: 'none' });
+  return http.get<GetRsaResult>({ url: Api.DefaultRSA }, { errorMessageMode: 'none' });
 }
 
 export function registerApi(params: RegisterParams, mode: ErrorMessageMode = 'message') {
-  return http.post<RegisterResultModel>(
+  return http.post<RegisterResult>(
     {
       url: Api.Register,
       params,
@@ -73,11 +73,11 @@ export function registerApi(params: RegisterParams, mode: ErrorMessageMode = 'me
  * @description: getUserInfo
  */
 export function getUserInfoAPI() {
-  return http.get<GetUserInfoModel>({ url: Api.User }, { errorMessageMode: 'none' });
+  return http.get<GetUserInfoResult>({ url: Api.User }, { errorMessageMode: 'none' });
 }
 
 export function getPermCodeAPI() {
-  return http.get<GetPermitCodeModel>({ url: Api.GetPermCode });
+  return http.get<GetPermitCodeResult>({ url: Api.GetPermCode });
 }
 
 export function doLogoutAPI() {

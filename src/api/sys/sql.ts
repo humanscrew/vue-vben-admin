@@ -1,6 +1,6 @@
 import { http } from '/@/utils/http/axios';
 import { ErrorMessageMode } from '/#/axios';
-import { SQLParams, SQLResultModel, databaseInfo } from './model/sqlModel';
+import { SQLParams, SQLResult, databaseInfo } from './model/sqlModel';
 import { dateUtil, formatToDateTime } from '/@/utils/dateUtil';
 
 enum Api {
@@ -8,7 +8,7 @@ enum Api {
 }
 
 export const executeSql = (params: SQLParams, mode: ErrorMessageMode = 'modal') => {
-  return http.post<SQLResultModel>(
+  return http.post<SQLResult>(
     {
       url: Api.SQL,
       params,

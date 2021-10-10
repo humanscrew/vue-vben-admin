@@ -1,4 +1,4 @@
-export interface GetCompanyGroupResultModel {
+export interface GetCompanyGroupResult {
   companyGroup: {
     financialCode: string;
     name: string;

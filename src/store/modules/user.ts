@@ -12,7 +12,7 @@ import {
   RSA_PUBLIC_KEY,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams, RegisterParams } from '/@/api/sys/model/userModel';
+import { GetUserInfoResult, LoginParams, RegisterParams } from '/@/api/sys/model/userModel';
 import {
   getRsaAPI,
   loginApi,
@@ -120,7 +120,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
-    ): Promise<GetUserInfoModel | null> {
+    ): Promise<GetUserInfoResult | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const { publicKey } = await getRsaAPI(loginParams, mode);
@@ -137,7 +137,7 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoResult | null> {
       if (!this.getToken) return null;
       // get user info
       const userInfo = await this.getUserInfoAction();
@@ -212,7 +212,7 @@ export const useUserStore = defineStore({
       params: RegisterParams & {
         mode?: ErrorMessageMode;
       },
-    ): Promise<GetUserInfoModel | null> {
+    ): Promise<GetUserInfoResult | null> {
       try {
         const { mode, ...registerParams } = params;
         const { publicKey } = await getDefaultRsaAPI();
@@ -227,7 +227,7 @@ export const useUserStore = defineStore({
       params: RegisterParams & {
         mode?: ErrorMessageMode;
       },
-    ): Promise<GetUserInfoModel | null> {
+    ): Promise<GetUserInfoResult | null> {
       return await this.login(params);
     },
   },
