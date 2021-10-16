@@ -1,5 +1,5 @@
 export interface GetCompanyGroupResult {
-  companyGroup: {
+  companyGroups: {
     financialCode: string;
     name: string;
   }[];

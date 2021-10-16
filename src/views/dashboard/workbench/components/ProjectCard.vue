@@ -8,7 +8,7 @@
       <CardGrid class="!md:w-1/3 !w-full">
         <span class="flex">
           <Icon :icon="item.icon" :color="item.color" size="30" />
-          <span class="text-lg ml-4">{{ item.title }}</span>
+          <span class="text-lg ml-4">{{ item.name }}</span>
         </span>
         <!-- <div class="flex mt-2 text-secondary justify-end">{{ item.desc }}</div> -->
         <div class="flex justify-between text-secondary mt-4">
@@ -20,27 +20,18 @@
   </Card>
 </template>
 <script lang="ts" setup>
-  import { ref, reactive, onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { Card } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import { getCompanyGroupAPI } from '/@/api/sys/company';
 
   const CardGrid = Card.Grid;
   const loading = ref(true);
-  const groupList = reactive([]);
+  const groupList = ref([]);
 
   onMounted(async () => {
-    const { companyGroup } = await getCompanyGroupAPI();
-    let groups = companyGroup.map((item) => {
-      return {
-        title: item.name + '项目',
-        icon: item.icon,
-        color: item.color,
-        desc: item.desc,
-        location: item.location,
-      };
-    });
-    groupList.push(...groups);
+    const { companyGroups } = await getCompanyGroupAPI();
+    groupList.value = companyGroups;
     loading.value = false;
   });
 </script>

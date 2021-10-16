@@ -1,80 +1,263 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
+import { getBookkeepingTemplateAPI } from '/@/api/sys/finance';
 
-export function getBasicColumns(): BasicColumn[] {
-  return [
-    {
-      title: '来游吧ID',
-      dataIndex: 'clientId',
-      width: 100,
-      sorter: true,
-    },
-    {
-      title: '客户类型',
-      dataIndex: 'type',
-      width: 100,
-      filters: [
-        { text: 'OTA', value: 'OTA' },
-        { text: 'VIP', value: 'VIP' },
-      ],
-    },
-    {
-      title: '客户名称',
-      dataIndex: 'name',
-      width: 250,
-    },
-    {
-      title: '销售额',
-      helpMessage: '本年累计/万元',
-      dataIndex: 'sales',
-      width: 150,
-      sorter: true,
-      defaultSortOrder: 'descend',
-      format: (value) => {
-        return ((Number(value) / 10000).toFixed(2) + '').replace(
-          /\d{1,3}(?=(\d{3})+(\.\d*)?$)/g,
-          '$&,',
-        );
-      },
-    },
-    {
-      title: '签约主体',
-      dataIndex: 'companyName',
-      width: 250,
-    },
-    {
-      title: '统一社会信用代码',
-      dataIndex: 'uniformSocialCreditCode',
-      width: 200,
-    },
-    {
-      title: '客户拓展负责人',
-      dataIndex: 'manager',
-      width: 150,
-    },
-    {
-      title: '合约起始时间',
-      width: 150,
-      sorter: true,
-      format: 'date|YYYY-MM-DD',
-      dataIndex: 'cooperateStartTime',
-    },
+const tableSetting = {
+  title: '凭证模板',
+  titleHelpMessage: '自动制证',
+  api: getBookkeepingTemplateAPI,
+};
 
-    {
-      title: '合约到期时间',
-      width: 150,
-      sorter: true,
-      format: 'date|YYYY-MM-DD',
-      dataIndex: 'cooperateEndTime',
-    },
-    {
-      title: '客户地址',
-      width: 250,
-      dataIndex: 'address',
-    },
-    {
-      title: '联系方式',
-      width: 200,
-      dataIndex: 'mobile',
-    },
-  ];
-}
+const basicColumns: BasicColumn[] = [
+  {
+    title: '模板编码',
+    dataIndex: 'code',
+    width: 150,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '模板名称',
+    dataIndex: 'name',
+    width: 250,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '公司代码',
+    dataIndex: 'companyCode',
+    width: 100,
+    filters: [],
+    slots: { filterIcon: 'filterIcon', customRender: 'Text' },
+  },
+  {
+    title: '凭证类型',
+    dataIndex: 'type',
+    width: 100,
+    filters: [],
+    slots: { filterIcon: 'filterIcon', customRender: 'Text' },
+  },
+  {
+    title: '摘要',
+    dataIndex: 'abstract',
+    width: 300,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '借方科目代码',
+    dataIndex: 'debitFinanceAccount.code',
+    width: 150,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '借方科目名称',
+    dataIndex: 'debitFinanceAccount.name',
+    width: 300,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '借方辅助帐类型',
+    dataIndex: 'debitFinanceAccount.auxiliaryGroup.name',
+    width: 250,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '借方金额',
+    dataIndex: 'debitAmount',
+    width: 150,
+  },
+  {
+    title: '贷方科目代码',
+    dataIndex: 'creditFinanceAccount.code',
+    width: 150,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '贷方科目名称',
+    dataIndex: 'creditFinanceAccount.name',
+    width: 300,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '贷方辅助帐类型',
+    dataIndex: 'creditFinanceAccount.auxiliaryGroup.name',
+    width: 250,
+    slots: { filterIcon: 'searchIcon', filterDropdown: 'searchDropdown', customRender: 'Text' },
+  },
+  {
+    title: '贷方金额',
+    dataIndex: 'creditAmount',
+    width: 150,
+  },
+  {
+    title: '是否有现金流量',
+    dataIndex: 'isCashflow',
+    width: 150,
+    filters: [],
+    slots: { filterIcon: 'filterIcon', customRender: 'Text' },
+  },
+  {
+    title: '现金流量标记',
+    dataIndex: 'cashflowTag',
+    width: 150,
+  },
+  {
+    title: '制单人',
+    dataIndex: 'lister',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '审核人',
+    dataIndex: 'auditor',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '过账人',
+    dataIndex: 'confirmor',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '记账日期',
+    dataIndex: 'bookkeepingDate',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '业务日期',
+    dataIndex: 'businessDate',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '会计期间',
+    dataIndex: 'period',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '凭证号',
+    dataIndex: 'voucherId',
+    width: 150,
+    defaultHidden: true,
+    slots: { customRender: 'Text' },
+  },
+  {
+    title: '分录号',
+    dataIndex: 'entryNo',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '币种',
+    dataIndex: 'currencyType',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '汇率',
+    dataIndex: 'currencyRate',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '方向',
+    dataIndex: 'direction',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '原币金额',
+    dataIndex: 'currencyAmount',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '数量',
+    dataIndex: 'count',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '单价',
+    dataIndex: 'unitPrice',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '附件数量',
+    dataIndex: 'attachCount',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '过账标记',
+    dataIndex: 'isConfirm',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '机制凭证模块',
+    dataIndex: 'machineModule',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '删除标记',
+    dataIndex: 'isDeleted',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '凭证序号',
+    dataIndex: 'voucherNo',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '单位',
+    dataIndex: 'unit',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '参考信息',
+    dataIndex: 'referenceInformation',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '业务编号',
+    dataIndex: 'businessNo',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '结算方式',
+    dataIndex: 'payment',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '结算号',
+    dataIndex: 'payNo',
+    width: 150,
+    defaultHidden: true,
+  },
+  {
+    title: '到期日',
+    dataIndex: 'dueDate',
+    width: 150,
+    defaultHidden: true,
+  },
+];
+
+export const tableData = {
+  tableSetting,
+  basicColumns,
+};

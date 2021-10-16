@@ -2,9 +2,9 @@ import { http } from '/@/utils/http/axios';
 import { GetBookkeepingTemplateResult } from './model/finance';
 
 enum Api {
-  BookkeepingTemplate = '/api/companyGroup',
+  BookkeepingTemplate = '/api/bookkeepingTemplate',
 }
 
-export const getBookkeepingTemplate = () => {
+export const getBookkeepingTemplateAPI = () => {
   return http.get<GetBookkeepingTemplateResult>({ url: Api.BookkeepingTemplate });
 };
