@@ -1,10 +1,23 @@
 import { http } from '/@/utils/http/axios';
-import { GetBookkeepingTemplateResult } from './model/finance';
+import { ErrorMessageMode } from '/#/axios';
+import { GetBookkeepingTemplateParams, GetBookkeepingTemplateResult } from './model/financeModel';
 
 enum Api {
   BookkeepingTemplate = '/api/bookkeepingTemplate',
 }
 
-export const getBookkeepingTemplateAPI = () => {
-  return http.get<GetBookkeepingTemplateResult>({ url: Api.BookkeepingTemplate });
+export const getBookkeepingTemplateAPI = (
+  params: GetBookkeepingTemplateParams,
+  mode: ErrorMessageMode = 'modal',
+) => {
+  return http.get<GetBookkeepingTemplateResult>(
+    {
+      url: Api.BookkeepingTemplate,
+      params,
+      timeout: 1000 * 30,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
 };
