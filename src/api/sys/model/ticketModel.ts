@@ -20,3 +20,19 @@ export interface GetLaiu8ClientResult {
   mobile?: string;
   address?: string;
 }
+
+export interface GetTicket2FinanceParams {
+  [k: string]: any;
+}
+
+export interface GetTicket2FinanceResult {
+  type: string;
+  date: Date;
+  paymentMethod: string;
+  userType: string;
+  userName: string;
+  productType: string;
+  ticketPrice: Number;
+  getVoucher: Number;
+  useVoucher: Number;
+}

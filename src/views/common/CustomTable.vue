@@ -72,15 +72,19 @@
       </template>
 
       <template #Tag="{ text }">
-        <Tag @click="handleCopy(text)" :color="tagColor(text)">
-          {{ text }}
-        </Tag>
+        <Tooltip :title="text" placement="top" :mouseEnterDelay="0.5">
+          <Tag @click="handleCopy(text)" :color="tagColor(text)">
+            {{ text }}
+          </Tag>
+        </Tooltip>
       </template>
 
       <template #Text="{ text }">
-        <div @click="handleCopy(text)" class="text-sm truncate">
-          {{ text }}
-        </div>
+        <Tooltip :title="text" placement="top" :mouseEnterDelay="0.5">
+          <div @click="handleCopy(text)" class="text-sm truncate">
+            {{ text }}
+          </div>
+        </Tooltip>
       </template>
 
       <template #expandedRowRender="{ record }" v-if="innerColumns.length">
@@ -94,14 +98,18 @@
           bordered
         >
           <template #Tag="{ text }">
-            <Tag @click="handleCopy(text)" :color="tagColor(text)">
-              {{ text }}
-            </Tag>
+            <Tooltip :title="text" placement="top" :mouseEnterDelay="0.5">
+              <Tag @click="handleCopy(text)" :color="tagColor(text)">
+                {{ text }}
+              </Tag>
+            </Tooltip>
           </template>
           <template #Text="{ text }">
-            <div @click="handleCopy(text)" class="text-sm truncate">
-              {{ text }}
-            </div>
+            <Tooltip :title="text" placement="top" :mouseEnterDelay="0.5">
+              <div @click="handleCopy(text)" class="text-sm truncate">
+                {{ text }}
+              </div>
+            </Tooltip>
           </template>
         </BasicTable>
       </template>
@@ -109,7 +117,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref, defineProps, unref, onMounted } from 'vue';
+  import { ref, unref, onMounted } from 'vue';
   import { BasicTable, ColumnChangeParam, useTable } from '/@/components/Table';
   import { Tooltip, Tag, Select, Spin } from 'ant-design-vue';
   import Icon from '/@/components/Icon';

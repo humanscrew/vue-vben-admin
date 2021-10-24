@@ -201,10 +201,12 @@ export default {
     laiu8: 'Laiu8 ticket system',
     client: 'Client management',
     salesDetail: 'Sales detail',
+    ticket2finance: 'Transform finance data',
   },
   voucher: {
     moduleName: 'Voucher management',
 
+    template: 'Bookkeeping template',
     generate: 'Generate voucher',
   },
 };

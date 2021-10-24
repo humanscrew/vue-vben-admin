@@ -5,11 +5,14 @@ import {
   GetTicketLaiu8Result,
   GetLaiu8ClientParams,
   GetLaiu8ClientResult,
+  GetTicket2FinanceParams,
+  GetTicket2FinanceResult,
 } from './model/ticketModel';
 
 enum Api {
   TicketLaiu8 = '/api/ticketLaiu8',
   Laiu8Client = '/api/laiu8Client',
+  Ticket2Finance = '/api/ticket2Finance',
 }
 
 export const getTicketLaiu8API = (
@@ -35,6 +38,21 @@ export const getLaiu8ClientAPI = (
   return http.get<GetLaiu8ClientResult>(
     {
       url: Api.Laiu8Client,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+};
+
+export const getTicket2FinanceAPI = (
+  params: GetTicket2FinanceParams,
+  mode: ErrorMessageMode = 'modal',
+) => {
+  return http.get<GetTicket2FinanceResult>(
+    {
+      url: Api.Ticket2Finance,
       params,
     },
     {

@@ -192,10 +192,12 @@ export default {
     laiu8: '来游吧',
     client: '客户管理',
     salesDetail: '销售明细',
+    ticket2finance: '业财数据',
   },
   voucher: {
     moduleName: '记账凭证',
 
+    template: '凭证模板',
     generate: '凭证生成',
   },
 };
