@@ -83,7 +83,7 @@
   </Form>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, toRaw, unref, computed } from 'vue';
+  import { reactive, ref, unref, computed } from 'vue';
 
   import { Checkbox, Form, Input, Row, Col, Button, Divider } from 'ant-design-vue';
   import {
@@ -135,13 +135,11 @@
     if (!data) return;
     try {
       loading.value = true;
-      const userInfo = await userStore.login(
-        toRaw({
-          password: data.password,
-          username: data.account,
-          mode: 'message',
-        }),
-      );
+      const userInfo = await userStore.login({
+        password: data.password,
+        username: data.account,
+        mode: 'none', //不要默认的错误提示
+      });
       if (userInfo) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
@@ -150,12 +148,11 @@
         });
       }
     } catch (error) {
-      console.log(error.message);
-      // createErrorModal({
-      //   title: t('sys.api.errorTip'),
-      //   content: error.message || t('sys.api.networkExceptionMsg'),
-      //   getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-      // });
+      createErrorModal({
+        title: t('sys.api.errorTip'),
+        content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+        getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+      });
     } finally {
       loading.value = false;
     }
