@@ -110,6 +110,7 @@
     "antv",
     "brotli",
     "browserslist",
+    "clickhouse",
     "codemirror",
     "commitlint",
     "cropperjs",

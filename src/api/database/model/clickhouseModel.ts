@@ -1,14 +1,13 @@
-export interface SQLParams {
-  sqlStatement: string;
+export interface ClickhouseParams {
+  statement: string;
   host?: string;
   port?: string;
   user?: string;
   password?: string;
-  db?: string;
-  charset?: string;
+  database?: string;
 }
 
-export interface SQLResult {
+export interface ClickhouseResult {
   result: any[];
   status: boolean;
   message: string;

@@ -1,5 +1,5 @@
 import { useI18n } from '/@/hooks/web/useI18n';
-import { formatToDateTime } from '/@/utils/dateUtil';
+import { dateUtil, formatToDateTime } from '/@/utils/dateUtil';
 
 const { t } = useI18n();
 
@@ -32,10 +32,13 @@ export const AnalysisConfig = {
 };
 
 export const timeStore = {
-  // dateTimeFormatter : 'YYYY-MM-DD HH:mm:ss',z
-  toDay: { start: '2021-09-15 00:00:00', end: '2021-09-15 23:59:59' },
-  toMonth: { start: '2021-09-01 00:00:00', end: '2021-09-30 23:59:59' },
-  nextDay: { start: '2021-09-16 00:00:00', end: '2021-09-16 23:59:59' },
+  // dateTimeFormatter : 'YYYY-MM-DD HH:mm:ss',
+  toDay: { start: dateUtil().startOf('day'), end: dateUtil().endOf('day') },
+  toMonth: { start: dateUtil().startOf('month'), end: dateUtil().endOf('month') },
+  nextDay: {
+    start: dateUtil(dateUtil().add(1, 'day')).startOf('day'),
+    end: dateUtil(dateUtil().add(1, 'day')).endOf('day'),
+  },
 };
 
 const todayDate = formatToDateTime(timeStore.toDay.end, 'M月D日');

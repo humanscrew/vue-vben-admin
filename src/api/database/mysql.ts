@@ -1,16 +1,16 @@
 import { http } from '/@/utils/http/axios';
 import { ErrorMessageMode } from '/#/axios';
-import { SQLParams, SQLResult, databaseInfo } from './model/sqlModel';
+import { MysqlParams, MysqlResult, databaseInfo } from './model/mysqlModel';
 import { dateUtil, formatToDateTime } from '/@/utils/dateUtil';
 
 enum Api {
-  SQL = '/api/sql',
+  Mysql = '/api/mysql',
 }
 
-export const executeSql = (params: SQLParams, mode: ErrorMessageMode = 'modal') => {
-  return http.post<SQLResult>(
+export const executeMysql = (params: MysqlParams, mode: ErrorMessageMode = 'modal') => {
+  return http.post<MysqlResult>(
     {
-      url: Api.SQL,
+      url: Api.Mysql,
       params,
       timeout: 1000 * 30,
     },
@@ -21,7 +21,7 @@ export const executeSql = (params: SQLParams, mode: ErrorMessageMode = 'modal') 
 };
 
 const dateTimeFormatter = 'YYYY-MM-DD HH:mm:ss';
-const handleSqlTime = (startTime: any, endTime: any) => {
+const handleDateTime = (startTime: any, endTime: any) => {
   startTime = startTime || dateUtil().startOf('day');
   endTime = endTime || dateUtil().endOf('day');
   startTime = formatToDateTime(startTime, dateTimeFormatter);
@@ -29,7 +29,7 @@ const handleSqlTime = (startTime: any, endTime: any) => {
   return { startTime, endTime };
 };
 
-export const executeSqlAPI = {
+export const executeMysqlAPI = {
   ticketSale: (
     productType: databaseInfo['productType'],
     start: any,
@@ -37,7 +37,7 @@ export const executeSqlAPI = {
     columns: string[] = ['visits', 'revenue'],
     groupBys: string[] = [],
   ) => {
-    const { startTime, endTime } = handleSqlTime(start, end);
+    const { startTime, endTime } = handleDateTime(start, end);
     const visits = columns.includes('visits') ? ` COUNT( id ) AS visits, ` : ``;
     const revenue = columns.includes('revenue') ? ` SUM( ticket_price ) AS revenue, ` : ``;
 
@@ -50,7 +50,7 @@ export const executeSqlAPI = {
 
     const str = date + visits + revenue;
     const columnCondition = str.substring(0, str.lastIndexOf(',')) + ' ';
-    const sqlStatement = `
+    const statement = `
         SELECT 
           ${columnCondition} 
         FROM ticket_laiu8 
@@ -61,15 +61,15 @@ export const executeSqlAPI = {
           AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}" 
           ${groupBy}
         `;
-    return executeSql({ sqlStatement });
+    return executeMysql({ statement });
   },
 
   advanceSale: (productType: databaseInfo['productType'], start: any, end: any) => {
-    const { startTime, endTime } = handleSqlTime(start, end);
+    const { startTime, endTime } = handleDateTime(start, end);
     const endCondition = end
       ? ` AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime} "`
       : ``;
-    const sqlStatement = `
+    const statement = `
         SELECT 
           COUNT( id ) AS advanceSale 
         FROM ticket_laiu8 
@@ -79,15 +79,15 @@ export const executeSqlAPI = {
           AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) >= "${startTime}" 
           ${endCondition}
         `;
-    return executeSql({ sqlStatement });
+    return executeMysql({ statement });
   },
 
   cashFlow: (productType: databaseInfo['productType'], start: any, end: any) => {
-    const { startTime, endTime } = handleSqlTime(start, end);
+    const { startTime, endTime } = handleDateTime(start, end);
     const endCondition = end
       ? ` AND DATE_FORMAT( create_time, "%Y-%m-%d %T" ) <= "${endTime} "`
       : ``;
-    const sqlStatement = `
+    const statement = `
         SELECT 
           SUM( ticket_price ) AS cashFlow 
         FROM ticket_laiu8 
@@ -97,6 +97,6 @@ export const executeSqlAPI = {
           AND DATE_FORMAT( create_time, "%Y-%m-%d %T" ) >= "${startTime}" 
           ${endCondition}
         `;
-    return executeSql({ sqlStatement });
+    return executeMysql({ statement });
   },
 };

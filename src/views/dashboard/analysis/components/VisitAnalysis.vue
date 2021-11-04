@@ -81,7 +81,7 @@
           type: 'value',
           name: '接待量/人次',
           position: 'left',
-          max: options.yAxisMaxVisits * 1.1,
+          max: (options.yAxisMaxVisits * 1.1).toFixed(0),
           // splitNumber: 4,
           axisTick: {
             show: false,
@@ -106,7 +106,7 @@
           name: '收入/万元',
           position: 'right',
           min: 0,
-          max: options.yAxisMaxRevenue * 1.1,
+          max: (options.yAxisMaxRevenue * 1.1).toFixed(0),
           // splitNumber: 4,
           // axisTick: {
           //   show: false,

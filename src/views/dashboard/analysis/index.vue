@@ -18,40 +18,42 @@
   import SalesAnalysis from './components/SalesAnalysis.vue';
 
   import { onMounted } from 'vue';
-  import { executeSqlAPI } from '/@/api/sys/sql';
+  import { executeClickhouseAPI } from '/@/api/database/clickhouse';
   import { growCardData, timeStore } from './data';
 
   const loading = ref(true);
 
   const growCardList = reactive(growCardData);
 
+  const executeAPI = executeClickhouseAPI;
+
   onMounted(async () => {
     const { toDay, toMonth, nextDay } = timeStore;
-    const ticketSaleDay = await executeSqlAPI.ticketSale('船票', toDay.start, toDay.end, [
+    const ticketSaleDay = await executeAPI.ticketSale('船票', toDay.start, toDay.end, [
       'visits',
       'revenue',
     ]);
-    const ticketSaleMonth = await executeSqlAPI.ticketSale('船票', toMonth.start, toMonth.end, [
+    const ticketSaleMonth = await executeAPI.ticketSale('船票', toMonth.start, toMonth.end, [
       'visits',
       'revenue',
     ]);
-    growCardList[0].value = ticketSaleDay.result[0].visits;
-    growCardList[0].total = ticketSaleMonth.result[0].visits;
-    growCardList[1].value = ticketSaleDay.result[0].revenue;
-    growCardList[1].total = ticketSaleMonth.result[0].revenue;
+    growCardList[0].value = ticketSaleDay.result[0].visits ?? 0;
+    growCardList[0].total = ticketSaleMonth.result[0].visits ?? 0;
+    growCardList[1].value = ticketSaleDay.result[0].revenue ?? 0;
+    growCardList[1].total = ticketSaleMonth.result[0].revenue ?? 0;
     growCardList[0].loading = false;
     growCardList[1].loading = false;
 
-    const advanceSaleDay = await executeSqlAPI.advanceSale('船票', nextDay.start, nextDay.end);
-    const advanceSaleTotal = await executeSqlAPI.advanceSale('船票', nextDay.start);
-    growCardList[2].value = advanceSaleDay.result[0].advanceSale;
-    growCardList[2].total = advanceSaleTotal.result[0].advanceSale;
+    const advanceSaleDay = await executeAPI.advanceSale('船票', nextDay.start, nextDay.end);
+    const advanceSaleTotal = await executeAPI.advanceSale('船票', nextDay.start);
+    growCardList[2].value = advanceSaleDay.result[0].advanceSale ?? 0;
+    growCardList[2].total = advanceSaleTotal.result[0].advanceSale ?? 0;
     growCardList[2].loading = false;
 
-    const cashFlowDay = await executeSqlAPI.cashFlow('船票', toDay.start, toDay.end);
-    const cashFlowMonth = await executeSqlAPI.cashFlow('船票', toMonth.start, toMonth.end);
-    growCardList[3].value = cashFlowDay.result[0].cashFlow;
-    growCardList[3].total = cashFlowMonth.result[0].cashFlow;
+    const cashFlowDay = await executeAPI.cashFlow('船票', toDay.start, toDay.end);
+    const cashFlowMonth = await executeAPI.cashFlow('船票', toMonth.start, toMonth.end);
+    growCardList[3].value = cashFlowDay.result[0].cashFlow ?? 0;
+    growCardList[3].total = cashFlowMonth.result[0].cashFlow ?? 0;
     growCardList[3].loading = false;
   });
 

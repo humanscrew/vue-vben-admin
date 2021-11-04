@@ -21,7 +21,7 @@
 
   import { dateUtil } from '/@/utils/dateUtil';
   import { timeStore } from '../data';
-  import { executeSqlAPI } from '/@/api/sys/sql';
+  import { executeClickhouseAPI } from '/@/api/database/clickhouse';
 
   const activeKey = ref('tab1');
 
@@ -48,7 +48,7 @@
     const daysInMonth = dateUtil(toDay.end).daysInMonth();
     // const thisMonth = formatToDateTime(toDay.end, 'M月');
 
-    const ticketSaleMonth = await executeSqlAPI.ticketSale(
+    const ticketSaleMonth = await executeClickhouseAPI.ticketSale(
       '船票',
       toMonth.start,
       toMonth.end,
