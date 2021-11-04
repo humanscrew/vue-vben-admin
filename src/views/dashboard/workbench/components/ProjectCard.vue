@@ -23,7 +23,7 @@
   import { ref, onMounted } from 'vue';
   import { Card } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
-  import { getCompanyGroupAPI } from '/@/api/sys/company';
+  import { getCompanyGroupAPI } from '/@/api/company/company';
 
   const CardGrid = Card.Grid;
   const loading = ref(true);

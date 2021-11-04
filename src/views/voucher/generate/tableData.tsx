@@ -1,5 +1,5 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
-import { getBookkeepingTemplateAPI } from '/@/api/sys/finance';
+import { getBookkeepingTemplateAPI } from '/@/api/finance/finance';
 
 const tableSetting = {
   title: '凭证模板',
