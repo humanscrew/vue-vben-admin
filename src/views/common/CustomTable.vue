@@ -138,7 +138,7 @@
     api: tableSetting.api,
   });
 
-  const canResize = ref(true);
+  const canResize = ref(false);
 
   function toggleCanResize() {
     canResize.value = !canResize.value;

@@ -5,7 +5,7 @@ import { FormSchema } from '/@/components/Table';
 export const columns: BasicColumn[] = [
   {
     title: '用户名',
-    dataIndex: 'account',
+    dataIndex: 'username',
     width: 120,
   },
   {
@@ -14,9 +14,29 @@ export const columns: BasicColumn[] = [
     width: 120,
   },
   {
+    title: '姓名',
+    dataIndex: 'realName',
+    width: 200,
+  },
+  {
+    title: '角色',
+    dataIndex: 'roles',
+    width: 200,
+    slots: { customRender: 'Roles' },
+  },
+  {
+    title: '手机号',
+    dataIndex: 'mobile',
+    width: 120,
+  },
+  {
     title: '邮箱',
     dataIndex: 'email',
-    width: 120,
+    width: 200,
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
   },
   {
     title: '创建时间',
@@ -24,13 +44,9 @@ export const columns: BasicColumn[] = [
     width: 180,
   },
   {
-    title: '角色',
-    dataIndex: 'role',
-    width: 200,
-  },
-  {
-    title: '备注',
-    dataIndex: 'remark',
+    title: '最后修改时间',
+    dataIndex: 'updateTime',
+    width: 180,
   },
 ];
 

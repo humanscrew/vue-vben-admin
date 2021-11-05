@@ -13,4 +13,4 @@ export interface RouteItem {
 /**
  * @description: Get menu return value
  */
-export type GetMenuListResult = { routesList: RouteItem[] };
+export type GetRouteListResult = { result: RouteItem[] };

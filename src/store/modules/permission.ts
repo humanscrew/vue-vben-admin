@@ -18,7 +18,7 @@ import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 
 import { filter } from '/@/utils/helper/treeHelper';
 
-import { getRouteListAPI } from '/@/api/sys/menu';
+import { getRouteListAPI } from '/@/api/sys/route';
 import { getPermCodeAPI } from '/@/api/sys/user';
 
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -189,7 +189,7 @@ export const usePermissionStore = defineStore({
           try {
             this.changePermissionCode();
             const res = await getRouteListAPI();
-            routeList = res.routesList as AppRouteRecordRaw[];
+            routeList = res.result as AppRouteRecordRaw[];
             routeList.sort((a, b) => {
               return (a.meta.orderNo || 0) - (b.meta.orderNo || 0);
             });

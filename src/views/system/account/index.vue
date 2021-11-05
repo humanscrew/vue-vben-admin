@@ -1,9 +1,27 @@
 <template>
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
     <DeptTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
-    <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5" :searchInfo="searchInfo">
+    <BasicTable
+      @register="registerTable"
+      class="w-3/4 xl:w-4/5"
+      :searchInfo="searchInfo"
+      :canResize="canResize"
+    >
       <template #toolbar>
         <a-button type="primary" @click="handleCreate">新增账号</a-button>
+        <Tooltip
+          :title="!canResize ? '自适应高度' : '取消自适应'"
+          placement="bottom"
+          :mouseEnterDelay="0.5"
+          @click="toggleCanResize"
+        >
+          <Icon :icon="canResize ? 'bi:arrows-expand' : 'bi:arrows-collapse'" />
+        </Tooltip>
+      </template>
+      <template #Roles="{ text: roles }">
+        <div v-for="role in roles" :key="role" class="mx-1 inline-block">
+          <Tag color="blue">{{ role.name }}</Tag>
+        </div>
       </template>
       <template #action="{ record }">
         <TableAction
@@ -35,12 +53,15 @@
   </PageWrapper>
 </template>
 <script lang="ts">
-  import { defineComponent, reactive } from 'vue';
+  import { defineComponent, reactive, ref } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { getAccountList } from '/@/api/demo/system';
+  import { getUserListAPI } from '/@/api/sys/user';
   import { PageWrapper } from '/@/components/Page';
   import DeptTree from './DeptTree.vue';
+
+  import { Tooltip, Tag } from 'ant-design-vue';
+  import Icon from '/@/components/Icon';
 
   import { useModal } from '/@/components/Modal';
   import AccountModal from './AccountModal.vue';
@@ -50,15 +71,24 @@
 
   export default defineComponent({
     name: 'AccountManagement',
-    components: { BasicTable, PageWrapper, DeptTree, AccountModal, TableAction },
+    components: {
+      BasicTable,
+      PageWrapper,
+      DeptTree,
+      AccountModal,
+      TableAction,
+      Icon,
+      Tooltip,
+      Tag,
+    },
     setup() {
       const go = useGo();
       const [registerModal, { openModal }] = useModal();
       const searchInfo = reactive<Recordable>({});
+      const canResize = ref(false);
       const [registerTable, { reload, updateTableDataRecord }] = useTable({
         title: '账号列表',
-        api: getAccountList,
-        rowKey: 'id',
+        api: getUserListAPI,
         columns,
         formConfig: {
           labelWidth: 120,
@@ -79,6 +109,10 @@
           slots: { customRender: 'action' },
         },
       });
+
+      function toggleCanResize() {
+        canResize.value = !canResize.value;
+      }
 
       function handleCreate() {
         openModal(true, {
@@ -121,6 +155,8 @@
       return {
         registerTable,
         registerModal,
+        canResize,
+        toggleCanResize,
         handleCreate,
         handleEdit,
         handleDelete,

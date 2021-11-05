@@ -18,8 +18,9 @@ export enum Api {
   DefaultRSA = '/utils/defaultRSA',
   Register = '/auth/register',
   User = '/api/user',
+  UserList = '/api/userList',
   Logout = '/logout',
-  GetPermCode = '/api/permitCode',
+  PermCode = '/api/permitCode',
 }
 
 export function getRsaAPI(params: LoginParams, mode: ErrorMessageMode = 'modal') {
@@ -77,9 +78,13 @@ export function getUserInfoAPI() {
 }
 
 export function getPermCodeAPI() {
-  return http.get<GetPermitCodeResult>({ url: Api.GetPermCode });
+  return http.get<GetPermitCodeResult>({ url: Api.PermCode });
 }
 
 export function doLogoutAPI() {
   return defHttp.get({ url: Api.Logout });
+}
+
+export function getUserListAPI() {
+  return http.get({ url: Api.UserList });
 }

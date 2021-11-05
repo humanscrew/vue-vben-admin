@@ -3,20 +3,24 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { Icon } from '/@/components/Icon';
+import { useI18n } from '/@/hooks/web/useI18n';
+
+const { t } = useI18n();
 
 export const columns: BasicColumn[] = [
   {
     title: '菜单名称',
-    dataIndex: 'menuName',
+    dataIndex: 'meta.title',
     width: 200,
     align: 'left',
+    format: (value: string): string => t(value),
   },
   {
     title: '图标',
-    dataIndex: 'icon',
+    dataIndex: 'meta.icon',
     width: 50,
     customRender: ({ record }) => {
-      return h(Icon, { icon: record.icon });
+      return h(Icon, { icon: record.meta.icon });
     },
   },
   {
@@ -30,7 +34,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '排序',
-    dataIndex: 'orderNo',
+    dataIndex: 'meta.orderNo',
     width: 50,
   },
   {
