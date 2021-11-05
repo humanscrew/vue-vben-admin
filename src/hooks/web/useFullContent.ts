@@ -10,6 +10,9 @@ import { useRouter } from 'vue-router';
 export const useFullContent = () => {
   const appStore = useAppStore();
   const router = useRouter();
+  if (!router) {
+    return { getFullContent: false };
+  }
   const { currentRoute } = router;
 
   // Whether to display the content in full screen without displaying the menu

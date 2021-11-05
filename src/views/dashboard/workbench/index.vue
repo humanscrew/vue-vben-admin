@@ -18,6 +18,12 @@
     </div>
   </PageWrapper>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'DashboardWorkbench',
+  };
+</script>
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Card } from 'ant-design-vue';
