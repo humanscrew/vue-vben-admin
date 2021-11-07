@@ -1,5 +1,5 @@
 <template>
-  <JSpreadSheet @workbook="getworkbook" :api="getTicket2FinanceAPI" :setting="setting" />
+  <JSpreadSheet @workbook="getworkbook" :apiConfig="apiConfig" :setting="setting" />
 </template>
 
 <script lang="ts">
@@ -14,7 +14,12 @@
   import { getTicket2FinanceAPI } from '/@/api/ticket/ticket';
 
   const workbook = ref();
-
+  const apiConfig = {
+    api: getTicket2FinanceAPI,
+    params: {
+      sorter: [{ field: 'date', type: 'desc' }],
+    },
+  };
   const setting = {
     worksheets: [
       {

@@ -1,5 +1,8 @@
 <template>
-  <div ref="spreadsheetRef"></div>
+  <div>
+    <div ref="spreadsheetRef"></div>
+    <Loading :loading="loading" :absolute="true" :tip="loadingTip" />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -8,6 +11,8 @@
   import { useLayoutHeight } from '/@/layouts/default/content/useContentViewHeight';
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
+  import { deepMerge } from '/@/utils';
+  import { Loading } from '/@/components/Loading';
 
   import 'jspreadsheet/dist/jspreadsheet.css';
   import 'jsuites/dist/jsuites.css';
@@ -23,7 +28,7 @@
   setting.root = spreadsheetRef.value;
 
   const props = defineProps({
-    api: Function,
+    apiConfig: Object,
     setting: Object,
   });
   const emits = defineEmits(['workbook']);
@@ -37,6 +42,20 @@
     total: 0,
   };
 
+  let loading = ref(false);
+  const loadingTip = '加载中...';
+  const getTableData = async () => {
+    loading.value = true;
+    const response = await props.apiConfig.api(
+      deepMerge(props.apiConfig.params, {
+        page: pageOptions.page,
+        per_page: pageOptions.pageSize,
+      }),
+    );
+    loading.value = false;
+    return response;
+  };
+
   setting.toolbar = {
     // container: true,
     badge: true,
@@ -44,15 +63,20 @@
     // responsive: true,
     items: [
       {
+        type: 'label',
+        tooltip: '总条数',
+        content: '共' + pageOptions.total + '条',
+      },
+      {
+        type: 'divisor',
+        tooltip: '分隔符',
+      },
+      {
         content: 'save',
         tooltip: '保存',
         onclick: function () {
           jspreadsheet.current?.download();
         },
-      },
-      {
-        type: 'divisor',
-        tooltip: '分隔符',
       },
       {
         type: 'divisor',
@@ -83,10 +107,7 @@
         },
         onchange: async (a, b, c, d) => {
           pageOptions.page = d;
-          const { result: tableData } = await props.api({
-            page: pageOptions.page,
-            per_page: pageOptions.pageSize,
-          });
+          const { result: tableData } = await getTableData();
 
           jspreadsheet.current?.setData(tableData);
         },
@@ -101,37 +122,27 @@
         },
         onchange: async (a, b, c, d) => {
           pageOptions.pageSize = d;
-          setting.toolbar.items.forEach((value, index) => {
-            value.tooltip === '条数' &&
-              (setting.toolbar.items[index].value =
-                setting.toolbar.items[index].options.indexOf(d));
-          });
-          const { result: tableData, pages } = await props.api({
-            page: pageOptions.page,
-            per_page: pageOptions.pageSize,
-          });
+          pageOptions.page = 1;
+          const { result: tableData, pages } = await getTableData();
           jspreadsheet.current?.setData(tableData);
-
           pageOptions.pageList = new Array(pages).fill('').map((value, index) => {
             return ++index;
           });
+
           setting.toolbar.items.forEach((value, index) => {
+            value.tooltip === '条数' &&
+              (setting.toolbar.items[index].value = setting.toolbar.items[index].options.indexOf(
+                pageOptions.pageSize,
+              ));
             value.tooltip === '页码' &&
-              (setting.toolbar.items[index].options = pageOptions.pageList);
+              ((setting.toolbar.items[index].options = pageOptions.pageList) ||
+                (setting.toolbar.items[index].value = 0));
           });
           jsuites.toolbar(document.querySelector('.jss_toolbar'), setting.toolbar);
           jspreadsheet.current.setConfig(setting);
         },
       },
-      {
-        type: 'divisor',
-        tooltip: '分隔符',
-      },
-      {
-        type: 'label',
-        tooltip: '总条数',
-        content: '共' + pageOptions.total + '条',
-      },
+
       {
         type: 'divisor',
         tooltip: '分隔符',
@@ -225,23 +236,17 @@
     }
     deepMergeSetting(setting, props.setting);
 
-    const {
-      result: tableData,
-      pages,
-      total,
-    } = await props.api({
-      page: 1,
-      per_page: pageOptions.pageSize,
-    });
+    const { result: tableData, pages, total } = await getTableData();
+
     pageOptions.pageList = new Array(pages).fill('').map((value, index) => {
       return ++index;
     });
-    pageOptions.total = '共' + total + '条';
-    setting.toolbar.items.forEach((value, index) => {
-      value.tooltip === '总条数' && (setting.toolbar.items[index].content = pageOptions.total);
-    });
+    pageOptions.total = total;
 
     setting.toolbar.items.forEach((value, index) => {
+      value.tooltip === '总条数' &&
+        (setting.toolbar.items[index].content = '共' + pageOptions.total + '条');
+      value.tooltip === '条数' && setting.toolbar.items[index].options.push(pageOptions.total);
       value.tooltip === '页码' && (setting.toolbar.items[index].options = pageOptions.pageList);
     });
 
