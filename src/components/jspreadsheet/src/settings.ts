@@ -4,30 +4,29 @@ export const license =
 export const setting = {
   worksheets: [
     {
+      // minDimensions: [5, 5],
       filters: true,
-      search: true,
+      // search: true,
       // pagination: 50,
       // paginationOptions: [20, 50, 100, 200],
       tableOverflow: true,
       // tableWidth: window.innerWidth,
       // tableHeight: window.innerHeight,
+      csvFileName: '无标题' + new Date().valueOf(),
     },
   ],
   tabs: {
-    /** Allow to create new tabs */
     allowCreate: true,
-    /** Hide headers */
     hideHeaders: true,
-    /** Allow drag and drop to change tabs position */
     allowChangePosition: true,
   },
-  // toolbar: false,
+  toolbar: true,
   loadingSpin: true,
   parseTableAutoCellType: true,
   includeHeadersOnDownload: true,
   license:
     'MWEzMTE4MGFkNWY5YzQzNjE4NjZiNmE1NThhM2M0Yjc1NmUyNGM2N2YzZjU2NDQ5ZjM1MGFiYWNmOTFkNTkwODFiYmYwNDE1YjhhM2ViNGUyMzM2YjYzY2Q4NTcyMWE4MGQ4YjVjNjI2NWY4NWYyMTBjMWU5M2ZmNTU4OGI1MDQsZXlKdVlXMWxJam9pY0dGMWJDNW9iMlJsYkNJc0ltUmhkR1VpT2pFMk5UZzVOakk0TURBc0ltUnZiV0ZwYmlJNld5SnFjM0J5WldGa2MyaGxaWFF1WTI5dElpd2lZM05pTG1Gd2NDSXNJbXB6YUdWc2JDNXVaWFFpTENKc2IyTmhiR2h2YzNRaVhTd2ljR3hoYmlJNklqSWlMQ0p6WTI5d1pTSTZXeUoyTnlJc0luWTRJaXdpY0dGeWMyVnlJaXdpYzJobFpYUnpJaXdpWm05eWJYTWlMQ0p5Wlc1a1pYSWlMQ0ptYjNKdGRXeGhJbDE5',
-  contextMenu: function (...arg) {
+  contextMenu: function (...arg: any) {
     arg[4].pop();
     return arg[4];
   },

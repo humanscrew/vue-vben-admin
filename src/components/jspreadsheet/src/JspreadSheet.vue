@@ -13,19 +13,157 @@
   import 'jsuites/dist/jsuites.css';
 
   import jspreadsheet from 'jspreadsheet';
-  import jsuites from 'jspreadsheet';
+  import jsuites from 'jsuites';
   import setting from './settings';
 
   import zh_CN from './lang/zh_CN';
-  jsuites.setDictionary(zh_CN);
+  jspreadsheet.setDictionary(zh_CN);
 
   const spreadsheetRef = ref();
+  setting.root = spreadsheetRef.value;
+
   const props = defineProps({
+    api: Function,
     setting: Object,
   });
   const emits = defineEmits(['workbook']);
 
-  const workbook = ref();
+  let workbook = null;
+
+  const pageOptions = {
+    page: 1,
+    pageSize: 500,
+    pageList: [1],
+    total: 0,
+  };
+
+  setting.toolbar = {
+    // container: true,
+    badge: true,
+    title: true,
+    // responsive: true,
+    items: [
+      {
+        content: 'save',
+        tooltip: '保存',
+        onclick: function () {
+          jspreadsheet.current?.download();
+        },
+      },
+      {
+        type: 'divisor',
+        tooltip: '分隔符',
+      },
+      {
+        type: 'divisor',
+        tooltip: '分隔符',
+      },
+      {
+        type: 'select',
+        tooltip: '字体',
+        width: 150,
+        options: ['微软雅黑', '宋体', 'Times New Roman', 'Verdana', 'Arial', 'Courier New'],
+        render: function (e) {
+          return '<span>' + e + '</span>';
+        },
+        onchange: function (a, b, c, d) {
+          jspreadsheet.current?.setStyle(jspreadsheet.current?.getSelected(), 'font-family', d);
+        },
+      },
+      {
+        type: 'divisor',
+        tooltip: '分隔符',
+      },
+      {
+        type: 'select',
+        tooltip: '页码',
+        options: pageOptions.pageList,
+        render: function (e) {
+          return '<span>' + '第' + e + '页' + '</span>';
+        },
+        onchange: async (a, b, c, d) => {
+          pageOptions.page = d;
+          const { result: tableData } = await props.api({
+            page: pageOptions.page,
+            per_page: pageOptions.pageSize,
+          });
+
+          jspreadsheet.current?.setData(tableData);
+        },
+      },
+      {
+        type: 'select',
+        tooltip: '条数',
+        options: [100, 500, 1000, 2000, 3000],
+        value: '1',
+        render: function (e) {
+          return '<span>' + e + '条/页' + '</span>';
+        },
+        onchange: async (a, b, c, d) => {
+          pageOptions.pageSize = d;
+          setting.toolbar.items.forEach((value, index) => {
+            value.tooltip === '条数' &&
+              (setting.toolbar.items[index].value =
+                setting.toolbar.items[index].options.indexOf(d));
+          });
+          const { result: tableData, pages } = await props.api({
+            page: pageOptions.page,
+            per_page: pageOptions.pageSize,
+          });
+          jspreadsheet.current?.setData(tableData);
+
+          pageOptions.pageList = new Array(pages).fill('').map((value, index) => {
+            return ++index;
+          });
+          setting.toolbar.items.forEach((value, index) => {
+            value.tooltip === '页码' &&
+              (setting.toolbar.items[index].options = pageOptions.pageList);
+          });
+          jsuites.toolbar(document.querySelector('.jss_toolbar'), setting.toolbar);
+          jspreadsheet.current.setConfig(setting);
+        },
+      },
+      {
+        type: 'divisor',
+        tooltip: '分隔符',
+      },
+      {
+        type: 'label',
+        tooltip: '总条数',
+        content: '共' + pageOptions.total + '条',
+      },
+      {
+        type: 'divisor',
+        tooltip: '分隔符',
+      },
+      {
+        content: 'search',
+        tooltip: '查找',
+        onclick: function (a, b, c) {
+          if (c.children[0].innerText == 'search') {
+            jspreadsheet.current?.showSearch();
+            c.children[0].innerText = 'search_off';
+          } else {
+            jspreadsheet.current?.hideSearch();
+            c.children[0].innerText = 'search';
+          }
+        },
+        tooltip: '查询',
+        updateState: function (a, b, c, worksheet) {
+          // Call this one when the worksheet is opened and on the selection of any cells
+          if (worksheet.options.search == true) {
+            c.children[0].innerText = 'search_off';
+          } else {
+            c.children[0].innerText = 'search';
+          }
+        },
+      },
+    ],
+  };
+
+  // setting.onchange = (...args) => {
+  //   console.log(args);
+  // };
 
   const deepMergeSetting = (src: any = {}, target: any = {}, exclude = 'worksheets') => {
     let key: string;
@@ -52,52 +190,78 @@
     const menuWidth = reg.exec(unref(getCalcContentWidth))[1];
     const tableWidth = `${document.documentElement.clientWidth - menuWidth - 50}`;
 
-    props.setting.worksheets.forEach((...arg) => {
-      const sheetSetting = setting.worksheets[arg[1]];
+    props.setting.worksheets.forEach((...args) => {
+      const sheetSetting = setting.worksheets[args[1]];
       sheetSetting.tableHeight = `${tableHeight - 100}px`;
       sheetSetting.tableWidth = `${tableWidth}px`;
 
       let totalWidth = 0;
-      const propSheetCloumns = props.setting.worksheets[arg[1]].columns;
+      const propSheetCloumns = props.setting.worksheets[args[1]].columns;
       propSheetCloumns.forEach((column) => {
         const width = ~~column.width || 100;
         totalWidth += width;
         return width;
       });
 
-      if (!workbook.value) {
+      if (!workbook) {
         return;
       }
 
-      const worksheet = workbook.value[arg[1]];
+      const worksheet = workbook[args[1]];
       worksheet.setConfig(sheetSetting);
       propSheetCloumns.forEach((column, index) => {
-        worksheet.setWidth(index, (tableWidth - 50) * (column.width / totalWidth));
+        worksheet?.setWidth(index, (tableWidth - 50) * (column.width / totalWidth));
       });
     });
   }
 
   useWindowSizeFn(calcSize, 150, { immediate: true });
 
-  onMounted(() => {
-    calcSize();
+  onMounted(async () => {
     if (props.setting.worksheets.length) {
       props.setting.worksheets.forEach((value, index) => {
         deepMergeSetting(setting.worksheets[index], value);
       });
     }
     deepMergeSetting(setting, props.setting);
-    workbook.value = jspreadsheet(spreadsheetRef.value, setting);
-    emits('workbook', workbook.value);
+
+    const {
+      result: tableData,
+      pages,
+      total,
+    } = await props.api({
+      page: 1,
+      per_page: pageOptions.pageSize,
+    });
+    pageOptions.pageList = new Array(pages).fill('').map((value, index) => {
+      return ++index;
+    });
+    pageOptions.total = '共' + total + '条';
+    setting.toolbar.items.forEach((value, index) => {
+      value.tooltip === '总条数' && (setting.toolbar.items[index].content = pageOptions.total);
+    });
+
+    setting.toolbar.items.forEach((value, index) => {
+      value.tooltip === '页码' && (setting.toolbar.items[index].options = pageOptions.pageList);
+    });
+
+    workbook = jspreadsheet(spreadsheetRef.value, setting);
+
+    calcSize();
+    workbook[0].setData(tableData);
+    emits('workbook', workbook);
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+  @font-url: '/@/assets/fonts/material-icons.woff2';
+
+  /* fallback */
   @font-face {
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
-    src: url('/@/assets/fonts/material-icons.woff2') format('woff2');
+    src: url(@font-url) format('woff2');
   }
 
   .material-icons {
@@ -112,7 +276,12 @@
     white-space: nowrap;
     word-wrap: normal;
     direction: ltr;
-    // -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+  }
+
+  .jpicker-content {
+    max-height: 40vh;
+    overflow: auto;
   }
 </style>
