@@ -1,5 +1,4 @@
-import JSpreadSheet from './src/JSpreadSheet.vue';
+import { withInstall } from '/@/utils';
+import jSpreadSheet from './src/JSpreadSheet.vue';
 
-export { JSpreadSheet };
-
-export default JSpreadSheet;
+export const JSpreadSheet = withInstall(jSpreadSheet);

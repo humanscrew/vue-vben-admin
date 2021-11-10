@@ -22,7 +22,8 @@
         <CountdownInput
           size="large"
           class="fix-auto-fill"
-          v-model:value="formData.sms"
+          v-model:value="formData.sms.code"
+          :sendCodeApi="sendCodeApi"
           :placeholder="t('sys.login.smsCode')"
         />
       </FormItem>
@@ -73,6 +74,7 @@
   import { Form, Input, Button, Checkbox } from 'ant-design-vue';
   import { StrengthMeter } from '/@/components/StrengthMeter';
   import { CountdownInput } from '/@/components/CountDown';
+  import { sendSmsAliyunAPI } from '/@/api/sms/sms';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useLoginState, useFormRules, useFormValid, LoginStateEnum } from './useLogin';
@@ -81,7 +83,7 @@
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
-  const { notification } = useMessage();
+  const { notification, createMessage } = useMessage();
   const { handleBackLogin, getLoginState } = useLoginState();
 
   const formRef = ref();
@@ -92,7 +94,7 @@
     password: '',
     confirmPassword: '',
     mobile: '',
-    sms: '',
+    sms: { code: '', callback: null },
     policy: false,
   });
 
@@ -103,7 +105,7 @@
 
   async function handleRegister() {
     const data = await validForm();
-    if (!data) return;
+    if (!data || !validateSms(formData.sms)) return;
     const userStore = useUserStore();
     try {
       loading.value = true;
@@ -129,4 +131,28 @@
       loading.value = false;
     }
   }
+
+  const validateSms = (sms) => {
+    if (!sms.callback) {
+      createMessage.error(t('sys.login.getSmsCode'));
+      return false;
+    }
+    if (!sms.code) {
+      createMessage.error(t('sys.login.smsPlaceholder'));
+      return false;
+    }
+    return true;
+  };
+
+  const sendCodeApi = async () => {
+    const data = await validForm();
+    if (!data) {
+      return;
+    }
+
+    formData.sms.callback = await sendSmsAliyunAPI({ phoneNumbers: formData.mobile });
+    createMessage.success(t('sys.login.smsCodeSendSuccess'));
+    formData.sms.code = '';
+    return true;
+  };
 </script>

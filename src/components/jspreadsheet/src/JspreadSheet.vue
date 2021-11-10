@@ -5,6 +5,11 @@
   </div>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'JSpreadSheet',
+  };
+</script>
 <script lang="ts" setup>
   import { ref, unref, onMounted } from 'vue';
   import { isObject } from '/@/utils/is';

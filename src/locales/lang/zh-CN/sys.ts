@@ -96,6 +96,11 @@ export default {
     email: '邮箱',
     smsCode: '短信验证码',
     mobile: '手机号码',
+
+    getSmsCode: '请获取短信验证码',
+    incorrectMobile: '手机号有误',
+    smsCodeSendSuccess: '验证码发送成功',
+    incorrectSmsCode: '验证码错误',
   },
   views: {
     dashboard: {

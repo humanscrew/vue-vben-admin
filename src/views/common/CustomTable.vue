@@ -162,7 +162,7 @@
     }
     clipboardRef.value = value;
     if (unref(copiedRef)) {
-      createMessage.warning('已复制');
+      createMessage.success('已复制');
       return;
     }
     createMessage.error('复制失败');

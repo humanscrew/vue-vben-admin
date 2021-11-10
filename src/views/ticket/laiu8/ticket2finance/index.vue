@@ -9,7 +9,7 @@
 </script>
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import JSpreadSheet from '/@/components/jspreadsheet';
+  import { JSpreadSheet } from '/@/components/jspreadsheet';
 
   import { getTicket2FinanceAPI } from '/@/api/ticket/ticket';
 

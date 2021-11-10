@@ -2,6 +2,7 @@ import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
 import type { RuleObject } from 'ant-design-vue/lib/form/interface';
 import { ref, computed, unref, Ref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
+import { isMobile } from '/@/utils/is';
 
 export enum LoginStateEnum {
   LOGIN,
@@ -43,8 +44,41 @@ export function useFormRules(formData?: Recordable) {
 
   const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
-  const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
-  const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
+
+  // const getSmsFormRule = computed(() => {
+  //   return [
+  //     {
+  //       trigger: 'change',
+  //       validator: async (_: RuleObject, sms: any) => {
+  //         console.log(sms);
+  //         if (!sms.callback) {
+  //           return Promise.reject(t('sys.login.getSmsCode'));
+  //         }
+  //         if (!sms.code) {
+  //           return Promise.reject(t('sys.login.smsPlaceholder'));
+  //         }
+  //         return Promise.resolve();
+  //       },
+  //     },
+  //   ];
+  // });
+
+  const getMobileFormRule = computed(() => {
+    return [
+      {
+        trigger: 'change',
+        validator: async (_: RuleObject, mobile: string) => {
+          if (!mobile) {
+            return Promise.reject(t('sys.login.mobilePlaceholder'));
+          }
+          if (!isMobile(mobile)) {
+            return Promise.reject(t('sys.login.incorrectMobile'));
+          }
+          return Promise.resolve();
+        },
+      },
+    ];
+  });
 
   const validatePolicy = async (_: RuleObject, value: boolean) => {
     return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
@@ -65,11 +99,11 @@ export function useFormRules(formData?: Recordable) {
   const getFormRules = computed((): { [k: string]: ValidationRule | ValidationRule[] } => {
     const accountFormRule = unref(getAccountFormRule);
     const passwordFormRule = unref(getPasswordFormRule);
-    const smsFormRule = unref(getSmsFormRule);
+    // const smsFormRule = unref(getSmsFormRule);
     const mobileFormRule = unref(getMobileFormRule);
 
     const mobileRule = {
-      sms: smsFormRule,
+      // sms: smsFormRule,
       mobile: mobileFormRule,
     };
     switch (unref(currentState)) {

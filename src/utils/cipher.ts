@@ -63,6 +63,9 @@ export class AesEncryption {
       return decryptText;
     }
     Object.keys(cipherVar).forEach((key) => {
+      if (key == 'message') {
+        return;
+      }
       const item = cipherVar[key];
       const decryptItem = decrypt(item, this.key, this.getOptions).toString(UTF8);
       cipherVar[key] = JSON.parse(decryptItem);

@@ -102,6 +102,11 @@ export default {
     email: 'Email',
     smsCode: 'SMS code',
     mobile: 'Mobile',
+
+    getSmsCode: 'Please get SMS code',
+    incorrectMobile: 'Incorrect Mobile',
+    smsCodeSendSuccess: 'SMS code sent',
+    incorrectSmsCode: 'Incorrect SMS code',
   },
   views: {
     dashboard: {

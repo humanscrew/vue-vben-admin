@@ -36,21 +36,25 @@ const transform: AxiosTransform = {
     if (isReturnNativeResponse) {
       return res;
     }
+
+    const { data, status } = res;
+
     // 不进行任何处理，直接返回
     // 用于页面代码可能需要直接获取code，data，message这些信息时开启
     if (!isTransformResponse) {
-      return res.data;
+      return data;
     }
     // 错误的时候返回
 
-    const { data } = res;
     if (!data) {
       // return '[HTTP] Request has no return value';
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const code = res.status;
     const { message } = data;
+    let { code = 200 } = data;
+
+    code = status in SuccessEnum ? code : status;
 
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && code in SuccessEnum;
@@ -72,18 +76,9 @@ const transform: AxiosTransform = {
         userStore.logout(true);
         break;
       default:
-        if (message) {
-          timeoutMsg = message;
-        }
     }
 
-    // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
-    // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
-    if (options.errorMessageMode === 'modal') {
-      createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg });
-    } else if (options.errorMessageMode === 'message') {
-      createMessage.error(timeoutMsg);
-    }
+    checkStatus(code, message, options.errorMessageMode);
 
     throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
   },
@@ -170,8 +165,7 @@ const transform: AxiosTransform = {
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
     const msg: string = response?.data?.message ?? '';
     const err: string = error?.toString?.() ?? '';
-    let errMessage = '';
-
+    let errMessage = msg;
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {
         errMessage = t('sys.api.apiTimeoutMessage');
@@ -192,7 +186,7 @@ const transform: AxiosTransform = {
       throw new Error(error as unknown as string);
     }
 
-    checkStatus(error?.response?.status, msg, errorMessageMode);
+    checkStatus(error?.response?.status, errMessage, errorMessageMode);
     return Promise.reject(error);
   },
 };
