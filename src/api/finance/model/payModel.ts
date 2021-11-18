@@ -1,7 +1,7 @@
-export interface transferTenPayBillParams {
+export interface tenPayBillParams {
   [k: string]: any;
 }
 
-export interface transferTenPayBillResult {
+export interface tenPayBillResult {
   [key: string]: any;
 }

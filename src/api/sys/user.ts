@@ -13,9 +13,9 @@ import { ErrorMessageMode } from '/#/axios';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 
 export enum Api {
-  RSA = '/utils/rsa',
+  RSA = '/trigger/RSA',
   Login = '/auth/login',
-  DefaultRSA = '/utils/defaultRSA',
+  DefaultRSA = '/trigger/defaultRSA',
   Register = '/auth/register',
   User = '/api/user',
   UserList = '/api/userList',

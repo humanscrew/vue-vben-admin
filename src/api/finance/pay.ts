@@ -1,18 +1,15 @@
 import { http } from '/@/utils/http/axios';
 import { ErrorMessageMode } from '/#/axios';
-import { transferTenPayBillParams, transferTenPayBillResult } from './model/payModel';
+import { tenPayBillParams, tenPayBillResult } from './model/payModel';
 
 enum Api {
-  TransferTenPayBill = '/api/transferTenPayBill',
+  TenPayBill = '/api/tenPayBill',
 }
 
-export const transferTenPayBillAPI = (
-  params: transferTenPayBillParams,
-  mode: ErrorMessageMode = 'message',
-) => {
-  return http.post<transferTenPayBillResult>(
+export const tenPayBillAPI = (params: tenPayBillResult, mode: ErrorMessageMode = 'message') => {
+  return http.post<tenPayBillParams>(
     {
-      url: Api.TransferTenPayBill,
+      url: Api.TenPayBill,
       params,
       timeout: 1000 * 60,
     },
