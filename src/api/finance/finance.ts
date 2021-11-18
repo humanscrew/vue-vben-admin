@@ -14,7 +14,7 @@ export const getBookkeepingTemplateAPI = (
     {
       url: Api.BookkeepingTemplate,
       params,
-      timeout: 1000 * 30,
+      timeout: 1000 * 5,
     },
     {
       errorMessageMode: mode,
