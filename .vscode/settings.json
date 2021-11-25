@@ -1,16 +1,10 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
   "volar.tsPlugin": true,
   "volar.tsPluginStatus": false,
-  //===========================================
-  //============= Editor ======================
-  //===========================================
+  "npm.packageManager": "pnpm",
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  //===========================================
-  //============= files =======================
-  //===========================================
   "files.eol": "\n",
   "search.exclude": {
     "**/node_modules": true,
@@ -123,15 +117,18 @@
     "INTLIFY",
     "jsencrypt",
     "Jspread",
+    "jspreadsheet",
     "Laiu",
     "lintstagedrc",
     "logicflow",
     "mockjs",
     "nprogress",
     "pinia",
+    "pnpm",
     "qrcode",
     "sider",
     "sortablejs",
+    "styl",
     "stylelint",
     "tailwindcss",
     "tibetourism",
@@ -144,6 +141,7 @@
     "vueuse",
     "westhide",
     "windi",
+    "windicss",
     "zxcvbn"
   ]
 }

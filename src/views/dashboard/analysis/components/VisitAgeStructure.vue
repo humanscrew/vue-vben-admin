@@ -24,6 +24,7 @@
   });
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
+
   watch(
     () => props.loading,
     () => {

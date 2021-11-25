@@ -38,9 +38,7 @@ export const executeClickhouseAPI = {
   ) => {
     const { startTime, endTime } = handleDateTime(start, end);
     const visits = columns.includes('visits') ? ` COUNT( id ) AS visits, ` : ``;
-    const revenue = columns.includes('revenue')
-      ? ` SUM( toDecimal128(ticket_price,2) ) AS revenue, `
-      : ``;
+    const revenue = columns.includes('revenue') ? ` SUM( ticket_price ) AS revenue, ` : ``;
 
     let date = '';
     let groupBy = '';
@@ -90,7 +88,7 @@ export const executeClickhouseAPI = {
       : ``;
     const statement = `
         SELECT 
-          SUM( toDecimal128(ticket_price,2) ) AS cashFlow 
+          SUM( ticket_price ) AS cashFlow 
         FROM westhide.ticket_laiu8 
         WHERE 
           product_type = '${productType}' 
