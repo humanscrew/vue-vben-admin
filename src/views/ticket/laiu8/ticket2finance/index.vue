@@ -1,5 +1,5 @@
 <template>
-  <JSpreadSheet @workbook="getworkbook" :apiConfig="apiConfig" :setting="setting" />
+  <JSpreadSheet @workbook="getWorkbook" :apiConfig="apiConfig" :setting="setting" />
 </template>
 
 <script lang="ts">
@@ -32,7 +32,7 @@
             title: '类型',
             name: 'type',
             type: 'text',
-            width: 150,
+            width: 130,
           },
           {
             title: '日期',
@@ -40,13 +40,13 @@
             type: 'calendar',
             options: { format: 'YYYY-MM-DD' },
             locale: 'zh-CN',
-            width: 150,
+            width: 130,
           },
           {
             title: '支付方式',
             name: 'paymentMethod',
             type: 'text',
-            width: 100,
+            width: 150,
           },
           {
             title: '客户类型',
@@ -67,7 +67,7 @@
             width: 100,
           },
           {
-            title: '实际金额',
+            title: '结算金额',
             name: 'ticketPrice',
             type: 'number',
             mask: '0.00',
@@ -95,7 +95,7 @@
     ],
   };
 
-  const getworkbook = (value) => {
+  const getWorkbook = (value) => {
     workbook.value = value;
   };
 </script>

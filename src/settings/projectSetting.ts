@@ -107,7 +107,7 @@ const setting: ProjectConfig = {
     // Fold trigger position
     trigger: TriggerEnum.HEADER,
     // Turn on accordion mode, only show a menu
-    accordion: true,
+    accordion: false,
     // Switch page to close menu
     closeMixSidebarOnChange: false,
     // Module opening method ‘click’ |'hover'

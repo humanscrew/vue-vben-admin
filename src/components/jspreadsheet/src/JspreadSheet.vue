@@ -106,6 +106,7 @@
       {
         type: 'select',
         tooltip: '页码',
+        width: 90,
         options: pageOptions.pageList,
         render: function (e) {
           return '<span>' + '第' + e + '页' + '</span>';
@@ -212,8 +213,8 @@
       sheetSetting.tableWidth = `${tableWidth}px`;
 
       let totalWidth = 0;
-      const propSheetCloumns = props.setting.worksheets[args[1]].columns;
-      propSheetCloumns.forEach((column) => {
+      const propSheetColumns = props.setting.worksheets[args[1]].columns;
+      propSheetColumns.forEach((column) => {
         const width = ~~column.width || 100;
         totalWidth += width;
         return width;
@@ -225,7 +226,7 @@
 
       const worksheet = workbook[args[1]];
       worksheet.setConfig(sheetSetting);
-      propSheetCloumns.forEach((column, index) => {
+      propSheetColumns.forEach((column, index) => {
         worksheet?.setWidth(index, (tableWidth - 50) * (column.width / totalWidth));
       });
     });

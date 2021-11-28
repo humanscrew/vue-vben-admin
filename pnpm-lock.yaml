@@ -64,7 +64,8 @@ specifiers:
   intro.js: ^4.3.0
   jest: ^27.3.1
   jsencrypt: ^3.2.1
-  jspreadsheet: ^8.0.55
+  jspreadsheet: ^8.0.58
+  jsuites: ^4.9.24
   less: ^4.1.2
   lint-staged: 12.1.2
   lodash-es: ^4.17.21
@@ -135,6 +136,7 @@ dependencies:
   intro.js: 4.3.0
   jsencrypt: registry.npmmirror.com/jsencrypt/3.2.1
   jspreadsheet: registry.npmmirror.com/jspreadsheet/8.0.58
+  jsuites: registry.npmmirror.com/jsuites/4.9.24
   lodash-es: 4.17.21
   mockjs: 1.1.0
   nprogress: 0.2.0
