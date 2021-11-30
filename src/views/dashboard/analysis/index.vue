@@ -25,6 +25,7 @@
 
   import { onMounted } from 'vue';
   import { executeClickhouseAPI } from '/@/api/database/clickhouse';
+  import { graphqlAPI } from '/@/api/graphql/graphql';
   import { growCardData, timeStore } from './data';
 
   const loading = ref(true);
@@ -33,7 +34,18 @@
 
   const executeAPI = executeClickhouseAPI;
 
+  const query = `{
+                  growCard {
+                    visits
+                    preSaleTicket
+                    sales
+                    netCashflow
+                  }
+                }`;
+
   onMounted(async () => {
+    const result = await graphqlAPI({ query });
+    console.log(result);
     const { toDay, toMonth, nextDay } = timeStore;
     const ticketSaleDay = await executeAPI.ticketSale('船票', toDay.start, toDay.end, [
       'visits',

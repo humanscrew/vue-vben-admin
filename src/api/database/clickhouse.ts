@@ -56,8 +56,8 @@ export const executeClickhouseAPI = {
         WHERE 
           product_type = '${productType}' 
           AND ticket_status IN ( '出票成功', '一检', '二检' ) 
-          AND formatDateTime( departure_datetime, '%Y-%m-%d %T' ) >= '${startTime}' 
-          AND formatDateTime( departure_datetime, '%Y-%m-%d %T' ) <= '${endTime}' 
+          AND departure_datetime >= '${startTime}' 
+          AND departure_datetime <= '${endTime}' 
           ${groupBy}
         `;
     return executeClickhouse({ statement });
@@ -65,9 +65,7 @@ export const executeClickhouseAPI = {
 
   advanceSale: (productType: databaseInfo['productType'], start: any, end: any) => {
     const { startTime, endTime } = handleDateTime(start, end);
-    const endCondition = end
-      ? ` AND formatDateTime( departure_datetime, '%Y-%m-%d %T' ) <= '${endTime} '`
-      : ``;
+    const endCondition = end ? ` AND departure_datetime <= '${endTime}' ` : ``;
     const statement = `
         SELECT 
           COUNT( id ) AS advanceSale 
@@ -75,7 +73,7 @@ export const executeClickhouseAPI = {
         WHERE 
           product_type = '${productType}' 
           AND ticket_status IN ( '出票成功', '一检', '二检' ) 
-          AND formatDateTime( departure_datetime, '%Y-%m-%d %T' ) >= '${startTime}' 
+          AND departure_datetime >= '${startTime}' 
           ${endCondition}
         `;
     return executeClickhouse({ statement });
@@ -83,9 +81,7 @@ export const executeClickhouseAPI = {
 
   cashFlow: (productType: databaseInfo['productType'], start: any, end: any) => {
     const { startTime, endTime } = handleDateTime(start, end);
-    const endCondition = end
-      ? ` AND formatDateTime( create_time, '%Y-%m-%d %T' ) <= '${endTime} '`
-      : ``;
+    const endCondition = end ? ` AND create_time <= '${endTime}' ` : ``;
     const statement = `
         SELECT 
           SUM( ticket_price ) AS cashFlow 
@@ -93,7 +89,7 @@ export const executeClickhouseAPI = {
         WHERE 
           product_type = '${productType}' 
           AND pay_id IS NOT NULL 
-          AND formatDateTime( create_time, '%Y-%m-%d %T' ) >= '${startTime}' 
+          AND create_time >= '${startTime}' 
           ${endCondition}
         `;
     return executeClickhouse({ statement });

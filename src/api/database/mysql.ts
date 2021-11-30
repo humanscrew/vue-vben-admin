@@ -57,8 +57,8 @@ export const executeMysqlAPI = {
         WHERE 
           product_type = "${productType}" 
           AND ticket_status IN ( "出票成功", "一检", "二检" ) 
-          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) >= "${startTime}" 
-          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime}" 
+          AND departure_datetime >= "${startTime}" 
+          AND departure_datetime <= "${endTime}" 
           ${groupBy}
         `;
     return executeMysql({ statement });
@@ -66,9 +66,7 @@ export const executeMysqlAPI = {
 
   advanceSale: (productType: databaseInfo['productType'], start: any, end: any) => {
     const { startTime, endTime } = handleDateTime(start, end);
-    const endCondition = end
-      ? ` AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) <= "${endTime} "`
-      : ``;
+    const endCondition = end ? ` AND departure_datetime <= "${endTime}" ` : ``;
     const statement = `
         SELECT 
           COUNT( id ) AS advanceSale 
@@ -76,7 +74,7 @@ export const executeMysqlAPI = {
         WHERE 
           product_type = "${productType}" 
           AND ticket_status IN ( "出票成功", "一检", "二检" ) 
-          AND DATE_FORMAT( departure_datetime, "%Y-%m-%d %T" ) >= "${startTime}" 
+          AND departure_datetime >= "${startTime}" 
           ${endCondition}
         `;
     return executeMysql({ statement });
@@ -84,9 +82,7 @@ export const executeMysqlAPI = {
 
   cashFlow: (productType: databaseInfo['productType'], start: any, end: any) => {
     const { startTime, endTime } = handleDateTime(start, end);
-    const endCondition = end
-      ? ` AND DATE_FORMAT( create_time, "%Y-%m-%d %T" ) <= "${endTime} "`
-      : ``;
+    const endCondition = end ? ` AND create_time <= "${endTime}" ` : ``;
     const statement = `
         SELECT 
           SUM( ticket_price ) AS cashFlow 
@@ -94,7 +90,7 @@ export const executeMysqlAPI = {
         WHERE 
           product_type = "${productType}" 
           AND ticket_status IN ( "出票成功", "一检", "二检" ) 
-          AND DATE_FORMAT( create_time, "%Y-%m-%d %T" ) >= "${startTime}" 
+          AND create_time >= "${startTime}" 
           ${endCondition}
         `;
     return executeMysql({ statement });
