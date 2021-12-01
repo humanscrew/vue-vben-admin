@@ -144,6 +144,12 @@
     "westhide",
     "windi",
     "windicss",
-    "zxcvbn"
+    "zxcvbn",
+    "lintstagedrc",
+    "brotli",
+    "tailwindcss",
+    "sider",
+    "pnpm",
+    "antd"
   ]
 }
