@@ -3,7 +3,7 @@ import { ErrorMessageMode } from '/#/axios';
 import { graphqlParams, graphqlResult } from './model/graphqlModel';
 
 export enum Api {
-  Graphql = '/graphql',
+  Graphql = '/graphql/',
 }
 
 export const graphqlAPI = (params: graphqlParams, mode: ErrorMessageMode = 'message') => {

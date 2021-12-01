@@ -32,28 +32,42 @@ export const AnalysisConfig = {
 };
 
 export const timeStore = {
-  // dateTimeFormatter : 'YYYY-MM-DD HH:mm:ss',
-  toDay: { start: dateUtil().startOf('day'), end: dateUtil().endOf('day') },
-  toMonth: { start: dateUtil().startOf('month'), end: dateUtil().endOf('month') },
+  toDay: {
+    start: formatToDateTime(dateUtil().startOf('day')),
+    end: formatToDateTime(dateUtil().endOf('day')),
+  },
+  toMonth: {
+    start: formatToDateTime(dateUtil().startOf('month')),
+    end: formatToDateTime(dateUtil().endOf('month')),
+  },
   nextDay: {
-    start: dateUtil(dateUtil().add(1, 'day')).startOf('day'),
-    end: dateUtil(dateUtil().add(1, 'day')).endOf('day'),
+    start: formatToDateTime(dateUtil(dateUtil().add(1, 'day')).startOf('day')),
+    end: formatToDateTime(dateUtil(dateUtil().add(1, 'day')).endOf('day')),
+  },
+  nextMonth: {
+    start: formatToDateTime(dateUtil(dateUtil().add(1, 'month')).startOf('day')),
+    end: formatToDateTime(dateUtil(dateUtil().add(1, 'month')).endOf('day')),
+  },
+  lastDay: {
+    start: formatToDateTime(dateUtil(dateUtil().add(-1, 'day')).startOf('day')),
+    end: formatToDateTime(dateUtil(dateUtil().add(-1, 'day')).endOf('day')),
   },
 };
 
 const todayDate = formatToDateTime(timeStore.toDay.end, 'M月D日');
 const nextDayDate = formatToDateTime(timeStore.nextDay.end, 'M月D日');
+const lastDayDate = formatToDateTime(timeStore.lastDay.end, 'M月D日');
 
 export const growCardData: GrowCardItem[] = [
   {
-    title: '船票接待量',
+    title: '接待量',
     icon: 'visitor-male|svg',
     value: 0,
     total: 0,
-    totalExtent: '当月累计接待量',
+    totalExtent: '当月接待量',
     color: 'green',
-    action: todayDate,
-    suffix: '人次',
+    action: todayDate + '/人次',
+    suffix: '',
     loading: true,
   },
   {
@@ -61,7 +75,7 @@ export const growCardData: GrowCardItem[] = [
     icon: 'line-chart|svg',
     value: 0,
     total: 0,
-    totalExtent: '当月累计收入',
+    totalExtent: '当月收入',
     color: 'green',
     action: todayDate,
     prefix: AnalysisConfig.growCard.currencySymbol,
@@ -83,9 +97,9 @@ export const growCardData: GrowCardItem[] = [
     icon: 'wallet|svg',
     value: 0,
     total: 0,
-    totalExtent: '当月累计净收款',
+    totalExtent: '当月净收款',
     color: 'green',
-    action: todayDate,
+    action: '昨日@' + lastDayDate,
     prefix: AnalysisConfig.growCard.currencySymbol,
     loading: true,
   },

@@ -22,9 +22,7 @@
   import VisitRadar from './components/VisitRadar.vue';
   import SalesProductPie from './components/SalesProductPie.vue';
   import SalesAnalysis from './components/SalesAnalysis.vue';
-
   import { onMounted } from 'vue';
-  import { executeClickhouseAPI } from '/@/api/database/clickhouse';
   import { graphqlAPI } from '/@/api/graphql/graphql';
   import { growCardData, timeStore } from './data';
 
@@ -32,48 +30,50 @@
 
   const growCardList = reactive(growCardData);
 
-  const executeAPI = executeClickhouseAPI;
-
-  const query = `{
-                  growCard {
-                    visits
-                    preSaleTicket
-                    sales
-                    netCashflow
-                  }
-                }`;
-
   onMounted(async () => {
-    const result = await graphqlAPI({ query });
-    console.log(result);
-    const { toDay, toMonth, nextDay } = timeStore;
-    const ticketSaleDay = await executeAPI.ticketSale('船票', toDay.start, toDay.end, [
-      'visits',
-      'revenue',
-    ]);
-    const ticketSaleMonth = await executeAPI.ticketSale('船票', toMonth.start, toMonth.end, [
-      'visits',
-      'revenue',
-    ]);
-    growCardList[0].value = ticketSaleDay.result[0].visits ?? 0;
-    growCardList[0].total = ticketSaleMonth.result[0].visits ?? 0;
-    growCardList[1].value = ticketSaleDay.result[0].revenue ?? 0;
-    growCardList[1].total = ticketSaleMonth.result[0].revenue ?? 0;
-    growCardList[0].loading = false;
-    growCardList[1].loading = false;
+    const { toDay, toMonth, nextDay, nextMonth, lastDay } = timeStore;
+    const query = `{
+      dashboard {
+        toDayVisits: visits(startTime: "${toDay.start}", endTime: "${toDay.end}")
+        toMonthVisits: visits(startTime: "${toMonth.start}", endTime: "${toMonth.end}")
+        toDaySales: sales(startTime: "${toDay.start}", endTime: "${toDay.end}")
+        toMonthSales: sales(startTime: "${toMonth.start}", endTime: "${toMonth.end}")
+        nextDayVisits: visits(startTime: "${nextDay.start}", endTime: "${nextDay.end}")
+        advanceVisits: visits(startTime: "${nextDay.start}", endTime: "${nextMonth.end}")
+        toDayNetCashflow: netCashflow(startTime: "${toDay.start}", endTime: "${toDay.end}")
+        toMonthNetCashflow: netCashflow(startTime: "${toMonth.start}", endTime: "${toMonth.end}")
+        }
+    }`;
+    const {
+      data: { dashboard },
+    } = await graphqlAPI({ query });
 
-    const advanceSaleDay = await executeAPI.advanceSale('船票', nextDay.start, nextDay.end);
-    const advanceSaleTotal = await executeAPI.advanceSale('船票', nextDay.start);
-    growCardList[2].value = advanceSaleDay.result[0].advanceSale ?? 0;
-    growCardList[2].total = advanceSaleTotal.result[0].advanceSale ?? 0;
-    growCardList[2].loading = false;
+    let valueKey = null;
+    let totalKey = null;
+    growCardList.forEach((item, index) => {
+      switch (item.title) {
+        case '接待量':
+          valueKey = 'toDayVisits';
+          totalKey = 'toMonthVisits';
+          break;
+        case '收入':
+          valueKey = 'toDaySales';
+          totalKey = 'toMonthSales';
+          break;
+        case '预售票':
+          valueKey = 'nextDayVisits';
+          totalKey = 'advanceVisits';
+          break;
+        case '净收款':
+          valueKey = 'toDayNetCashflow';
+          totalKey = 'toMonthNetCashflow';
+          break;
+      }
+      growCardList[index].value = Number(dashboard[valueKey]);
+      growCardList[index].total = Number(dashboard[totalKey]);
+      growCardList[index].loading = false;
+    });
 
-    const cashFlowDay = await executeAPI.cashFlow('船票', toDay.start, toDay.end);
-    const cashFlowMonth = await executeAPI.cashFlow('船票', toMonth.start, toMonth.end);
-    growCardList[3].value = cashFlowDay.result[0].cashFlow ?? 0;
-    growCardList[3].total = cashFlowMonth.result[0].cashFlow ?? 0;
-    growCardList[3].loading = false;
+    loading.value = false;
   });
-
-  loading.value = false;
 </script>
