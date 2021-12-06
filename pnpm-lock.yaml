@@ -67,8 +67,6 @@ specifiers:
   intro.js: ^4.3.0
   jest: ^27.4.0
   jsencrypt: ^3.2.1
-  jspreadsheet: ^8.0.58
-  jsuites: ^4.9.24
   less: ^4.1.2
   lint-staged: 12.1.2
   lodash-es: ^4.17.21
@@ -141,8 +139,6 @@ dependencies:
   echarts: 5.2.2
   intro.js: 4.3.0
   jsencrypt: registry.npmmirror.com/jsencrypt/3.2.1
-  jspreadsheet: registry.npmmirror.com/jspreadsheet/8.0.61
-  jsuites: registry.npmmirror.com/jsuites/4.9.24
   lodash-es: 4.17.21
   mockjs: 1.1.0
   nprogress: 0.2.0
@@ -12507,12 +12503,6 @@ packages:
     dev: true
     optional: true
 
-  registry.npmmirror.com/@jspreadsheet/formula/1.2.0:
-    resolution: {integrity: sha1-nY3U5cWgSmkoCKHYRxE7Vfoucf8=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@jspreadsheet/formula/download/@jspreadsheet/formula-1.2.0.tgz}
-    name: '@jspreadsheet/formula'
-    version: 1.2.0
-    dev: false
-
   registry.npmmirror.com/@vue/reactivity/3.2.23:
     resolution: {integrity: sha512-8RGVr/5Kpgb/EkCjgHXqttgA5IMc6n0lIXFY4TVbMkzdXrvaIhzBd7Te44oIDsTSYVKZLpfHd6/wEnuDqE8vFw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vue/reactivity/download/@vue/reactivity-3.2.23.tgz}
     name: '@vue/reactivity'
@@ -12920,21 +12910,6 @@ packages:
     resolution: {integrity: sha1-CXZpg8x2AIj/JrEv5+V0JSr5dyc=, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jsencrypt/download/jsencrypt-3.2.1.tgz}
     name: jsencrypt
     version: 3.2.1
-    dev: false
-
-  registry.npmmirror.com/jspreadsheet/8.0.61:
-    resolution: {integrity: sha512-nZ9w54wyv0kslU1H9SdZdF3KTgOb5vKXChUrdM2rjw5CymureEoIg4AMqCmGInGn00uQnty6A8KuSdJoBGyHdQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jspreadsheet/download/jspreadsheet-8.0.61.tgz}
-    name: jspreadsheet
-    version: 8.0.61
-    dependencies:
-      '@jspreadsheet/formula': registry.npmmirror.com/@jspreadsheet/formula/1.2.0
-      jsuites: registry.npmmirror.com/jsuites/4.9.24
-    dev: false
-
-  registry.npmmirror.com/jsuites/4.9.24:
-    resolution: {integrity: sha512-1BJgGFAsErKH4UPgTz+Xyk5iO0mv7XP8t2RxKbYpgPfrNQ0A8h1S3Yd7vWxfxqnHNfcBgfRiVzLr5d9kLlmEgQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/jsuites/download/jsuites-4.9.24.tgz}
-    name: jsuites
-    version: 4.9.24
     dev: false
 
   registry.npmmirror.com/keyv/3.0.0:

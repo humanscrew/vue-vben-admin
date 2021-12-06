@@ -23,7 +23,7 @@ export const getTicketLaiu8API = (
     {
       url: Api.TicketLaiu8,
       params,
-      timeout: 1000 * 30,
+      timeout: 1000 * 60,
     },
     {
       errorMessageMode: mode,
