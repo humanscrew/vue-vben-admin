@@ -23,7 +23,7 @@
       </template>
 
       <template #searchIcon>
-        <Icon icon="uil:search" class="mt-4" />
+        <Icon icon="uil:search" />
       </template>
       <template #searchDropdown="{ setSelectedKeys, confirm, clearFilters, column }">
         <div class="p-2 flex flex-wrap justify-left w-70">
@@ -61,7 +61,7 @@
         </div>
       </template>
 
-      <template #filterIcon> <Icon icon="mdi:filter-menu" class="mt-4" /> </template>
+      <template #filterIcon> <Icon icon="mdi:filter-menu" /> </template>
 
       <template #Lock="{ record }">
         <Icon
@@ -224,8 +224,8 @@
       }
       const dataIndex = column.dataIndex;
       const { result } = await tableSetting.api({
-        page: 1,
-        per_page: 50,
+        // page: 1,
+        // per_page: 50,
         withEntities: [dataIndex],
         distinct: true,
       });

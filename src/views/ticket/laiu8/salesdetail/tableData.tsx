@@ -109,8 +109,7 @@ const basicColumns: BasicColumn[] = [
     title: '原价',
     dataIndex: 'fullTicketPrice',
     width: 100,
-    filters: [],
-    slots: { filterIcon: 'filterIcon', customRender: 'Text' },
+    slots: { customRender: 'Text' },
   },
   {
     title: '票价折扣',
@@ -321,20 +320,6 @@ enum ColorEnum {
   '微信' = '#87d068',
   '支付宝' = '#2db7f5',
 }
-
-// export const unLockIcon = {
-//   UNLOCK: { icon: 'mdi:sort-clock-descending-outline', color: 'grey' },
-// };
-
-// export const lockIcon = {
-//   一检: { icon: 'teenyicons:tick-circle-solid', color: 'green' },
-//   二检: { icon: 'teenyicons:tick-circle-solid', color: 'green' },
-//   出票成功: { icon: 'teenyicons:tick-circle-solid', color: 'green' },
-//   已取消: { icon: 'clarity:cancel-line', color: 'grey' },
-//   已退款: { icon: 'ic:sharp-cancel', color: '#f07c76' },
-//   改签废票: { icon: 'tabler:zodiac-cancer', color: 'orange' },
-//   OTHER: { icon: 'clarity:unknown-status-line', color: 'orange' },
-// };
 
 export const tableData = {
   tableSetting,
