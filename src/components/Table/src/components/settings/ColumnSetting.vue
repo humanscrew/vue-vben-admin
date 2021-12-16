@@ -6,8 +6,8 @@
     <Popover
       placement="bottomLeft"
       trigger="click"
-      @visibleChange="handleVisibleChange"
-      :overlayClassName="`${prefixCls}__cloumn-list`"
+      @visible-change="handleVisibleChange"
+      :overlayClassName="`${prefixCls}__column-list`"
       :getPopupContainer="getPopupContainer"
     >
       <template #title>
@@ -124,6 +124,7 @@
 
   interface State {
     checkAll: boolean;
+    isInit: boolean;
     checkedList: string[];
     defaultCheckList: string[];
   }
@@ -154,7 +155,6 @@
       const table = useTableContext();
 
       const defaultRowSelection = omit(table.getRowSelection(), 'selectedRowKeys');
-      let inited = false;
 
       const cachePlainOptions = ref<Options[]>([]);
       const plainOptions = ref<Options[]>([]);
@@ -163,8 +163,12 @@
 
       const columnListRef = ref<ComponentRef>(null);
 
+      let sortable = null;
+      let defaultSortable = null;
+
       const state = reactive<State>({
         checkAll: true,
+        isInit: false,
         checkedList: [],
         defaultCheckList: [],
       });
@@ -180,7 +184,7 @@
 
       watchEffect(() => {
         const columns = table.getColumns();
-        if (columns.length) {
+        if (columns.length && !state.isInit) {
           init();
         }
       });
@@ -273,12 +277,13 @@
         plainOptions.value = unref(cachePlainOptions);
         plainSortOptions.value = unref(cachePlainOptions);
         setColumns(table.getCacheColumns());
+        sortable.sort(defaultSortable);
       }
 
       // Open the pop-up window for drag and drop initialization
       function handleVisibleChange() {
-        if (inited) return;
-        nextTick(() => {
+        if (state.isInit) return;
+        nextTick(async () => {
           const columnListEl = unref(columnListRef);
           if (!columnListEl) return;
           const el = columnListEl.$el as any;
@@ -306,8 +311,9 @@
               setColumns(columns);
             },
           });
-          initSortable();
-          inited = true;
+          sortable = await initSortable();
+          defaultSortable = sortable.toArray();
+          state.isInit = true;
         });
       }
 
@@ -436,7 +442,7 @@
       transform: rotate(180deg);
     }
 
-    &__cloumn-list {
+    &__column-list {
       svg {
         width: 1em !important;
         height: 1em !important;
