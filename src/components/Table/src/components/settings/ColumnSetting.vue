@@ -124,7 +124,7 @@
 
   interface State {
     checkAll: boolean;
-    isInit: boolean;
+    isInit?: boolean;
     checkedList: string[];
     defaultCheckList: string[];
   }
@@ -157,7 +157,7 @@
       const defaultRowSelection = omit(table.getRowSelection(), 'selectedRowKeys');
 
       const cachePlainOptions = ref<Options[]>([]);
-      const plainOptions = ref<Options[]>([]);
+      const plainOptions = ref<Options[] | any>([]);
 
       const plainSortOptions = ref<Options[]>([]);
 
@@ -345,7 +345,7 @@
         if (isFixed && !item.width) {
           item.width = 100;
         }
-        table.setCacheColumnsByField?.(item.dataIndex, { fixed: isFixed });
+        table.setCacheColumnsByField?.(item.dataIndex as string, { fixed: isFixed });
         setColumns(columns);
       }
 

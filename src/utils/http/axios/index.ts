@@ -204,7 +204,7 @@ const httpSetting = {
   // 如果是form-data格式
   // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
   // 数据处理方式
-  transform,
+  transform: cloneDeep(transform),
   // 配置项，下面的选项都可以在独立的接口请求中覆盖
   requestOptions: {
     // 默认将prefix 添加到url
@@ -234,20 +234,14 @@ const httpSetting = {
 
 function createAxios(opt?: Partial<CreateAxiosOptions>) {
   const setting = cloneDeep(httpSetting);
-  setting.requestOptions.apiUrl = '/basic-api';
-  setting.requestOptions.urlPrefix = '';
   return new VAxios(deepMerge(setting, opt || {}));
 }
 
-export const defHttp = createAxios();
+export const http = createAxios();
 
-export const http = ((opt?: Partial<CreateAxiosOptions>) => {
-  return new VAxios(deepMerge(httpSetting, opt || {}));
-})();
-// other api url
-// export const otherHttp = createAxios({
-//   requestOptions: {
-//     apiUrl: 'xxx',
-//     urlPrefix: 'xxx',
-//   },
-// });
+export const defHttp = createAxios({
+  requestOptions: {
+    apiUrl: '/basic-api',
+    urlPrefix: '',
+  },
+});
