@@ -102,6 +102,7 @@
   "i18n-ally.enabledFrameworks": ["vue", "react"],
   "cSpell.words": [
     "Aliyun",
+    "antd",
     "antv",
     "brotli",
     "browserslist",
@@ -113,6 +114,7 @@
     "echarts",
     "esnext",
     "esno",
+    "iconfont",
     "iconify",
     "INTLIFY",
     "jsencrypt",
@@ -122,6 +124,7 @@
     "Laiu",
     "lintstagedrc",
     "logicflow",
+    "luckysheet",
     "mockjs",
     "nprogress",
     "pinia",
@@ -144,12 +147,6 @@
     "westhide",
     "windi",
     "windicss",
-    "zxcvbn",
-    "lintstagedrc",
-    "brotli",
-    "tailwindcss",
-    "sider",
-    "pnpm",
-    "antd"
+    "zxcvbn"
   ]
 }

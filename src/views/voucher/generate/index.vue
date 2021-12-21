@@ -1,5 +1,5 @@
 <template>
-  <CustomTable :tableData="tableData" />
+  <LuckySheet v-loading="loading" />
 </template>
 
 <script lang="ts">
@@ -8,6 +8,12 @@
   };
 </script>
 <script lang="ts" setup>
-  import CustomTable from '/@/views/common/CustomTable.vue';
-  import { tableData } from './tableData.tsx';
+  import { ref, onMounted } from 'vue';
+  import { LuckySheet } from '/@/components/LuckySheet';
+
+  const loading = ref(true);
+
+  onMounted(() => {
+    loading.value = false;
+  });
 </script>
