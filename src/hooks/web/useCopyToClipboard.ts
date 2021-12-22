@@ -1,6 +1,8 @@
 import { ref, watch } from 'vue';
 
-import { isDef } from '/@/utils/is';
+import { isDef, isString } from '/@/utils/is';
+
+import { useMessage } from '/@/hooks/web/useMessage';
 interface Options {
   target?: HTMLElement;
 }
@@ -67,3 +69,18 @@ export function copyTextToClipboard(input: string, { target = document.body }: O
   }
   return isSuccess;
 }
+
+export const handleCopy = (str: string) => {
+  const { createMessage } = useMessage();
+  const { clipboardRef, isSuccessRef } = useCopyToClipboard();
+  if (!isString(str)) {
+    createMessage.warning('复制无效');
+    return;
+  }
+  clipboardRef.value = str;
+  if (isSuccessRef.value) {
+    createMessage.success('已复制');
+    return;
+  }
+  createMessage.error('复制失败');
+};

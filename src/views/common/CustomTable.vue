@@ -25,7 +25,7 @@
       <template #searchIcon>
         <Icon icon="uil:search" />
       </template>
-      <template #searchDropdown="{ setSelectedKeys, confirm, clearFilters, column }">
+      <template #customFilterDropdown="{ setSelectedKeys, confirm, clearFilters, column }">
         <div class="p-2 flex flex-wrap justify-left w-70">
           <a-button
             type="primary"
@@ -41,7 +41,7 @@
             class="w-70"
             mode="multiple"
             labelInValue
-            :value="searchValue"
+            v-model:value="searchValue"
             :token-separators="[',']"
             :placeholder="`${column.dataIndex}`"
             :filter-option="false"
@@ -138,7 +138,7 @@
     api: tableSetting.api,
   });
 
-  const canResize = ref(false);
+  const canResize = ref(true);
 
   function toggleCanResize() {
     canResize.value = !canResize.value;
@@ -212,6 +212,7 @@
 
   const handleReset = (clearFilters) => {
     clearFilters();
+    console.log(searchValue.value);
     selectOptions.value = [];
     searchValue.value = [];
   };
@@ -219,7 +220,7 @@
   onMounted(() => {
     tableColumns.value.forEach(async (column, index) => {
       let filters = column.filters;
-      if (column.slots?.filterIcon !== 'filterIcon' || !isEmpty(filters)) {
+      if (!isEmpty(filters)) {
         return;
       }
       const dataIndex = column.dataIndex;
