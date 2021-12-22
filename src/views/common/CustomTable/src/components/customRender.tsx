@@ -7,7 +7,7 @@ const Text = ({ text }) => (
   <>
     {text ? (
       <Tooltip title={text} placement="top" mouseEnterDelay={0.5}>
-        <div onClick={() => handleCopy(text)}>{text}</div>
+        <div onDblclick={() => handleCopy(text)}>{text}</div>
       </Tooltip>
     ) : (
       ''
@@ -25,7 +25,7 @@ const useTag = (ColorEnum) => {
     <>
       {text ? (
         <Tooltip title={text} placement="top" mouseEnterDelay={0.5}>
-          <Tag onClick={() => handleCopy(text)} color={tagColor(text, ColorEnum)}>
+          <Tag onDblclick={() => handleCopy(text)} color={tagColor(text, ColorEnum)}>
             {text}
           </Tag>
         </Tooltip>
