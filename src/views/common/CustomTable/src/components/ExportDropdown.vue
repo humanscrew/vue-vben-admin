@@ -13,12 +13,14 @@
         </MenuItem>
       </Menu>
     </template>
+    <template #icon v-if="dropdownIcon"><Icon :icon="dropdownIcon" /></template>
   </DropdownButton>
 </template>
 
 <script lang="ts" setup>
   import { ref, reactive } from 'vue';
   import { DropdownButton, Menu } from 'ant-design-vue';
+  import Icon from '/@/components/Icon';
   import { getPopupContainer } from '/@/utils';
   import { jsonToSheetXlsx } from '/@/components/Excel';
   import { useTableContext } from '/@/components/Table/src/hooks/useTableContext';
@@ -32,27 +34,38 @@
       label: 'xlsx',
       value: 'xlsx',
       key: 'xlsx',
+      icon: 'vscode-icons:file-type-excel',
     },
     {
       label: 'html',
       value: 'html',
       key: 'html',
+      // icon: 'vscode-icons:file-type-htmlhint',
+      icon: 'dashicons:html',
     },
     {
       label: 'csv',
       value: 'csv',
       key: 'csv',
+      icon: 'eos-icons:csv-file',
     },
     {
       label: 'txt',
       value: 'txt',
       key: 'txt',
+      icon: 'grommet-icons:document-txt',
     },
   ]);
 
   const selectedKeys = ref([dropdownOptions[0].key]);
+  const dropdownIcon = ref(dropdownOptions[0].icon ?? false);
   const handleMenuClick = ({ key }) => {
     selectedKeys.value = [key];
+    dropdownOptions.forEach((item, index) => {
+      if (item.key == key) {
+        dropdownIcon.value = dropdownOptions[index].icon ?? false;
+      }
+    });
   };
 
   const table = useTableContext();
