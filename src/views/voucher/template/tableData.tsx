@@ -54,7 +54,7 @@ const basicColumns: BasicColumn[] = [
   },
   {
     title: '借方科目代码',
-    dataIndex: 'debitFinanceAccount.code',
+    dataIndex: ['debitFinanceAccount', 'code'],
     width: 150,
     filterIcon: FilterIcon.SearchIcon,
     filterDropdown: SearchDropdown,
@@ -62,7 +62,7 @@ const basicColumns: BasicColumn[] = [
   },
   {
     title: '借方科目名称',
-    dataIndex: 'debitFinanceAccount.name',
+    dataIndex: ['debitFinanceAccount', 'name'],
     width: 300,
     filterIcon: FilterIcon.SearchIcon,
     filterDropdown: SearchDropdown,
@@ -70,7 +70,7 @@ const basicColumns: BasicColumn[] = [
   },
   {
     title: '借方辅助帐类型',
-    dataIndex: 'debitFinanceAccount.auxiliaryGroup.name',
+    dataIndex: ['debitFinanceAccount', 'auxiliaryGroup', 'name'],
     width: 250,
     filterIcon: FilterIcon.SearchIcon,
     filterDropdown: SearchDropdown,
@@ -84,7 +84,7 @@ const basicColumns: BasicColumn[] = [
   },
   {
     title: '贷方科目代码',
-    dataIndex: 'creditFinanceAccount.code',
+    dataIndex: ['creditFinanceAccount', 'code'],
     width: 150,
     filterIcon: FilterIcon.SearchIcon,
     filterDropdown: SearchDropdown,
@@ -92,7 +92,7 @@ const basicColumns: BasicColumn[] = [
   },
   {
     title: '贷方科目名称',
-    dataIndex: 'creditFinanceAccount.name',
+    dataIndex: ['creditFinanceAccount', 'name'],
     width: 300,
     filterIcon: FilterIcon.SearchIcon,
     filterDropdown: SearchDropdown,
@@ -100,7 +100,7 @@ const basicColumns: BasicColumn[] = [
   },
   {
     title: '贷方辅助帐类型',
-    dataIndex: 'creditFinanceAccount.auxiliaryGroup.name',
+    dataIndex: ['creditFinanceAccount', 'auxiliaryGroup', 'name'],
     width: 250,
     filterIcon: FilterIcon.SearchIcon,
     filterDropdown: SearchDropdown,

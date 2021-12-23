@@ -13,6 +13,7 @@
       @register="register"
     >
       <template #toolbar>
+        <ExportDropdown />
         <Tooltip
           :title="!canResize ? '自适应高度' : '取消自适应'"
           placement="bottom"
@@ -43,6 +44,7 @@
   import { Tooltip } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
   import { isEmpty } from '/@/utils/is';
+  import ExportDropdown from './components/ExportDropdown.vue';
 
   const props = defineProps({
     tableData: Object,
