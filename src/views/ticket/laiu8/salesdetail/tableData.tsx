@@ -15,7 +15,7 @@ enum ColorEnum {
 
 const tableSetting = {
   title: '销售明细',
-  titleHelpMessage: '点击单元格内容即可复制',
+  titleHelpMessage: '双击单元格内容即可复制',
   hideStatus: '已取消',
   api: getTicketLaiu8API,
 };
