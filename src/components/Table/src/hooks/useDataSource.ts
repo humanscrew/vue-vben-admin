@@ -261,8 +261,11 @@ export function useDataSource(
       );
       let pageParams: Recordable = {};
 
-      const { current = 1, pageSize = PAGE_SIZE } = unref(getPaginationInfo) as PaginationProps;
-
+      const {
+        current = 1,
+        pageSize = PAGE_SIZE,
+        pageSizeOptions,
+      } = unref(getPaginationInfo) as PaginationProps;
       if ((isBoolean(pagination) && !pagination) || isBoolean(getPaginationInfo)) {
         pageParams = {};
       } else {
@@ -310,8 +313,17 @@ export function useDataSource(
         resultItems = (await afterFetch(resultItems)) || resultItems;
       }
       dataSourceRef.value = resultItems;
+      if (
+        pageSizeOptions &&
+        !pageSizeOptions.some((item) => {
+          return Number(item) > resultTotal;
+        })
+      ) {
+        pageSizeOptions.push(resultTotal.toString());
+      }
       setPagination({
         total: resultTotal || 0,
+        pageSizeOptions,
       });
       if (opt && opt.page) {
         setPagination({

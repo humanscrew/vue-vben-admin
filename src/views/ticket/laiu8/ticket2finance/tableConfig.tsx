@@ -78,7 +78,9 @@ const basicColumns: BasicColumn[] = [
   },
 ];
 
-export const tableData = {
-  tableSetting,
-  basicColumns,
-};
+export const tableConfig = [
+  {
+    tableSetting,
+    basicColumns,
+  },
+];

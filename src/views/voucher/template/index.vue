@@ -1,5 +1,5 @@
 <template>
-  <CustomTable :tableData="tableData" />
+  <CustomTable :tableConfig="tableConfig" />
 </template>
 
 <script lang="ts">
@@ -8,6 +8,6 @@
   };
 </script>
 <script lang="ts" setup>
-  import { CustomTable } from '/@/views/common/CustomTable/index';
-  import { tableData } from './tableData.tsx';
+  import { CustomTable } from '/@/views/common/CustomTable';
+  import { tableConfig } from './tableConfig.tsx';
 </script>

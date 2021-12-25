@@ -12,6 +12,10 @@
       @resize-column="handleResizeColumn"
       @register="register"
     >
+      <template #tableTitle v-if="isMultiTable">
+        <TableTitle :tableConfig="tableConfig" :tableIndex="tableIndex" />
+      </template>
+
       <template #toolbar>
         <ExportDropdown />
         <Tooltip
@@ -43,16 +47,22 @@
   import { BasicTable, useTable } from '/@/components/Table';
   import { Tooltip } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
-  import { isEmpty } from '/@/utils/is';
+  import { isEmpty, isArray } from '/@/utils/is';
   import ExportDropdown from './components/ExportDropdown.vue';
+  import TableTitle from './components/TableTitle.vue';
 
   const props = defineProps({
-    tableData: Object,
+    tableConfig: Object,
   });
 
-  const { tableSetting, basicColumns, innerColumns = [] } = unref(props.tableData);
+  const { tableConfig } = unref(props);
 
-  let tableColumns = ref(basicColumns);
+  const isMultiTable = isArray(tableConfig);
+  const tableIndex = ref(0);
+  const config = isMultiTable ? tableConfig[tableIndex.value] : tableConfig;
+  const { tableSetting, basicColumns, innerColumns = [] } = config;
+
+  const tableColumns = ref(basicColumns);
 
   const [register] = useTable({
     api: tableSetting.api,

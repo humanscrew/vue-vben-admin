@@ -69,9 +69,10 @@
   };
 
   const table = useTableContext();
+
   const handleButtonClick = () => {
     const bookType = selectedKeys.value[0];
-    const dateTime = '@' + formatToDateTime(new Date().getTime());
+    const dateTime = '_' + formatToDateTime(new Date().getTime());
     const filename = table.getBindValues.value.title().props.title + dateTime + '.' + bookType;
 
     const columns = table.getColumns();

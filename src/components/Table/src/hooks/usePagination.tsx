@@ -5,6 +5,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue';
 import { isBoolean } from '/@/utils/is';
 import { PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../const';
 import { useI18n } from '/@/hooks/web/useI18n';
+import { cloneDeep } from 'lodash-es';
 
 interface ItemRender {
   page: number;
@@ -53,7 +54,7 @@ export function usePagination(refProps: ComputedRef<BasicTableProps>) {
       defaultPageSize: PAGE_SIZE,
       showTotal: (total) => t('component.table.total', { total }),
       showSizeChanger: true,
-      pageSizeOptions: PAGE_SIZE_OPTIONS,
+      pageSizeOptions: cloneDeep(PAGE_SIZE_OPTIONS),
       itemRender: itemRender,
       showQuickJumper: true,
       ...(isBoolean(pagination) ? {} : pagination),
