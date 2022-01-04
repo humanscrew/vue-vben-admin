@@ -195,6 +195,7 @@ export default {
     editCellTable: 'Editable cell',
     editRowTable: 'Editable row',
     authColumn: 'Auth column',
+    resizeParentHeightTable: 'resizeParentHeightTable',
   },
   ticket: {
     moduleName: 'Ticket management',
