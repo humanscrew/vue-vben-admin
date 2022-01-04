@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue';
-
+import { CopyTwoTone } from '@ant-design/icons-vue';
 import { isDef, isString } from '/@/utils/is';
 
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -79,7 +79,12 @@ export const handleCopy = (str: string) => {
   }
   clipboardRef.value = str;
   if (isSuccessRef.value) {
-    createMessage.success('已复制');
+    createMessage.success(
+      <>
+        {str}
+        <CopyTwoTone class="ml-1" />
+      </>,
+    );
     return;
   }
   createMessage.error('复制失败');

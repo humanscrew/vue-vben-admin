@@ -13,7 +13,7 @@
       @register="register"
     >
       <template #tableTitle v-if="isMultiTable">
-        <TableTitle :tableConfig="tableConfig" :tableIndex="tableIndex" />
+        <TableSelector :tableConfig="tableConfig" :tableIndex="tableIndex" />
       </template>
 
       <template #toolbar>
@@ -49,7 +49,7 @@
   import Icon from '/@/components/Icon';
   import { isEmpty, isArray } from '/@/utils/is';
   import ExportDropdown from './components/ExportDropdown.vue';
-  import TableTitle from './components/TableTitle.vue';
+  import TableSelector from './components/TableSelector.vue';
 
   const props = defineProps({
     tableConfig: Object,

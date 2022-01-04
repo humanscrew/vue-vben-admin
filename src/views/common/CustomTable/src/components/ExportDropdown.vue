@@ -72,7 +72,7 @@
 
   const handleButtonClick = () => {
     const bookType = selectedKeys.value[0];
-    const dateTime = '_' + formatToDateTime(new Date().getTime());
+    const dateTime = formatToDateTime(new Date().getTime(), 'YYYYMMDDHHmmss');
     const filename = table.getBindValues.value.title().props.title + dateTime + '.' + bookType;
 
     const columns = table.getColumns();
