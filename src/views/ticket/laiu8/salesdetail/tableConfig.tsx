@@ -22,7 +22,7 @@ const tableSetting = {
 
 const SearchDropdown = FilterDropdown.useSearchDropdown(getTicketLaiu8API);
 
-const basicColumns: BasicColumn[] = [
+const columns: BasicColumn[] = [
   {
     title: '锁定',
     dataIndex: 'isLock',
@@ -351,8 +351,7 @@ const innerColumns: BasicColumn[] = [
 ];
 
 export const tableConfig = {
-  tableSetting,
-  basicColumns,
+  ...tableSetting,
+  columns,
   innerColumns,
-  ColorEnum,
 };

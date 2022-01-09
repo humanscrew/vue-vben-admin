@@ -1,38 +1,39 @@
 <template>
   <Dropdown placement="bottomCenter" :getPopupContainer="getPopupContainer" size="small">
     <a-button type="dashed">
-      <div class="font-bold inline mr-2">{{ tableConfig[selectedKeys[0]].tableSetting.title }}</div>
+      <div class="font-bold inline mr-2">{{ tableConfig[tableIndex].title }}</div>
       <DownOutlined />
     </a-button>
 
     <template #overlay>
       <Menu @click="handleMenuClick" selectable v-model:selectedKeys="selectedKeys">
-        <MenuItem v-for="(item, index) in tableConfig" :key="index">
-          <span>{{ item.tableSetting.title }}</span>
-        </MenuItem>
+        <Menu.Item v-for="(item, index) in tableConfig" :key="index">
+          <span>{{ item.title }}</span>
+        </Menu.Item>
       </Menu>
     </template>
   </Dropdown>
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref } from 'vue';
+  import { ref, toRefs } from 'vue';
   import { getPopupContainer } from '/@/utils';
   import { Dropdown, Menu } from 'ant-design-vue';
   import { DownOutlined } from '@ant-design/icons-vue';
-
-  const MenuItem = Menu.Item;
 
   const props = defineProps({
     tableConfig: Array,
     tableIndex: Number,
   });
 
-  const { tableConfig, tableIndex } = unref(props);
+  const emit = defineEmits(['change']);
 
-  const selectedKeys = ref([tableIndex]);
+  const { tableConfig, tableIndex } = toRefs(props);
+
+  const selectedKeys = ref([tableIndex.value]);
 
   const handleMenuClick = ({ key }) => {
     selectedKeys.value = [key];
+    emit('change', key);
   };
 </script>

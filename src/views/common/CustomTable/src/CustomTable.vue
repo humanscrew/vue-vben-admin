@@ -4,16 +4,16 @@
       bordered
       showTableSetting
       expandRowByClick
-      :indentSize="10"
-      :columns="tableColumns"
-      :title="tableSetting.title"
-      :titleHelpMessage="tableSetting.titleHelpMessage"
       :canResize="canResize"
       @resize-column="handleResizeColumn"
       @register="register"
     >
       <template #tableTitle v-if="isMultiTable">
-        <TableSelector :tableConfig="tableConfig" :tableIndex="tableIndex" />
+        <TableSelector
+          :tableConfig="tableConfig"
+          :tableIndex="tableIndex"
+          @change="handleTableSelect"
+        />
       </template>
 
       <template #toolbar>
@@ -28,11 +28,11 @@
         </Tooltip>
       </template>
 
-      <template #expandedRowRender="{ record }" v-if="innerColumns.length">
+      <template #expandedRowRender="{ record }" v-if="config.innerColumns?.length">
         <BasicTable
-          v-if="record.ticketStatus != tableSetting.hideStatus"
+          v-if="record.ticketStatus != config.hideStatus"
           :dataSource="[record]"
-          :columns="innerColumns"
+          :columns="config.innerColumns"
           :pagination="false"
           :canResize="false"
           :inset="false"
@@ -56,17 +56,18 @@
   });
 
   const { tableConfig } = unref(props);
-
   const isMultiTable = isArray(tableConfig);
   const tableIndex = ref(0);
-  const config = isMultiTable ? tableConfig[tableIndex.value] : tableConfig;
-  const { tableSetting, basicColumns, innerColumns = [] } = config;
 
-  const tableColumns = ref(basicColumns);
-
-  const [register] = useTable({
-    api: tableSetting.api,
-  });
+  const getConfig = () => {
+    const config = isMultiTable ? tableConfig[tableIndex.value] : tableConfig;
+    return {
+      indentSize: 10,
+      ...config,
+    };
+  };
+  const config = ref(getConfig());
+  const [register, { setProps, reload }] = useTable(config.value);
 
   const canResize = ref(true);
 
@@ -78,14 +79,16 @@
     col.width = w;
   };
 
-  onMounted(() => {
-    tableColumns.value.forEach(async (column, index) => {
+  const handleColumnFilter = () => {
+    const columns = config.value.columns;
+    const api = config.value.api;
+    columns.forEach(async (column, index) => {
       let filters = column.filters;
       if (!isEmpty(filters)) {
         return;
       }
       const dataIndex = column.dataIndex;
-      const { result } = await tableSetting.api({
+      const { result } = await api({
         // page: 1,
         // per_page: 50,
         withEntities: [dataIndex],
@@ -94,7 +97,22 @@
       result.forEach((item) => {
         item[dataIndex] && filters.push({ text: item[dataIndex], value: item[dataIndex] });
       });
-      tableColumns.value[index].filters = filters;
+      columns[index].filters = filters;
     });
+  };
+
+  const handleTableSelect = (key) => {
+    if (key == tableIndex.value) {
+      return;
+    }
+    tableIndex.value = key;
+    config.value = getConfig();
+    setProps(config.value);
+    reload();
+    handleColumnFilter();
+  };
+
+  onMounted(() => {
+    handleColumnFilter();
   });
 </script>

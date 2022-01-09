@@ -10,7 +10,7 @@ const tableSetting = {
 
 const SearchDropdown = FilterDropdown.useSearchDropdown(getBookkeepingTemplateAPI);
 
-const basicColumns: BasicColumn[] = [
+const columns: BasicColumn[] = [
   {
     title: '模板编码',
     dataIndex: 'code',
@@ -342,6 +342,6 @@ const basicColumns: BasicColumn[] = [
 ];
 
 export const tableConfig = {
-  tableSetting,
-  basicColumns,
+  ...tableSetting,
+  columns,
 };

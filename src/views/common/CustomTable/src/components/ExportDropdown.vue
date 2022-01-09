@@ -82,8 +82,8 @@
     const header = {};
 
     for (let i = 0; i < columns.length; i++) {
-      let dataIndex = columns[i].dataIndex;
-      let title = columns[i].title;
+      const dataIndex = columns[i].dataIndex;
+      const title = columns[i].title;
       if (isNullOrUnDef(dataIndex)) {
         continue;
       }
@@ -91,13 +91,14 @@
       let headerKey = undefined;
       records.forEach((item, index) => {
         if (!isArray(dataIndex)) {
-          dataIndex = [dataIndex];
+          headerKey = dataIndex;
+          item = item[headerKey];
+        } else {
+          headerKey = dataIndex.join('.');
+          dataIndex.forEach((key) => {
+            item = item[key];
+          });
         }
-
-        headerKey = dataIndex.join('.');
-        dataIndex.forEach((key) => {
-          item = item[key];
-        });
 
         data[index][headerKey] = item;
       });

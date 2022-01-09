@@ -312,17 +312,14 @@ export function useDataSource(
         resultItems = (await afterFetch(resultItems)) || resultItems;
       }
       dataSourceRef.value = resultItems;
-      if (
-        pageSizeOptions &&
-        !pageSizeOptions.some((item) => {
-          return Number(item) > resultTotal;
-        })
-      ) {
-        pageSizeOptions.push(resultTotal.toString());
-      }
       setPagination({
         total: resultTotal || 0,
-        pageSizeOptions,
+        pageSizeOptions: pageSizeOptions && [
+          ...(pageSizeOptions.filter((item) => {
+            return Number(item) < resultTotal;
+          }) as string[]),
+          resultTotal.toString(),
+        ],
       });
       if (opt && opt.page) {
         setPagination({

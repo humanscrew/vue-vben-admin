@@ -2,15 +2,9 @@ import { BasicColumn } from '/@/components/Table/src/types/table';
 import { getLaiu8ClientAPI } from '/@/api/ticket/ticket';
 import { FilterIcon, CustomRender, FilterDropdown } from '/@/views/common/CustomTable/index';
 
-const tableSetting = {
-  title: '签约客户',
-  titleHelpMessage: '来游吧',
-  api: getLaiu8ClientAPI,
-};
-
 const SearchDropdown = FilterDropdown.useSearchDropdown(getLaiu8ClientAPI);
 
-const basicColumns: BasicColumn[] = [
+const columns: BasicColumn[] = [
   {
     title: '来游吧ID',
     dataIndex: 'clientId',
@@ -111,6 +105,8 @@ const basicColumns: BasicColumn[] = [
 ];
 
 export const tableConfig = {
-  tableSetting,
-  basicColumns,
+  title: '签约客户',
+  titleHelpMessage: '来游吧',
+  api: getLaiu8ClientAPI,
+  columns,
 };

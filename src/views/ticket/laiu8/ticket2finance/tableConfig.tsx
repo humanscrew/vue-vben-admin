@@ -1,16 +1,11 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
 import { getTicket2FinanceAPI } from '/@/api/ticket/ticket';
 import { FilterIcon, CustomRender, FilterDropdown } from '/@/views/common/CustomTable/index';
-
-const tableSetting = {
-  title: '业财数据',
-  titleHelpMessage: '制证数据提取',
-  api: getTicket2FinanceAPI,
-};
+import { tableConfig as clientTableConfig } from '/@/views/ticket/laiu8/client/tableConfig';
 
 const SearchDropdown = FilterDropdown.useSearchDropdown(getTicket2FinanceAPI);
 
-const basicColumns: BasicColumn[] = [
+const columns: BasicColumn[] = [
   {
     title: '类型',
     dataIndex: 'type',
@@ -78,9 +73,11 @@ const basicColumns: BasicColumn[] = [
   },
 ];
 
-export const tableConfig = [
-  {
-    tableSetting,
-    basicColumns,
-  },
-];
+const config = {
+  title: '业财数据',
+  titleHelpMessage: '制证数据提取',
+  api: getTicket2FinanceAPI,
+  columns,
+};
+
+export const tableConfig = [config, clientTableConfig];
