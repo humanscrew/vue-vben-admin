@@ -11,6 +11,7 @@ import { RequestEnum } from '/@/enums/httpEnum';
 import { getPublicKey } from '/@/utils/auth';
 import { AesEncryption } from '/@/utils/cipher';
 import { Api } from '/@/api/sys/user';
+import { isDevMode } from '/@/utils/env';
 
 export * from './axiosTransform';
 
@@ -20,11 +21,13 @@ export * from './axiosTransform';
 export class VAxios {
   private axiosInstance: AxiosInstance;
   private readonly options: CreateAxiosOptions;
+  private readonly isDevMode: boolean;
 
   constructor(options: CreateAxiosOptions) {
     this.options = options;
     this.axiosInstance = axios.create(options);
     this.setupInterceptors();
+    this.isDevMode = isDevMode();
   }
 
   /**
@@ -209,7 +212,7 @@ export class VAxios {
     const publicKey = getPublicKey();
     let encryption: AesEncryption | undefined = undefined;
     if (publicKey) {
-      console.log('request', cloneDeep(conf.data || conf.params));
+      this.isDevMode && console.log('<Q>', cloneDeep(conf.data || conf.params), conf.url);
       encryption = new AesEncryption();
       if (conf.data) {
         encryption.encryptByAES(conf.data);
@@ -232,7 +235,7 @@ export class VAxios {
         .then((res: AxiosResponse<Result>) => {
           if (encryption) {
             encryption.decryptByAES(res.data);
-            console.log('response', cloneDeep(res.data));
+            this.isDevMode && console.log('<R>', cloneDeep(res.data), conf.url);
           }
           if (transformRequestHook && isFunction(transformRequestHook)) {
             try {
