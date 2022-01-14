@@ -1,10 +1,10 @@
-import CustomFilterDropdown from './CustomFilterDropdown.vue';
+import SearchDropdown from './SearchDropdown.vue';
 
 export const filterDropdown = {
-  useSearchDropdown: (api: Function) => {
+  useSearchDropdown: (api: Function | undefined = undefined) => {
     return (props) => (
       <>
-        <CustomFilterDropdown {...props} api={api}></CustomFilterDropdown>
+        <SearchDropdown {...props} api={api}></SearchDropdown>
       </>
     );
   },

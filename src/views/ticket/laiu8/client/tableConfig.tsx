@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table/src/types/table';
 import { getLaiu8ClientAPI } from '/@/api/ticket/ticket';
 import { FilterIcon, CustomRender, FilterDropdown } from '/@/views/common/CustomTable/index';
 
-const SearchDropdown = FilterDropdown.useSearchDropdown(getLaiu8ClientAPI);
+const SearchDropdown = FilterDropdown.useSearchDropdown();
 
 const columns: BasicColumn[] = [
   {

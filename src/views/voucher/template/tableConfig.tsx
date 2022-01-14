@@ -8,7 +8,7 @@ const tableSetting = {
   api: getBookkeepingTemplateAPI,
 };
 
-const SearchDropdown = FilterDropdown.useSearchDropdown(getBookkeepingTemplateAPI);
+const SearchDropdown = FilterDropdown.useSearchDropdown();
 
 const columns: BasicColumn[] = [
   {

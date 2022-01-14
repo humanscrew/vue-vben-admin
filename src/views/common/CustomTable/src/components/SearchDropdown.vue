@@ -35,16 +35,19 @@
   import { Select, Spin } from 'ant-design-vue';
   import { isNullOrUnDef } from '/@/utils/is';
   import { debounce } from 'lodash-es';
+  import { useTableContext } from '/@/components/Table/src/hooks/useTableContext';
 
   const props = defineProps({
     setSelectedKeys: Function,
     confirm: Function,
     clearFilters: Function,
     column: Object,
-    api: Function,
+    api: [Function, undefined],
   });
 
   const { setSelectedKeys, confirm, clearFilters, column, api } = toRefs(props);
+
+  const fetchApi = api.value ?? useTableContext().getBindValues.value.api;
 
   const state = reactive({
     selectValue: [],
@@ -64,7 +67,7 @@
     const fetchId = lastFetchId;
     fetching.value = true;
     state.options = [];
-    const { result } = await api.value({
+    const { result } = await fetchApi({
       page: 1,
       per_page: 100,
       filterLike: [{ field: dataIndex, values: [value] }],

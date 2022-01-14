@@ -6,8 +6,8 @@ enum Api {
   TenPayBill = '/api/tenPayBill',
 }
 
-export const tenPayBillAPI = (params: tenPayBillResult, mode: ErrorMessageMode = 'message') => {
-  return http.post<tenPayBillParams>(
+export const tenPayBillAPI = (params: tenPayBillParams, mode: ErrorMessageMode = 'message') => {
+  return http.post<tenPayBillResult>(
     {
       url: Api.TenPayBill,
       params,

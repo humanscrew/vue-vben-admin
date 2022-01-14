@@ -3,7 +3,7 @@ import { getTicket2FinanceAPI } from '/@/api/ticket/ticket';
 import { FilterIcon, CustomRender, FilterDropdown } from '/@/views/common/CustomTable/index';
 import { tableConfig as clientTableConfig } from '/@/views/ticket/laiu8/client/tableConfig';
 
-const SearchDropdown = FilterDropdown.useSearchDropdown(getTicket2FinanceAPI);
+const SearchDropdown = FilterDropdown.useSearchDropdown();
 
 const columns: BasicColumn[] = [
   {

@@ -16,7 +16,7 @@ const Text = ({ text }) => (
 );
 
 const useTag = (ColorEnum) => {
-  const tagColor = (text, ColorEnum) => {
+  const tagColor = (text: string, ColorEnum) => {
     const color = ColorEnum[text];
     return color;
   };

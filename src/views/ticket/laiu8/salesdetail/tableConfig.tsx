@@ -20,7 +20,7 @@ const tableSetting = {
   api: getTicketLaiu8API,
 };
 
-const SearchDropdown = FilterDropdown.useSearchDropdown(getTicketLaiu8API);
+const SearchDropdown = FilterDropdown.useSearchDropdown();
 
 const columns: BasicColumn[] = [
   {
