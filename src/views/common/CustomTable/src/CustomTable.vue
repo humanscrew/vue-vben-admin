@@ -67,7 +67,7 @@
     };
   };
   const config = ref(getConfig());
-  const [register, { setProps, reload }] = useTable(config.value);
+  const [register, { setTableData, setProps, reload }] = useTable(config.value);
 
   const canResize = ref(true);
 
@@ -107,6 +107,7 @@
     }
     tableIndex.value = key;
     config.value = getConfig();
+    setTableData([]);
     setProps(config.value);
     reload();
     handleColumnFilter();
