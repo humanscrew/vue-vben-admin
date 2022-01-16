@@ -1,9 +1,11 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
 import { getTicket2FinanceAPI } from '/@/api/ticket/ticket';
-import { FilterIcon, CustomRender, FilterDropdown } from '/@/views/common/CustomTable/index';
 import { tableConfig as clientTableConfig } from '/@/views/ticket/laiu8/client/tableConfig';
 
-const SearchDropdown = FilterDropdown.useSearchDropdown();
+const SearchDropdown = ['filterDropdown', { function: 'useSearchDropdown', params: [] }] as any;
+const SearchIcon = ['filterIcon', 'SearchIcon'];
+const FilterIcon = ['filterIcon', 'FilterIcon'];
+const Text = ['columnRender', 'Text'] as any;
 
 const columns: BasicColumn[] = [
   {
@@ -12,8 +14,8 @@ const columns: BasicColumn[] = [
     width: 150,
     sorter: true,
     filters: [],
-    filterIcon: FilterIcon.FilterIcon,
-    customRender: CustomRender.Text,
+    filterIcon: FilterIcon,
+    customRender: Text,
   },
   {
     title: '日期',
@@ -21,7 +23,7 @@ const columns: BasicColumn[] = [
     format: 'date|YYYY-MM-DD',
     sorter: true,
     width: 150,
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
   },
   {
@@ -29,32 +31,32 @@ const columns: BasicColumn[] = [
     dataIndex: 'paymentMethod',
     width: 100,
     filters: [],
-    filterIcon: FilterIcon.FilterIcon,
-    customRender: CustomRender.Text,
+    filterIcon: FilterIcon,
+    customRender: Text,
   },
   {
     title: '客户类型',
     dataIndex: 'userType',
     width: 100,
     filters: [],
-    filterIcon: FilterIcon.FilterIcon,
-    customRender: CustomRender.Text,
+    filterIcon: FilterIcon,
+    customRender: Text,
   },
   {
     title: '客户名称',
     dataIndex: 'userName',
     width: 300,
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
   {
     title: '产品类型',
     dataIndex: 'productType',
     width: 100,
     filters: [],
-    filterIcon: FilterIcon.FilterIcon,
-    customRender: CustomRender.Text,
+    filterIcon: FilterIcon,
+    customRender: Text,
   },
   {
     title: '实际金额',

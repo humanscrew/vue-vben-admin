@@ -50,7 +50,7 @@ const Lock = ({ text }) => (
   </>
 );
 
-export const customRender = {
+export const columnRender = {
   Text,
   useTag,
   Lock,

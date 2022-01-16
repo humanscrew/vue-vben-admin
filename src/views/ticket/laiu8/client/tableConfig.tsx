@@ -1,8 +1,10 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
 import { getLaiu8ClientAPI } from '/@/api/ticket/ticket';
-import { FilterIcon, CustomRender, FilterDropdown } from '/@/views/common/CustomTable/index';
 
-const SearchDropdown = FilterDropdown.useSearchDropdown();
+const SearchDropdown = ['filterDropdown', { function: 'useSearchDropdown', params: [] }] as any;
+const SearchIcon = ['filterIcon', 'SearchIcon'];
+const FilterIcon = ['filterIcon', 'FilterIcon'];
+const Text = ['columnRender', 'Text'] as any;
 
 const columns: BasicColumn[] = [
   {
@@ -10,25 +12,25 @@ const columns: BasicColumn[] = [
     dataIndex: 'clientId',
     width: 150,
     sorter: true,
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
   {
     title: '客户类型',
     dataIndex: 'type',
     width: 100,
     filters: [],
-    filterIcon: FilterIcon.FilterIcon,
-    customRender: CustomRender.Text,
+    filterIcon: FilterIcon,
+    customRender: Text,
   },
   {
     title: '客户名称',
     dataIndex: 'name',
     width: 250,
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
   {
     title: '销售额',
@@ -47,25 +49,25 @@ const columns: BasicColumn[] = [
     title: '签约主体',
     dataIndex: 'companyName',
     width: 250,
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
   {
     title: '统一社会信用代码',
     dataIndex: 'uniformSocialCreditCode',
     width: 200,
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
   {
     title: '客户拓展负责人',
     dataIndex: 'manager',
     width: 150,
     filters: [],
-    filterIcon: FilterIcon.FilterIcon,
-    customRender: CustomRender.Text,
+    filterIcon: FilterIcon,
+    customRender: Text,
   },
   {
     title: '合约起始时间',
@@ -73,7 +75,7 @@ const columns: BasicColumn[] = [
     sorter: true,
     format: 'date|YYYY-MM-DD',
     dataIndex: 'cooperateStartTime',
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
   },
 
@@ -83,24 +85,24 @@ const columns: BasicColumn[] = [
     sorter: true,
     format: 'date|YYYY-MM-DD',
     dataIndex: 'cooperateEndTime',
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
   },
   {
     title: '客户地址',
     width: 300,
     dataIndex: 'address',
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
   {
     title: '联系方式',
     width: 200,
     dataIndex: 'mobile',
-    filterIcon: FilterIcon.SearchIcon,
+    filterIcon: SearchIcon,
     filterDropdown: SearchDropdown,
-    customRender: CustomRender.Text,
+    customRender: Text,
   },
 ];
 

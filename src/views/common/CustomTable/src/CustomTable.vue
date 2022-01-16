@@ -47,9 +47,10 @@
   import { BasicTable, useTable } from '/@/components/Table';
   import { Tooltip } from 'ant-design-vue';
   import Icon from '/@/components/Icon';
-  import { isEmpty, isArray } from '/@/utils/is';
+  import { isEmpty, isArray, isString } from '/@/utils/is';
   import ExportDropdown from './components/ExportDropdown.vue';
   import TableSelector from './components/TableSelector.vue';
+  import { CustomRender } from './components/CustomRender';
 
   const props = defineProps({
     tableConfig: Object,
@@ -101,6 +102,32 @@
     });
   };
 
+  const getRender = (arg) => {
+    if (isArray(arg)) {
+      let render = CustomRender;
+      arg.forEach((item) => {
+        render = isString(item) ? render[item] : render[item.function](...item.params);
+      });
+      return render;
+    } else {
+      return arg;
+    }
+  };
+
+  const handleCustomRender = () => {
+    const columns = config.value.columns;
+    columns.forEach((column) => {
+      column.filterIcon = getRender(column.filterIcon);
+      column.filterDropdown = getRender(column.filterDropdown);
+      column.customRender = getRender(column.customRender);
+    });
+  };
+
+  const handleColumn = () => {
+    handleColumnFilter();
+    handleCustomRender();
+  };
+
   const handleTableSelect = (key) => {
     if (key == tableIndex.value) {
       return;
@@ -110,10 +137,10 @@
     setTableData([]);
     setProps(config.value);
     reload();
-    handleColumnFilter();
+    handleColumn();
   };
 
   onMounted(() => {
-    handleColumnFilter();
+    handleColumn();
   });
 </script>
