@@ -116,25 +116,24 @@
     });
   };
 
-  const getRender = (arg) => {
-    if (isArray(arg)) {
-      let render = CustomRender;
-      arg.forEach((item) => {
-        render = isString(item) ? render[item] : render[item.function](...item.params);
-      });
-      return render;
-    } else {
-      return arg;
-    }
+  const handleRender = (column) => {
+    const renderKeys = ['filterIcon', 'filterDropdown', 'customRender'];
+    renderKeys.forEach((key) => {
+      if (isArray(column[key])) {
+        let render = CustomRender;
+        column[key].forEach((item) => {
+          render = isString(item) ? render[item] : render[item.function](...item.params);
+        });
+        column[key] = render;
+      }
+    });
   };
 
   const handleCustomRender = () => {
     const columns = config.value.columns;
-    columns.forEach((column) => {
-      column.filterIcon = getRender(column.filterIcon);
-      column.filterDropdown = getRender(column.filterDropdown);
-      column.customRender = getRender(column.customRender);
-    });
+    const innerColumns = config.value.innerColumns;
+    columns.forEach((column) => handleRender(column));
+    innerColumns?.forEach((column) => handleRender(column));
   };
 
   const handleColumn = () => {

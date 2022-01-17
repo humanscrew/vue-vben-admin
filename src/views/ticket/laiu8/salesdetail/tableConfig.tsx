@@ -262,99 +262,99 @@ const columns: BasicColumn[] = [
   },
 ];
 
-// const innerColumns: BasicColumn[] = [
-//   {
-//     title: '状态变更',
-//     dataIndex: 'changeType',
-//     width: 100,
-//     customRender: Text,
-//   },
-//   {
-//     title: '实际支付价格',
-//     dataIndex: 'realPrice',
-//     width: 150,
-//     customRender: Text,
-//   },
-//   {
-//     title: '退款金额',
-//     dataIndex: 'refundAmount',
-//     width: 100,
-//     customRender: Text,
-//   },
-//   {
-//     title: '手续费',
-//     dataIndex: 'fee',
-//     width: 100,
-//     customRender: Text,
-//   },
-//   {
-//     title: '支付时间',
-//     dataIndex: 'paymentTime',
-//     width: 150,
-//     format: 'date|YYYY-MM-DD HH:mm:ss',
-//   },
-//   {
-//     title: '支付方式',
-//     dataIndex: 'paymentMethod',
-//     width: 150,
-//     customRender: Text,
-//   },
-//   {
-//     title: '支付ID',
-//     dataIndex: 'payId',
-//     width: 250,
-//     customRender: Text,
-//   },
-//   {
-//     title: '变更后关联票号',
-//     dataIndex: 'ticketNoNew',
-//     width: 150,
-//     customRender: Text,
-//   },
-//   {
-//     title: '变更时间',
-//     dataIndex: 'changeTime',
-//     width: 150,
-//     format: 'date|YYYY-MM-DD HH:mm:ss',
-//   },
-//   {
-//     title: '变更渠道',
-//     dataIndex: 'ticketChangeChannelName',
-//     width: 100,
-//     customRender: Text,
-//   },
-//   {
-//     title: '变更操作人',
-//     dataIndex: 'changeUserName',
-//     width: 100,
-//     customRender: Text,
-//   },
-//   {
-//     title: '退款方式',
-//     dataIndex: 'ticketRefundMethod',
-//     width: 100,
-//     customRender: Text,
-//   },
-//   {
-//     title: '实际退款时间',
-//     dataIndex: 'ticketRefundFinishTime',
-//     width: 150,
-//     format: 'date|YYYY-MM-DD HH:mm:ss',
-//   },
-//   {
-//     title: '退款ID',
-//     dataIndex: 'refundId',
-//     width: 250,
-//     customRender: Text,
-//   },
-//   {
-//     title: '',
-//     dataIndex: '',
-//   },
-// ];
+const innerColumns: BasicColumn[] = [
+  {
+    title: '状态变更',
+    dataIndex: 'changeType',
+    width: 100,
+    customRender: Text,
+  },
+  {
+    title: '实际支付价格',
+    dataIndex: 'realPrice',
+    width: 150,
+    customRender: Text,
+  },
+  {
+    title: '退款金额',
+    dataIndex: 'refundAmount',
+    width: 100,
+    customRender: Text,
+  },
+  {
+    title: '手续费',
+    dataIndex: 'fee',
+    width: 100,
+    customRender: Text,
+  },
+  {
+    title: '支付时间',
+    dataIndex: 'paymentTime',
+    width: 150,
+    format: 'date|YYYY-MM-DD HH:mm:ss',
+  },
+  {
+    title: '支付方式',
+    dataIndex: 'paymentMethod',
+    width: 150,
+    customRender: Text,
+  },
+  {
+    title: '支付ID',
+    dataIndex: 'payId',
+    width: 250,
+    customRender: Text,
+  },
+  {
+    title: '变更后关联票号',
+    dataIndex: 'ticketNoNew',
+    width: 150,
+    customRender: Text,
+  },
+  {
+    title: '变更时间',
+    dataIndex: 'changeTime',
+    width: 150,
+    format: 'date|YYYY-MM-DD HH:mm:ss',
+  },
+  {
+    title: '变更渠道',
+    dataIndex: 'ticketChangeChannelName',
+    width: 100,
+    customRender: Text,
+  },
+  {
+    title: '变更操作人',
+    dataIndex: 'changeUserName',
+    width: 100,
+    customRender: Text,
+  },
+  {
+    title: '退款方式',
+    dataIndex: 'ticketRefundMethod',
+    width: 100,
+    customRender: Text,
+  },
+  {
+    title: '实际退款时间',
+    dataIndex: 'ticketRefundFinishTime',
+    width: 150,
+    format: 'date|YYYY-MM-DD HH:mm:ss',
+  },
+  {
+    title: '退款ID',
+    dataIndex: 'refundId',
+    width: 250,
+    customRender: Text,
+  },
+  {
+    title: '',
+    dataIndex: '',
+  },
+];
 
 export const tableConfig = {
   ...tableSetting,
   columns,
-  // innerColumns,
+  innerColumns,
 };
