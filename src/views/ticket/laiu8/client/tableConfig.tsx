@@ -1,5 +1,4 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
-import { getLaiu8ClientAPI } from '/@/api/ticket/ticket';
 
 const SearchDropdown = ['filterDropdown', { function: 'useSearchDropdown', params: [] }] as any;
 const SearchIcon = ['filterIcon', 'SearchIcon'];
@@ -109,6 +108,6 @@ const columns: BasicColumn[] = [
 export const tableConfig = {
   title: '签约客户',
   titleHelpMessage: '来游吧',
-  api: getLaiu8ClientAPI,
+  api: ['getLaiu8ClientAPI'],
   columns,
 };

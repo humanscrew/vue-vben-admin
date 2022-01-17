@@ -1,10 +1,9 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
-import { getBookkeepingTemplateAPI } from '/@/api/finance/finance';
 
 const tableSetting = {
   title: '凭证模板',
   titleHelpMessage: '自动制证',
-  api: getBookkeepingTemplateAPI,
+  api: ['getBookkeepingTemplateAPI'],
 };
 
 const SearchDropdown = ['filterDropdown', { function: 'useSearchDropdown', params: [] }] as any;

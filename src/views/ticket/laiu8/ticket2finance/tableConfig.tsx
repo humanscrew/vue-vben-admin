@@ -1,5 +1,4 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
-import { getTicket2FinanceAPI } from '/@/api/ticket/ticket';
 import { tableConfig as clientTableConfig } from '/@/views/ticket/laiu8/client/tableConfig';
 
 const SearchDropdown = ['filterDropdown', { function: 'useSearchDropdown', params: [] }] as any;
@@ -78,7 +77,7 @@ const columns: BasicColumn[] = [
 const config = {
   title: '业财数据',
   titleHelpMessage: '制证数据提取',
-  api: getTicket2FinanceAPI,
+  api: ['getTicket2FinanceAPI'],
   columns,
 };
 

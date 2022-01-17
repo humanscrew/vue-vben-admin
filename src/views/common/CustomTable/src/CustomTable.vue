@@ -51,6 +51,7 @@
   import ExportDropdown from './components/ExportDropdown.vue';
   import TableSelector from './components/TableSelector.vue';
   import { CustomRender } from './components/CustomRender';
+  import { tableApi } from './tableApi';
 
   const props = defineProps({
     tableConfig: Object,
@@ -60,14 +61,27 @@
   const isMultiTable = isArray(tableConfig);
   const tableIndex = ref(0);
 
+  const handleApi = (config) => {
+    if (isArray(config.api)) {
+      let api = tableApi;
+      config.api.forEach((item) => {
+        api = api[item];
+      });
+      config.api = api;
+    }
+  };
+
   const getConfig = () => {
     const config = isMultiTable ? tableConfig[tableIndex.value] : tableConfig;
+    handleApi(config);
     return {
       indentSize: 10,
       ...config,
     };
   };
+
   const config = ref(getConfig());
+
   const [register, { setTableData, setProps, reload }] = useTable(config.value);
 
   const canResize = ref(true);

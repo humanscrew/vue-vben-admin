@@ -1,5 +1,4 @@
 import { BasicColumn } from '/@/components/Table/src/types/table';
-import { getTicketLaiu8API } from '/@/api/ticket/ticket';
 
 enum ColorEnum {
   '来游吧' = 'blue',
@@ -23,7 +22,7 @@ const tableSetting = {
   title: '销售明细',
   titleHelpMessage: '双击单元格内容即可复制',
   hideStatus: '已取消',
-  api: getTicketLaiu8API,
+  api: ['getTicketLaiu8API'],
 };
 
 const columns: BasicColumn[] = [
